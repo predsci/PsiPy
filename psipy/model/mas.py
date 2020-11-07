@@ -87,6 +87,11 @@ class MASOutput:
         self.path = Path(path)
         self._data = read_mas_files(self.path)
 
+        # TODO: set following attributes:
+        # - Carrington rotation
+        # - Type of model (heliospheric/coronal)
+        # - Type of solution (thermodynamic/Alfvén wave)
+
     def __getattr__(self, attr):
         """
         Get an attribute. This allows one to do e.g. ``masoutput.vr`` to get
