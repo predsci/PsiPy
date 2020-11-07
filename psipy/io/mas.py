@@ -4,18 +4,21 @@ Tools for reading MAS (Magnetohydrodynamics on a sphere) model outputs.
 from pathlib import Path
 
 import numpy as np
+import xarray as xr
 
-from .util import HDF4File
+from .util import read_hdf
 
 
-def read_hdf():
-    fname = Path('data/corona/vr002.hdf')
-    # Load the HDF4 file
-    # In all PSI files the data is stored in "Data-Set-2"
-    with HDF4File(fname) as sd_id:
-        sds_id = sd_id.select('Data-Set-2')
-        print(sds_id)
-
-        # Get the scalar data
-        f = sds_id.get()
-        print(f.shape)
+def read_mas_files(path):
+    """
+    Parameters
+    ----------
+    path :
+        Path to the folder containing the MAS data files.
+    """
+    mas_path = Path(path)
+    fpath = mas_path / 'vr002.hdf'
+    data, coords = read_hdf(fpath)
+    dims = ['phi', 'theta', 'r']
+    data = xr.DataArray(data=data, coords=coords, dims=dims)
+    return data

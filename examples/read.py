@@ -1,3 +1,5 @@
-from psipy.io import read_hdf
+from psipy.io import read_mas_files
 
-read_hdf()
+mas_path = 'data/corona'
+data = read_mas_files(mas_path)
+print(data)
