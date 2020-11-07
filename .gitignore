@@ -1,0 +1,3 @@
+*.pyc
+psi_code/*
+*.DS_Store
