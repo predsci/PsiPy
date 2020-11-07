@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import pyhdf.SD as h4
 
@@ -11,6 +13,8 @@ class HDF4File:
     """
     def __init__(self, file_name):
         file_name = str(file_name)
+        if not os.path.exists(file_name):
+            raise FileNotFoundError(f'Could not find {file_name}')
         self.file_obj = h4.SD(file_name)
 
     def __enter__(self):
