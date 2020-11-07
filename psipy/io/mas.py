@@ -34,6 +34,8 @@ def read_mas_files(path):
         fpath = mas_path / f'{var}002.hdf'
         data, coords = read_hdf(fpath)
         dims = ['phi', 'theta', 'r']
+        # Convert from co-latitude to latitude
+        coords[1] = np.pi / 2 - np.array(coords[1])
         data = xr.DataArray(data=data, coords=coords, dims=dims)
         data_arrays[var] = data
 

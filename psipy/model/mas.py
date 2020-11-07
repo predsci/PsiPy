@@ -66,8 +66,6 @@ class Variable:
 
         sliced.plot(x='theta', y='r', ax=ax, **kwargs)
 
-        # Put zero degrees at the bottom of the plot
-        ax.set_theta_zero_location("S")
         ax.set_rlim(0)
         ax.set_aspect('equal')
 
