@@ -12,8 +12,9 @@ from .util import read_hdf
 __all__ = ['read_mas_files']
 
 # MAS variable names
+# TODO: check if cs is always present?
 _mas_vars = ['vr', 'vp', 'vt', 'va', 't', 'rho', 'p',
-             'jt', 'jr', 'jp', 'cs', 'br', 'bt', 'br']
+             'jt', 'jr', 'jp', 'br', 'bt', 'br']
 
 
 def read_mas_files(path):
