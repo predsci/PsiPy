@@ -1,5 +1,5 @@
-from psipy.io import read_mas_files
+from psipy.model import MASOutput
 
 mas_path = 'data/corona'
-data = read_mas_files(mas_path)
-print(data)
+model = MASOutput(mas_path)
+print(model)
