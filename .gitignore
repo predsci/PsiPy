@@ -1,4 +1,7 @@
 *.pyc
-psi_code/*
+*.egg-info
+
 *.DS_Store
+
+psi_code/*
 data/*
