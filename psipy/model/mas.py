@@ -23,7 +23,7 @@ class Variable:
         self.data = data
         self.name = name
 
-    def plot_radial_cut(self, i, ax=None):
+    def plot_radial_cut(self, i, ax=None, **kwargs):
         """
         Plot a radial cut.
 
@@ -33,16 +33,18 @@ class Variable:
             Index at which to slice the data.
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
+        kwargs :
+            Additional keyword arguments are passed to `xarray.plot.pcolormesh`.
         """
         sliced = self.data.isel(r=i)
 
         if ax is None:
             ax = plt.gca()
 
-        sliced.plot(x='phi', y='theta', ax=ax)
+        sliced.plot(x='phi', y='theta', ax=ax, **kwargs)
         ax.set_aspect('equal')
 
-    def plot_phi_cut(self, i, ax=None):
+    def plot_phi_cut(self, i, ax=None, **kwargs):
         """
         Plot a theta cut.
 
@@ -52,6 +54,8 @@ class Variable:
             Index at which to slice the data.
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
+        kwargs :
+            Additional keyword arguments are passed to `xarray.plot.pcolormesh`.
         """
         sliced = self.data.isel(phi=i)
 
@@ -60,10 +64,11 @@ class Variable:
         if ax.name != 'polar':
             raise ValueError('ax must have a polar projection')
 
+        sliced.plot(x='theta', y='r', ax=ax, **kwargs)
+
         # Put zero degrees at the bottom of the plot
         ax.set_theta_zero_location("S")
-
-        sliced.plot(x='theta', y='r', ax=ax)
+        ax.set_rlim(0)
         ax.set_aspect('equal')
 
 
