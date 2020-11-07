@@ -9,9 +9,11 @@ import xarray as xr
 from .util import read_hdf
 
 
-# A mapping from the MAS filenames to the names they are given within the
-# data array
-_mas_files = ['vr', 'vp', 'vt']
+__all__ = ['read_mas_files']
+
+# MAS variable names
+_mas_vars = ['vr', 'vp', 'vt', 'va', 't', 'rho', 'p',
+             'jt', 'jr', 'jp', 'cs', 'br', 'bt', 'br']
 
 
 def read_mas_files(path):
@@ -27,7 +29,7 @@ def read_mas_files(path):
     """
     mas_path = Path(path)
     data_arrays = {}
-    for var in _mas_files:
+    for var in _mas_vars:
         fpath = mas_path / f'{var}002.hdf'
         data, coords = read_hdf(fpath)
         dims = ['phi', 'theta', 'r']
