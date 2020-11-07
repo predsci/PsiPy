@@ -25,6 +25,8 @@ class Variable:
 
     def plot_radial_cut(self, i, ax=None):
         """
+        Plot a radial cut.
+
         Parameters
         ----------
         i : int
@@ -32,12 +34,36 @@ class Variable:
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
         """
-        sliced = self.data.isel(r=-1)
+        sliced = self.data.isel(r=i)
 
         if ax is None:
             ax = plt.gca()
 
         sliced.plot(x='phi', y='theta', ax=ax)
+        ax.set_aspect('equal')
+
+    def plot_phi_cut(self, i, ax=None):
+        """
+        Plot a theta cut.
+
+        Parameters
+        ----------
+        i : int
+            Index at which to slice the data.
+        ax : matplolit.axes.Axes, optional
+            axes on which to plot. Defaults to current axes if not specified.
+        """
+        sliced = self.data.isel(phi=i)
+
+        if ax is None:
+            ax = plt.gca()
+        if ax.name != 'polar':
+            raise ValueError('ax must have a polar projection')
+
+        # Put zero degrees at the bottom of the plot
+        ax.set_theta_zero_location("S")
+
+        sliced.plot(x='theta', y='r', ax=ax)
         ax.set_aspect('equal')
 
 
@@ -65,4 +91,5 @@ class MASOutput:
         """
         if attr in _mas_vars:
             return Variable(self._data[attr], attr)
-        return super().__getattr__(attr)
+        else:
+            raise AttributeError(f'attribute {attr} not present in {_mas_vars}')
