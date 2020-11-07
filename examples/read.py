@@ -1,9 +1,12 @@
 from psipy.model import MASOutput
 import matplotlib.pyplot as plt
 
-mas_path = 'data/corona'
+mas_path = 'data/helio'
 model = MASOutput(mas_path)
 
 ax = plt.subplot(111, projection='polar')
-model.vr.plot_phi_cut(75, ax=ax)
+model.rho.plot_phi_cut(75, ax=ax)
+
+fig, ax = plt.subplots()
+model.rho.plot_radial_cut(0, ax=ax)
 plt.show()
