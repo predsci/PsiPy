@@ -6,6 +6,7 @@ Welcome to psipy's documentation!
    :caption: Contents:
 
    api
+   auto_examples/index
 
 
 

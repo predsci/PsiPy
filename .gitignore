@@ -3,6 +3,7 @@
 
 docs/_build/*
 docs/api/*
+docs/auto_examples
 
 *.DS_Store
 
