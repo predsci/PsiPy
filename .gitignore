@@ -1,6 +1,9 @@
 *.pyc
 *.egg-info
 
+docs/_build/*
+docs/api/*
+
 *.DS_Store
 
 psi_code/*
