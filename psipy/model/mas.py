@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import numpy as np
+
 from psipy.io import read_mas_files
 from psipy.io.mas import _mas_vars
 
@@ -44,7 +46,7 @@ class Variable:
         sliced.plot(x='phi', y='theta', ax=ax, **kwargs)
         ax.set_aspect('equal')
 
-    def plot_phi_cut(self, i, ax=None, **kwargs):
+    def plot_theta_cut(self, i, ax=None, **kwargs):
         """
         Plot a theta cut.
 
@@ -67,6 +69,7 @@ class Variable:
         sliced.plot(x='theta', y='r', ax=ax, **kwargs)
 
         ax.set_rlim(0)
+        ax.set_thetalim(-np.pi / 2, np.pi / 2)
         ax.set_aspect('equal')
 
 
