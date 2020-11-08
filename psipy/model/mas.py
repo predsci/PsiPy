@@ -12,7 +12,8 @@ class Variable:
     """
     A single scalar variable.
 
-    This class primarily contains methods for plotting data.
+    This class primarily contains methods for plotting data. It can be created
+    with any `~xarray.DataArray` that has ``['theta', 'phi', 'r']`` fields.
 
     Parameters
     ----------
@@ -38,17 +39,23 @@ class Variable:
         kwargs :
             Additional keyword arguments are passed to `xarray.plot.pcolormesh`.
         """
-        sliced = self.data.isel(r=i)
-
         if ax is None:
             ax = plt.gca()
 
+        # Take slice of data, and plot
+        sliced = self.data.isel(r=i)
         sliced.plot(x='phi', y='theta', ax=ax, **kwargs)
-        ax.set_aspect('equal')
 
-    def plot_theta_cut(self, i, ax=None, **kwargs):
+        # Plot formatting
+        ax.set_aspect('equal')
+        r = sliced['r'].values
+        ax.set_title(f'{self.name}, r={r:.2f}' + r'$R_{\odot}$')
+        ax.set_xlim(0, 2 * np.pi)
+        ax.set_ylim(-np.pi / 2, np.pi / 2)
+
+    def plot_phi_cut(self, i, ax=None, **kwargs):
         """
-        Plot a theta cut.
+        Plot a phi cut.
 
         Parameters
         ----------
@@ -59,18 +66,20 @@ class Variable:
         kwargs :
             Additional keyword arguments are passed to `xarray.plot.pcolormesh`.
         """
-        sliced = self.data.isel(phi=i)
-
         if ax is None:
             ax = plt.gca()
         if ax.name != 'polar':
             raise ValueError('ax must have a polar projection')
 
+        sliced = self.data.isel(phi=i)
         sliced.plot(x='theta', y='r', ax=ax, **kwargs)
 
+        # Plot formatting
         ax.set_rlim(0)
         ax.set_thetalim(-np.pi / 2, np.pi / 2)
         ax.set_aspect('equal')
+        phi = np.rad2deg(sliced['phi'].values)
+        ax.set_title(f'{self.name}, ' + r'$\phi$= ' + f'{phi:.2f}' + '$^{\circ}$')
 
 
 class MASOutput:
