@@ -52,6 +52,8 @@ class Variable:
         ax.set_title(f'{self.name}, r={r:.2f}' + r'$R_{\odot}$')
         ax.set_xlim(0, 2 * np.pi)
         ax.set_ylim(-np.pi / 2, np.pi / 2)
+        ax.set_xlabel('')
+        ax.set_ylabel('')
 
     def plot_phi_cut(self, i, ax=None, **kwargs):
         """
@@ -80,6 +82,8 @@ class Variable:
         ax.set_aspect('equal')
         phi = np.rad2deg(sliced['phi'].values)
         ax.set_title(f'{self.name}, ' + r'$\phi$= ' + f'{phi:.2f}' + '$^{\circ}$')
+        ax.set_xlabel('')
+        ax.set_ylabel('')
 
 
 class MASOutput:
