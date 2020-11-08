@@ -19,6 +19,8 @@ _mas_vars = ['vr', 'vp', 'vt', 'va', 't', 'rho', 'p',
 
 def read_mas_files(path):
     """
+    Read in a full set of MAS output files.
+
     Parameters
     ----------
     path :
@@ -26,7 +28,9 @@ def read_mas_files(path):
 
     Returns
     -------
-    data : xarray.DataArray
+    data : list
+        A list of `xarray.DataArray`, containing all the variables from the MAS
+        output.
     """
     mas_path = Path(path)
     data_arrays = {}

@@ -24,14 +24,19 @@ class HDF4File:
         self.file_obj.end()
 
 
-def read_hdf(path):
+def read_hdf(path, sds_id='Data-Set-2'):
     """
     Read a HDF4 file.
+
+    Reads a single dataset from a single HDF4 file, returning the scalar data
+    and associated coordinates.
 
     Parameters
     ----------
     path :
         Path to the file.
+    sds_id : str, optional
+        ID of the dataset to get.
 
     Returns
     -------
