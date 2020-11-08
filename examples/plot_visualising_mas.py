@@ -13,6 +13,11 @@ mas_path = '/Users/dstansby/github/psipy/data/helio'
 model = MASOutput(mas_path)
 
 ###############################################################################
+# Each MAS model contains a number of variables. The variable names can be
+# accessed using the ``.variables`` attribute.
+print(model.variables)
+
+###############################################################################
 # Plot a cut of the model at a constant radius.
 fig, ax = plt.subplots()
 model.rho.plot_radial_cut(0, ax=ax)

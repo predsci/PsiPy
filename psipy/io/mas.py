@@ -1,6 +1,7 @@
 """
 Tools for reading MAS (Magnetohydrodynamics on a sphere) model outputs.
 """
+import glob
 from pathlib import Path
 
 import numpy as np
@@ -10,11 +11,6 @@ from .util import read_hdf
 
 
 __all__ = ['read_mas_files']
-
-# MAS variable names
-# TODO: check if cs is always present?
-_mas_vars = ['vr', 'vp', 'vt', 'va', 't', 'rho', 'p',
-             'jt', 'jr', 'jp', 'br', 'bt', 'br']
 
 
 def read_mas_files(path):
@@ -28,19 +24,22 @@ def read_mas_files(path):
 
     Returns
     -------
-    data : list
-        A list of `xarray.DataArray`, containing all the variables from the MAS
-        output.
+    data : dict
+        A mapping from variable names to `xarray.DataArray`, containing all
+        the variables from the MAS output.
     """
     mas_path = Path(path)
     data_arrays = {}
-    for var in _mas_vars:
-        fpath = mas_path / f'{var}002.hdf'
-        data, coords = read_hdf(fpath)
+    # Loop through all the files that end in 002.hdf
+    for f in glob.glob(str(mas_path / '*002.hdf')):
+        data, coords = read_hdf(f)
         dims = ['phi', 'theta', 'r']
         # Convert from co-latitude to latitude
         coords[1] = np.pi / 2 - np.array(coords[1])
         data = xr.DataArray(data=data, coords=coords, dims=dims)
+
+        # Get the variable name from the filename
+        var = Path(f).stem.split('002')[0]
         data_arrays[var] = data
 
     return data_arrays

@@ -3,7 +3,6 @@ from pathlib import Path
 import numpy as np
 
 from psipy.io import read_mas_files
-from psipy.io.mas import _mas_vars
 
 __all__ = ['MASOutput', 'Variable']
 
@@ -115,7 +114,14 @@ class MASOutput:
         Get an attribute. This allows one to do e.g. ``masoutput.vr`` to get
         the radial velocity variable.
         """
-        if attr in _mas_vars:
+        if attr in self.variables:
             return Variable(self._data[attr], attr)
         else:
-            raise AttributeError(f'attribute {attr} not present in {_mas_vars}')
+            raise AttributeError(f'attribute {attr} not present in {self.variables}')
+
+    @property
+    def variables(self):
+        """
+        List of variable names.
+        """
+        return list(self._data.keys())
