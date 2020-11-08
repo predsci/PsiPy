@@ -3,14 +3,14 @@ from pathlib import Path
 from psipy.io import read_mas_files
 from psipy.io.mas import _mas_vars
 
-__all__ = ['MASOutput']
+__all__ = ['MASOutput', 'Variable']
 
 
 class Variable:
     """
     A single scalar variable.
 
-    This class contains methods for plotting data.
+    This class primarily contains methods for plotting data.
 
     Parameters
     ----------
@@ -73,6 +73,8 @@ class Variable:
 class MASOutput:
     """
     The results from a single run of MAS.
+
+    This is a storage object that contains a number of `Variable` objects.
 
     Parameters
     ----------
