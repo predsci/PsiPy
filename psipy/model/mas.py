@@ -4,6 +4,7 @@ import astropy.units as u
 import numpy as np
 
 from psipy.io import read_mas_files
+import psipy.visualization as viz
 
 __all__ = ['MASOutput', 'Variable']
 
@@ -113,8 +114,12 @@ class Variable:
         ax.set_title(f'{self.name}, r={r:.2f}' + r'$R_{\odot}$')
         ax.set_xlim(0, 2 * np.pi)
         ax.set_ylim(-np.pi / 2, np.pi / 2)
-        ax.set_xlabel('')
-        ax.set_ylabel('')
+        viz.clear_axes_labels(ax)
+
+        # Tick label formatting
+        viz.set_theta_formatters(ax)
+        ax.set_xticks(np.deg2rad(np.linspace(0, 360, 7, endpoint=True)))
+        ax.set_yticks(np.deg2rad(np.linspace(-90, 90, 7, endpoint=True)))
 
     def plot_phi_cut(self, i, ax=None, **kwargs):
         """
@@ -145,8 +150,11 @@ class Variable:
         ax.set_aspect('equal')
         phi = np.rad2deg(sliced['phi'].values)
         ax.set_title(f'{self.name}, ' + r'$\phi$= ' + f'{phi:.2f}' + '$^{\circ}$')
-        ax.set_xlabel('')
-        ax.set_ylabel('')
+        viz.clear_axes_labels(ax)
+
+        # Tick label formatting
+        # Set theta ticks
+        ax.set_xticks(np.deg2rad(np.linspace(-90, 90, 7, endpoint=True)))
 
     @staticmethod
     def _set_cbar_label(kwargs, label):
