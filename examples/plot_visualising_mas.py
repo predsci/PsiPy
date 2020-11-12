@@ -41,4 +41,10 @@ fig = plt.figure()
 ax = plt.subplot(111, projection='polar')
 scaled_rho.plot_phi_cut(75, ax=ax)
 
+rho_squared = model.rho * model.rho
+
+fig = plt.figure()
+ax = plt.subplot(111, projection='polar')
+rho_squared.plot_phi_cut(75, ax=ax)
+
 plt.show()

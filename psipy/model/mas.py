@@ -80,6 +80,14 @@ class Variable:
         self.name = name
         self._unit = unit
 
+    def __mul__(self, other):
+        if not isinstance(other, Variable):
+            raise ValueError('Can only multiply a Variable with another Variable')
+        data = self.data * other.data
+        name = f'{self.name} x {other.name}'
+        unit = self.unit * other.unit
+        return Variable(data, name, unit)
+
     @property
     def unit(self):
         """
