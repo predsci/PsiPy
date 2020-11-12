@@ -5,9 +5,9 @@ Welcome to psipy's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   api
+   getting_started
    auto_examples/index
-
+   api
 
 
 Indices and tables
