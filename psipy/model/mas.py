@@ -1,10 +1,61 @@
 from pathlib import Path
 
+import astropy.units as u
 import numpy as np
 
 from psipy.io import read_mas_files
 
 __all__ = ['MASOutput', 'Variable']
+
+
+# A mapping from unit names to their units, and factors the data needs to be
+# multiplied to get them into these units.
+_vunit = [u.km / u.s, 481.37]
+_bunit = [u.G, 2.205]
+_mas_units = {'vr': _vunit,
+              'vt': _vunit,
+              'vp': _vunit,
+              'br': _bunit,
+              'bt': _bunit,
+              'bp': _bunit,
+              'bmag': _bunit,
+              'rho': [u.cm**-3, 1.67e-16 / 1.67e-24],
+              't': [u.K, 2.804e7]
+              }
+
+
+class MASOutput:
+    """
+    The results from a single run of MAS.
+
+    This is a storage object that contains a number of `Variable` objects.
+
+    Parameters
+    ----------
+    path :
+        Path to the directry containing the model output files.
+    """
+    def __init__(self, path):
+        self.path = Path(path)
+        self._data = read_mas_files(self.path)
+
+        for var in self.variables:
+            if var in _mas_units:
+                unit = _mas_units[var][0]
+                data = self._data[var] * _mas_units[var][1]
+                self.__setattr__(var, Variable(data, var, unit))
+            else:
+                raise RuntimeError('Do not know what units are for '
+                                   f'variable "{var}"')
+
+        # TODO: add __str__, __repr__
+
+    @property
+    def variables(self):
+        """
+        List of variable names.
+        """
+        return list(self._data.keys())
 
 
 class Variable:
@@ -20,10 +71,13 @@ class Variable:
         Variable data.
     name : str
         Variable name.
+    unit : astropy.units.Quantity
+        Variable unit.
     """
-    def __init__(self, data, name):
+    def __init__(self, data, name, unit):
         self.data = data
         self.name = name
+        self._unit = unit
 
     def plot_radial_cut(self, i, ax=None, **kwargs):
         """
@@ -83,45 +137,3 @@ class Variable:
         ax.set_title(f'{self.name}, ' + r'$\phi$= ' + f'{phi:.2f}' + '$^{\circ}$')
         ax.set_xlabel('')
         ax.set_ylabel('')
-
-
-class MASOutput:
-    """
-    The results from a single run of MAS.
-
-    This is a storage object that contains a number of `Variable` objects.
-
-    Parameters
-    ----------
-    path :
-        Path to the directry containing the model output files.
-
-    Attributes
-    ----------
-    TODO: add description of attributes
-    """
-    def __init__(self, path):
-        self.path = Path(path)
-        self._data = read_mas_files(self.path)
-
-        # TODO: set following attributes:
-        # - Carrington rotation
-        # - Type of model (heliospheric/coronal)
-        # - Type of solution (thermodynamic/Alfvén wave)
-
-    def __getattr__(self, attr):
-        """
-        Get an attribute. This allows one to do e.g. ``masoutput.vr`` to get
-        the radial velocity variable.
-        """
-        if attr in self.variables:
-            return Variable(self._data[attr], attr)
-        else:
-            raise AttributeError(f'attribute {attr} not present in {self.variables}')
-
-    @property
-    def variables(self):
-        """
-        List of variable names.
-        """
-        return list(self._data.keys())
