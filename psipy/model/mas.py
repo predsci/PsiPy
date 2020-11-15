@@ -51,13 +51,16 @@ class MASOutput:
         # TODO: add __str__, __repr__
 
     def __getitem__(self, var):
-        if var in _mas_units:
-            unit = _mas_units[var][0]
-            data = self._data[var] * _mas_units[var][1]
-            return Variable(data, var, unit)
+        if var in self.variables:
+            if var in _mas_units:
+                unit = _mas_units[var][0]
+                data = self._data[var] * _mas_units[var][1]
+                return Variable(data, var, unit)
+            else:
+                raise RuntimeError('Do not know what units are for '
+                                   f'variable "{var}"')
         else:
-            raise RuntimeError('Do not know what units are for '
-                               f'variable "{var}"')
+            raise RuntimeError(f'{var} not in list of known variables: {self.variables}')
 
     @property
     def variables(self):
