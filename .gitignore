@@ -9,3 +9,5 @@ docs/auto_examples
 
 psi_code/*
 data/*
+
+*.pdf
