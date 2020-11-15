@@ -1,3 +1,4 @@
+import copy
 from pathlib import Path
 
 import astropy.units as u
@@ -152,7 +153,7 @@ class Variable:
         if ax.name != 'polar':
             raise ValueError('ax must have a polar projection')
 
-        self._set_cbar_label(kwargs, str(self.unit))
+        kwargs = self._set_cbar_label(kwargs, str(self.unit))
         # Take slice of data and plot
         sliced = self.data.isel(phi=i)
         sliced.plot(x='theta', y='r', ax=ax, **kwargs)
@@ -173,9 +174,11 @@ class Variable:
     def _set_cbar_label(kwargs, label):
         """
         Set the colobar label with units.
-        This modifies kwargs in place.
         """
+        # Copy kwargs to prevent modifying them inplace
+        kwargs = copy.deepcopy(kwargs)
         # Set the colobar label with units
         cbar_kwargs = kwargs.pop('cbar_kwargs', {})
         cbar_kwargs['label'] = cbar_kwargs.pop('label', label)
         kwargs['cbar_kwargs'] = cbar_kwargs
+        return kwargs
