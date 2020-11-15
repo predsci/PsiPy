@@ -13,15 +13,21 @@ __all__ = ['MASOutput', 'Variable']
 # multiplied to get them into these units.
 _vunit = [u.km / u.s, 481.37]
 _bunit = [u.G, 2.205]
+_junit = [u.A / u.m**2, 2.267e4]
 _mas_units = {'vr': _vunit,
               'vt': _vunit,
               'vp': _vunit,
+              'va': _vunit,
               'br': _bunit,
               'bt': _bunit,
               'bp': _bunit,
               'bmag': _bunit,
               'rho': [u.cm**-3, 1.67e-16 / 1.67e-24],
-              't': [u.K, 2.804e7]
+              't': [u.K, 2.804e7],
+              'p': [u.Pa, 3.875717e-2],
+              'jr': _junit,
+              'jt': _junit,
+              'jp': _junit
               }
 
 
