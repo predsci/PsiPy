@@ -45,17 +45,16 @@ class MASOutput:
     def __init__(self, path):
         self.path = Path(path)
         self._data = read_mas_files(self.path)
-
-        for var in self.variables:
-            if var in _mas_units:
-                unit = _mas_units[var][0]
-                data = self._data[var] * _mas_units[var][1]
-                self.__setattr__(var, Variable(data, var, unit))
-            else:
-                raise RuntimeError('Do not know what units are for '
-                                   f'variable "{var}"')
-
         # TODO: add __str__, __repr__
+
+    def __getitem__(self, var):
+        if var in _mas_units:
+            unit = _mas_units[var][0]
+            data = self._data[var] * _mas_units[var][1]
+            return Variable(data, var, unit)
+        else:
+            raise RuntimeError('Do not know what units are for '
+                               f'variable "{var}"')
 
     @property
     def variables(self):
