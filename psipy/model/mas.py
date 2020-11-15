@@ -4,6 +4,7 @@ from pathlib import Path
 import astropy.constants as const
 import astropy.units as u
 import numpy as np
+import xarray
 
 from psipy.io import read_mas_files
 import psipy.visualization as viz
@@ -149,6 +150,25 @@ class Variable:
         ax.set_xticks(np.deg2rad(np.linspace(0, 360, 7, endpoint=True)))
         ax.set_yticks(np.deg2rad(np.linspace(-90, 90, 7, endpoint=True)))
 
+    @staticmethod
+    def _setup_polar_ax(ax):
+        if ax is None:
+            ax = plt.gca()
+        if ax.name != 'polar':
+            raise ValueError('ax must have a polar projection')
+        return ax
+
+    def _format_polar_ax(self, ax, data):
+        # Plot formatting
+        ax.set_rlim(0)
+        ax.set_thetalim(-np.pi / 2, np.pi / 2)
+        ax.set_aspect('equal')
+        viz.clear_axes_labels(ax)
+
+        # Tick label formatting
+        # Set theta ticks
+        ax.set_xticks([])
+
     def plot_phi_cut(self, i, ax=None, **kwargs):
         """
         Plot a phi cut.
@@ -162,27 +182,40 @@ class Variable:
         kwargs :
             Additional keyword arguments are passed to `xarray.plot.pcolormesh`.
         """
-        if ax is None:
-            ax = plt.gca()
-        if ax.name != 'polar':
-            raise ValueError('ax must have a polar projection')
+        ax = self._setup_polar_ax(ax)
 
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
         # Take slice of data and plot
         sliced = self.data.isel(phi=i)
         sliced.plot(x='theta', y='r', ax=ax, **kwargs)
-
-        # Plot formatting
-        ax.set_rlim(0)
-        ax.set_thetalim(-np.pi / 2, np.pi / 2)
-        ax.set_aspect('equal')
+        self._format_polar_ax(ax, sliced)
         phi = np.rad2deg(sliced['phi'].values)
         ax.set_title(f'{self.name}, ' + r'$\phi$= ' + f'{phi:.2f}' + '$^{\circ}$')
-        viz.clear_axes_labels(ax)
 
-        # Tick label formatting
-        # Set theta ticks
-        ax.set_xticks([])
+    def contour_phi_cut(self, i, levels, ax=None, **kwargs):
+        """
+        Plot contours on a phi cut.
+
+        Parameters
+        ----------
+        i : int
+            Index at which to slice the data.
+        levels : list
+            List of levels to contour.
+        ax : matplolit.axes.Axes, optional
+            axes on which to plot. Defaults to current axes if not specified.
+        kwargs :
+            Additional keyword arguments are passed to `xarray.plot.contour`.
+        """
+        ax = self._setup_polar_ax(ax)
+        sliced = self.data.isel(phi=i)
+        # Need to save a copy of the title to reset it later, since xarray
+        # tries to set it's own title that we don't want
+        title = ax.get_title()
+        xarray.plot.contour(sliced, x='theta', y='r', ax=ax,
+                            levels=levels, **kwargs)
+        self._format_polar_ax(ax, sliced)
+        ax.set_title(title)
 
     @staticmethod
     def _set_cbar_label(kwargs, label):
