@@ -1,6 +1,7 @@
 import copy
 from pathlib import Path
 
+import astropy.constants as const
 import astropy.units as u
 import numpy as np
 
@@ -93,6 +94,27 @@ class Variable:
         """
         return self._unit
 
+    def radial_normalized(self, radial_exponent):
+        """
+        Return a radially normalised copy of this variable.
+
+        Returns var**gamma, where gamma is the given exponent.
+
+        Parameters
+        ----------
+        radial_exponent : float
+
+        Returns
+        -------
+        Variable
+        """
+        r = self.data.coords['r']
+        rsun_au = float(u.AU / const.R_sun)
+        data = self.data * (r * rsun_au)**radial_exponent
+        units = self.unit * (u.AU)**radial_exponent
+        name = self.name + f' $r^{radial_exponent}$'
+        return Variable(data, name, units)
+
     def plot_radial_cut(self, i, ax=None, **kwargs):
         """
         Plot a radial cut.
@@ -145,7 +167,7 @@ class Variable:
         if ax.name != 'polar':
             raise ValueError('ax must have a polar projection')
 
-        kwargs = self._set_cbar_label(kwargs, str(self.unit))
+        kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
         # Take slice of data and plot
         sliced = self.data.isel(phi=i)
         sliced.plot(x='theta', y='r', ax=ax, **kwargs)
@@ -160,7 +182,7 @@ class Variable:
 
         # Tick label formatting
         # Set theta ticks
-        ax.set_xticks(np.deg2rad(np.linspace(-90, 90, 7, endpoint=True)))
+        ax.set_xticks([])
 
     @staticmethod
     def _set_cbar_label(kwargs, label):
