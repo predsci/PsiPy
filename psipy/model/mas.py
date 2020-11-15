@@ -119,6 +119,7 @@ class Variable:
         name = self.name + f' $r^{radial_exponent}$'
         return Variable(data, name, units)
 
+    # Methods for radial cuts
     def plot_radial_cut(self, i, ax=None, **kwargs):
         """
         Plot a radial cut.
@@ -135,7 +136,7 @@ class Variable:
         if ax is None:
             ax = plt.gca()
 
-        self._set_cbar_label(kwargs, str(self.unit))
+        kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
         # Take slice of data, and plot
         sliced = self.data.isel(r=i)
         sliced.plot(x='phi', y='theta', ax=ax, **kwargs)
@@ -153,6 +154,7 @@ class Variable:
         ax.set_xticks(np.deg2rad(np.linspace(0, 360, 7, endpoint=True)))
         ax.set_yticks(np.deg2rad(np.linspace(-90, 90, 7, endpoint=True)))
 
+    # Methods for phi cuts
     @staticmethod
     def _setup_polar_ax(ax):
         if ax is None:
