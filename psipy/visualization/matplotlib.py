@@ -26,3 +26,13 @@ def setup_polar_ax(ax):
         raise ValueError('ax must have a polar projection')
     return ax
 
+
+def format_equatorial_ax(ax):
+    # Plot formatting
+    ax.set_rlim(0)
+    ax.set_thetalim(0, 2 * np.pi)
+    clear_axes_labels(ax)
+
+    # Tick label formatting
+    # Remove theta ticks
+    ax.set_xticks([])

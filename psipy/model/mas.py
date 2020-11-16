@@ -248,6 +248,30 @@ class Variable:
         self._format_polar_ax(ax, sliced)
         ax.set_title(title)
 
+    # Methods for equatorial cuts
+    def plot_equatorial_cut(self, ax=None, **kwargs):
+        """
+        Plot an equatorial cut.
+
+        Parameters
+        ----------
+        ax : matplolit.axes.Axes, optional
+            axes on which to plot. Defaults to current axes if not specified.
+        kwargs :
+            Additional keyword arguments are passed to `xarray.plot.pcolormesh`.
+        """
+        ax = viz.setup_polar_ax(ax)
+        kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
+        # Get data slice
+        idx = (self.data.shape[1] - 1) // 2
+        sliced = self.data.isel(theta=idx)
+        # Plot
+        sliced.plot(x='phi', y='r', ax=ax, **kwargs)
+        # Plot formatting
+        viz.format_equatorial_ax(ax)
+        theta = np.rad2deg(sliced['theta'].values)
+        ax.set_title(f'{self.name}, equatorial plane')
+
     @staticmethod
     def _set_cbar_label(kwargs, label):
         """
