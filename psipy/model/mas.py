@@ -190,20 +190,10 @@ class Variable:
         ax.set_title(title)
         self._format_radial_ax(ax)
 
-    # Methods for phi cuts
-    @staticmethod
-    def _setup_polar_ax(ax):
-        if ax is None:
-            ax = plt.gca()
-        if ax.name != 'polar':
-            raise ValueError('ax must have a polar projection')
-        return ax
-
     def _format_polar_ax(self, ax, data):
         # Plot formatting
         ax.set_rlim(0)
         ax.set_thetalim(-np.pi / 2, np.pi / 2)
-        ax.set_aspect('equal')
         viz.clear_axes_labels(ax)
 
         # Tick label formatting
@@ -223,7 +213,7 @@ class Variable:
         kwargs :
             Additional keyword arguments are passed to `xarray.plot.pcolormesh`.
         """
-        ax = self._setup_polar_ax(ax)
+        ax = viz.setup_polar_ax(ax)
 
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
         # Take slice of data and plot
@@ -248,7 +238,7 @@ class Variable:
         kwargs :
             Additional keyword arguments are passed to `xarray.plot.contour`.
         """
-        ax = self._setup_polar_ax(ax)
+        ax = viz.setup_polar_ax(ax)
         sliced = self.data.isel(phi=i)
         # Need to save a copy of the title to reset it later, since xarray
         # tries to set it's own title that we don't want
