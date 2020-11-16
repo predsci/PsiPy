@@ -60,7 +60,8 @@ class MASOutput:
                 raise RuntimeError('Do not know what units are for '
                                    f'variable "{var}"')
         else:
-            raise RuntimeError(f'{var} not in list of known variables: {self.variables}')
+            raise RuntimeError(f'{var} not in list of known variables: '
+                               f'{self.variables}')
 
     @property
     def variables(self):
