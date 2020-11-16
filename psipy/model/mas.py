@@ -249,6 +249,13 @@ class Variable:
         self._format_polar_ax(ax, sliced)
         ax.set_title(title)
 
+    @property
+    def _equator_theta_idx(self):
+        """
+        The theta index of the solar equator.
+        """
+        return (self.data.shape[1] - 1) // 2
+
     # Methods for equatorial cuts
     def plot_equatorial_cut(self, ax=None, **kwargs):
         """
@@ -264,14 +271,36 @@ class Variable:
         ax = viz.setup_polar_ax(ax)
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
         # Get data slice
-        idx = (self.data.shape[1] - 1) // 2
-        sliced = self.data.isel(theta=idx)
+        sliced = self.data.isel(theta=self._equator_theta_idx)
         # Plot
         sliced.plot(x='phi', y='r', ax=ax, **kwargs)
         # Plot formatting
         viz.format_equatorial_ax(ax)
         theta = np.rad2deg(sliced['theta'].values)
         ax.set_title(f'{self.name}, equatorial plane')
+
+    def contour_equatorial_cut(self, levels, ax=None, **kwargs):
+        """
+        Plot contours on an equatorial cut.
+
+        Parameters
+        ----------
+        levels : list
+            List of levels to contour.
+        ax : matplolit.axes.Axes, optional
+            axes on which to plot. Defaults to current axes if not specified.
+        kwargs :
+            Additional keyword arguments are passed to `xarray.plot.contour`.
+        """
+        ax = viz.setup_polar_ax(ax)
+        sliced = self.data.isel(theta=self._equator_theta_idx)
+        # Need to save a copy of the title to reset it later, since xarray
+        # tries to set it's own title that we don't want
+        title = ax.get_title()
+        xarray.plot.contour(sliced, x='phi', y='r', ax=ax,
+                            levels=levels, **kwargs)
+        viz.format_equatorial_ax(ax)
+        ax.set_title(title)
 
     @staticmethod
     def _set_cbar_label(kwargs, label):
