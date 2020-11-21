@@ -42,4 +42,6 @@ def read_mas_files(path):
         var = Path(f).stem.split('002')[0]
         data_arrays[var] = data
 
+    if not len(data_arrays):
+        raise FileNotFoundError(f'Did not find any MAS files at {mas_path}')
     return data_arrays
