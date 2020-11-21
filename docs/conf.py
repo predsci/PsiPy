@@ -30,12 +30,13 @@ author = 'David Stansby'
 extensions = ['sphinx_automodapi.automodapi',
               'sphinx_gallery.gen_gallery',
               "sphinx_rtd_theme",
-              'numpydoc']
+              'numpydoc',
+              'sphinx.ext.intersphinx']
 
 numpydoc_show_class_members = False
 sphinx_gallery_conf = {
-     'examples_dirs': '../examples',   # path to your example scripts
-     'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
+    'examples_dirs': '../examples',   # path to your example scripts
+    'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
 }
 
 # Add any paths that contain templates here, relative to this directory.
@@ -60,3 +61,9 @@ html_theme = "sphinx_rtd_theme"
 # html_static_path = ['_static']
 
 nitpicky = True
+
+
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
+                       'xarray': ('http://xarray.pydata.org/en/stable', None)}
+
+default_role = 'any'
