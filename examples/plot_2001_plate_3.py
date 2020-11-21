@@ -1,6 +1,6 @@
 """
-Reading and visualising MAS runs
-================================
+Plotting constant longitude slices
+==================================
 """
 ###############################################################################
 # First, load the required modules.

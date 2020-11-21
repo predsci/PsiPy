@@ -1,6 +1,6 @@
 """
-Reading and visualising MAS runs
-================================
+Plotting radial slices
+======================
 """
 ###############################################################################
 # First, load the required modules.
