@@ -3,4 +3,4 @@ API reference
 
 .. automodapi:: psipy.io
 
-.. automodapi:: psipy.model
+.. automodapi:: psipy.model.mas
