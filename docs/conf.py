@@ -60,6 +60,7 @@ html_theme = "sphinx_rtd_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 # html_static_path = ['_static']
 
+# Raise an error for missing doc references
 nitpicky = True
 
 
@@ -67,3 +68,4 @@ intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
                        'xarray': ('http://xarray.pydata.org/en/stable', None)}
 
 default_role = 'any'
+automodapi_inheritance_diagram = False
