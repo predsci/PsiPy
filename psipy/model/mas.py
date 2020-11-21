@@ -76,7 +76,7 @@ class Variable:
     A single scalar variable.
 
     This class primarily contains methods for plotting data. It can be created
-    with any `~xarray.DataArray` that has ``['theta', 'phi', 'r']`` fields.
+    with any `xarray.DataArray` that has ``['theta', 'phi', 'r']`` fields.
 
     Parameters
     ----------
