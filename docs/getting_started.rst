@@ -7,7 +7,7 @@ and running with obtaining, loading, and visualising some model results.
 
 Getting data
 ------------
-The `PSI MHDWeb`_ pages give access to MAS model runs. The runs are indexed by
+The PSI `MHDWeb pages`_ give access to MAS model runs. The runs are indexed by
 Carrington rotation, and for each Carrington rotation there are generally a
 number of different runs, varying in the type model run and/or
 the boundary conditions.
@@ -43,7 +43,7 @@ radial magnetic field component::
     # TODO: PUT OUTPUT HERE
 
 This will return a `Variable` object, which stores the underlying data as a
-`xarray.DataFrame` under `Variable.data`.
+`xarray.DataArray` under `Variable.data`.
 
 Data coordinates
 ----------------
