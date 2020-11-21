@@ -88,9 +88,16 @@ class Variable:
         Variable unit.
     """
     def __init__(self, data, name, unit):
-        self.data = data
+        self._data = data
         self.name = name
         self._unit = unit
+
+    @property
+    def data(self):
+        """
+        DataFrame with the data.
+        """
+        return self._data
 
     @property
     def unit(self):
