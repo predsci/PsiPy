@@ -1,15 +1,18 @@
 """
 Plotting equatorial slices
 ==========================
+
+This example shows how to plot slices in the equatorial plane from a MAS model
+output.
 """
 ###############################################################################
 # First, load the required modules.
 from psipy.model import MASOutput
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
 
 ###############################################################################
-# Load a set of MAS output files.
+# Next, load a set of MAS output files. You will need to change this line to
+# point to a folder with MAS files in them.
 mas_path = '/Users/dstansby/github/psipy/data/helio'
 model = MASOutput(mas_path)
 
@@ -19,9 +22,12 @@ model = MASOutput(mas_path)
 print(model.variables)
 
 ###############################################################################
-# Plot the data layout
+# Set parameters for plotting. This line will give us a horizontal
+# errorbar underneath the plots.
 cbar_kwargs = {'orientation': 'horizontal'}
 
+###############################################################################
+# Plot the slices
 ax = plt.subplot(projection='polar')
 model['vr'].plot_equatorial_cut(ax=ax, cbar_kwargs=cbar_kwargs)
 
