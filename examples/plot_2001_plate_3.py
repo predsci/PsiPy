@@ -1,15 +1,18 @@
 """
 Plotting constant longitude slices
 ==================================
+
+This example shows how to plot slices of constant longitude from a MAS model
+output.
 """
 ###############################################################################
 # First, load the required modules.
 from psipy.model import MASOutput
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
 
 ###############################################################################
-# Load a set of MAS output files.
+# Next, load a set of MAS output files. You will need to change this line to
+# point to a folder with MAS files in them.
 mas_path = '/Users/dstansby/github/psipy/data/helio'
 model = MASOutput(mas_path)
 
@@ -19,10 +22,17 @@ model = MASOutput(mas_path)
 print(model.variables)
 
 ###############################################################################
-# Plot the data layout
+# Set parameters for plotting. The first line will give us a horizontal
+# errorbar underneath the plots. The second line is the index to select for the
+# longitude slice.
 cbar_kwargs = {'orientation': 'horizontal'}
 phi_idx = 40
 
+###############################################################################
+# Plot the slices
+#
+# Note that for density (rho) and pressure (p) we first normalise the data
+# relative to a power law decrease, to make it easer to see spatial variations.
 fig = plt.figure()
 axs = [plt.subplot(1, 3, i + 1, projection='polar') for i in range(3)]
 
@@ -39,7 +49,8 @@ p = model['p']
 p_r3 = p.radial_normalized(3)
 p_r3.plot_phi_cut(phi_idx, ax=ax, cbar_kwargs=cbar_kwargs)
 
-# Contour br
+###############################################################################
+# Add a contour of br = 0 (the heliopsheric current sheet) to all the axes
 for ax in axs:
     model['br'].contour_phi_cut(phi_idx, levels=[0], ax=ax,
                                 colors='white', linestyles='--', linewidths=1)
