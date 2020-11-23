@@ -49,7 +49,7 @@ p = model['p']
 p_r3 = p.radial_normalized(3)
 p_r3.plot_phi_cut(phi_idx, ax=ax, cbar_kwargs=cbar_kwargs)
 
-###############################################################################
+
 # Add a contour of br = 0 (the heliopsheric current sheet) to all the axes
 for ax in axs:
     model['br'].contour_phi_cut(phi_idx, levels=[0], ax=ax,

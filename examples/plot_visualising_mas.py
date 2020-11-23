@@ -18,7 +18,7 @@ model = MASOutput(mas_path)
 print(model.variables)
 
 ###############################################################################
-# Plot a cut of the model at a constant radius.
+# Plot a cut of the model at a constant radius
 fig, ax = plt.subplots()
 model['rho'].plot_radial_cut(0, ax=ax)
 
@@ -28,4 +28,10 @@ fig = plt.figure()
 ax = plt.subplot(111, projection='polar')
 model['rho'].plot_phi_cut(75, ax=ax)
 
+###############################################################################
+# Add the current sheet
+fig = plt.figure()
+ax = plt.subplot(111, projection='polar')
+model['rho'].plot_phi_cut(75, ax=ax)
+model['br'].contour_phi_cut(75, levels=[0], ax=ax, colors='white')
 plt.show()
