@@ -1,15 +1,18 @@
 """
 Plotting radial slices
 ======================
+
+This example shows how to plot slices of constant radial distance from a MAS model
+output.
 """
 ###############################################################################
 # First, load the required modules.
 from psipy.model import MASOutput
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
 
 ###############################################################################
-# Load a set of MAS output files.
+# Next, load a set of MAS output files. You will need to change this line to
+# point to a folder with MAS files in them.
 mas_path = '/Users/dstansby/github/psipy/data/helio'
 model = MASOutput(mas_path)
 
@@ -19,10 +22,15 @@ model = MASOutput(mas_path)
 print(model.variables)
 
 ###############################################################################
-# Plot the data layout
+# Set parameters for plotting. The first line will give us a horizontal
+# errorbar underneath the plots. The second line is the index to select for the
+# radial slice.
 cbar_kwargs = {'orientation': 'horizontal'}
 r_idx = 139
 
+
+###############################################################################
+# Plot the slices
 fig, axs = plt.subplots(nrows=2, ncols=3)
 
 ax = axs[0, 0]
