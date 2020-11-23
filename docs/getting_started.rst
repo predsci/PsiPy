@@ -5,6 +5,15 @@ psipy is a package for loading and visualising the output of PSI's MAS model
 runs. This page provides some narrative documentation that should get you up
 and running with obtaining, loading, and visualising some model results.
 
+Installing
+----------
+Currently the only way to install psipy is from source. Change to the directory
+you want to download the source too, and run::
+
+  git clone https://github.com/predsci/PsiPy
+  cd PsiPy
+  pip install .
+
 Getting data
 ------------
 The PSI `MHDWeb pages`_ give access to MAS model runs. The runs are indexed by
