@@ -6,7 +6,7 @@ import astropy.units as u
 import numpy as np
 import xarray
 
-from psipy.io import read_mas_files
+from psipy.io import read_mas_file, get_mas_variables
 import psipy.visualization as viz
 
 __all__ = ['MASOutput', 'Variable']
@@ -44,31 +44,42 @@ class MASOutput:
     ----------
     path :
         Path to the directry containing the model output files.
+    vars : list, optional
+        A list of varible names to read. If not given, all the variables in
+        the directory *path* will be read in.
     """
-    def __init__(self, path):
+    def __init__(self, path, vars=None):
         self.path = Path(path)
-        self._data = read_mas_files(self.path)
+        # Leave data empty for now, as we want to load on demand
+        self._data = {}
+        self._variables = get_mas_variables(self.path)
         # TODO: add __str__, __repr__
 
     def __getitem__(self, var):
-        if var in self.variables:
-            if var in _mas_units:
-                unit = _mas_units[var][0]
-                data = self._data[var] * _mas_units[var][1]
-                return Variable(data, var, unit)
-            else:
-                raise RuntimeError('Do not know what units are for '
-                                   f'variable "{var}"')
-        else:
+        if var not in self.variables:
             raise RuntimeError(f'{var} not in list of known variables: '
-                               f'{self.variables}')
+                               f'{self._variables}')
+        if var not in self.loaded_variables:
+            self._data[var] = read_mas_file(self.path, var)
+
+        if var in _mas_units:
+            unit = _mas_units[var][0]
+            data = self._data[var] * _mas_units[var][1]
+            return Variable(data, var, unit)
+        else:
+            raise RuntimeError('Do not know what units are for '
+                               f'variable "{var}"')
+
+    @property
+    def loaded_variables(self):
+        """
+        List of loaded variable names.
+        """
+        return list(self._data.keys())
 
     @property
     def variables(self):
-        """
-        List of variable names.
-        """
-        return list(self._data.keys())
+        return self._variables
 
 
 class Variable:
