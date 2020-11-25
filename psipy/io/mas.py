@@ -30,8 +30,9 @@ def read_mas_files(path):
     """
     mas_path = Path(path)
     data_arrays = {}
-    # Loop through all the files that end in 002.hdf
-    for f in glob.glob(str(mas_path / '*002.hdf')):
+    # Loop through all the .hdf files. They all end in three numbers, so use
+    # this to distinguish from boundary condidtion hdf files
+    for f in glob.glob(str(mas_path / '*[0-9][0-9][0-9].hdf')):
         data, coords = read_hdf(f)
         dims = ['phi', 'theta', 'r']
         # Convert from co-latitude to latitude
