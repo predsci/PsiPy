@@ -60,7 +60,12 @@ class MASOutput:
         # Leave data empty for now, as we want to load on demand
         self._data = {}
         self._variables = get_mas_variables(self.path)
-        # TODO: add __str__, __repr__
+
+    def __repr__(self):
+        return f'psipy.model.mas.MASOutput("{self.path}")'
+
+    def __str__(self):
+        return f"MAS output in directory {self.path}"
 
     def __getitem__(self, var):
         if var not in self.variables:
