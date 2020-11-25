@@ -2,9 +2,10 @@ import os
 
 import numpy as np
 import pyhdf.SD as h4
+import h5py as h5
 
 
-__all__ = ['read_hdf4']
+__all__ = ['read_hdf4', 'read_hdf5']
 
 
 class HDF4File:
@@ -55,4 +56,37 @@ def read_hdf4(path, sds_id='Data-Set-2'):
         # Get coordinate information
         coords = [sds_id.dim(i).getscale() for i in range(np.ndim(data))]
 
+    return data, coords
+
+
+def read_hdf5(path, dataset_name='Data'):
+    """
+    Read a HDF5 file.
+
+    Reads a single dataset from a single HDF5 file, returning the scalar data
+    and associated coordinates.
+
+    Parameters
+    ----------
+    path :
+        Path to the file.
+    dataset_name : str, optional
+        ID of the dataset to get.
+
+    Returns
+    -------
+    data : ndarray
+        Scalar data.
+    coords : list of ndarray
+        Cooordinates values along each axis of the data.
+    """
+    with h5.File(path, 'r') as hdf5_file:
+        # Get the scalar data
+        data = np.array(hdf5_file[dataset_name])
+        # Get coordinate information
+        coords = [np.array(hdf5_file[dataset_name].dims[i][0]) for i in
+                  range(np.ndim(data))]
+        coords = coords[::-1]
+
+    print(data.shape)
     return data, coords
