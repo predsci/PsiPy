@@ -16,6 +16,18 @@ __all__ = ['read_mas_file', 'get_mas_variables']
 def read_mas_file(directory, var):
     """
     Read in a single MAS output file.
+
+    Parameters
+    ----------
+    directory :
+        Directory to look in.
+    var : str
+        Variable name.
+
+    Returns
+    -------
+    data : xarray.DataArray
+        Loaded data.
     """
     directory = Path(directory)
     files = glob.glob(str(directory / f'{var}[0-9][0-9][0-9].h*'))
