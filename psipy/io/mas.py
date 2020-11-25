@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 import xarray as xr
 
-from .util import read_hdf
+from .util import read_hdf4
 
 
 __all__ = ['read_mas_files']
@@ -33,7 +33,7 @@ def read_mas_files(path):
     # Loop through all the .hdf files. They all end in three numbers, so use
     # this to distinguish from boundary condidtion hdf files
     for f in glob.glob(str(mas_path / '*[0-9][0-9][0-9].hdf')):
-        data, coords = read_hdf(f)
+        data, coords = read_hdf4(f)
         dims = ['phi', 'theta', 'r']
         # Convert from co-latitude to latitude
         coords[1] = np.pi / 2 - np.array(coords[1])

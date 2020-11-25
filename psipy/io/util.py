@@ -4,7 +4,7 @@ import numpy as np
 import pyhdf.SD as h4
 
 
-__all__ = ['read_hdf']
+__all__ = ['read_hdf4']
 
 
 class HDF4File:
@@ -24,7 +24,7 @@ class HDF4File:
         self.file_obj.end()
 
 
-def read_hdf(path, sds_id='Data-Set-2'):
+def read_hdf4(path, sds_id='Data-Set-2'):
     """
     Read a HDF4 file.
 
