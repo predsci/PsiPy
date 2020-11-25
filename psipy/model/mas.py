@@ -38,17 +38,24 @@ class MASOutput:
     """
     The results from a single run of MAS.
 
-    This is a storage object that contains a number of `Variable` objects.
+    This is a storage object that contains a number of `Variable` objects. It
+    is designed to be used like::
+
+        mas_output = MASOutput('directory')
+        br = mas_output['br']
 
     Parameters
     ----------
     path :
         Path to the directry containing the model output files.
-    vars : list, optional
-        A list of varible names to read. If not given, all the variables in
-        the directory *path* will be read in.
+
+    Notes
+    -----
+    Variables are loaded on demand. To see the list of available variables
+    use `MASOutput.variables`, and to see the list of already loaded variables
+    use `MASOutput.loaded_variables`.
     """
-    def __init__(self, path, vars=None):
+    def __init__(self, path):
         self.path = Path(path)
         # Leave data empty for now, as we want to load on demand
         self._data = {}
