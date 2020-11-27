@@ -6,6 +6,7 @@ import astropy.units as u
 import numpy as np
 import xarray
 
+from .base import ModelOutput
 from psipy.io import read_mas_file, get_mas_variables
 import psipy.visualization as viz
 
@@ -34,7 +35,7 @@ _mas_units = {'vr': _vunit,
               }
 
 
-class MASOutput:
+class MASOutput(ModelOutput):
     """
     The results from a single run of MAS.
 
@@ -44,22 +45,14 @@ class MASOutput:
         mas_output = MASOutput('directory')
         br = mas_output['br']
 
-    Parameters
-    ----------
-    path :
-        Path to the directry containing the model output files.
-
     Notes
     -----
     Variables are loaded on demand. To see the list of available variables
     use `MASOutput.variables`, and to see the list of already loaded variables
     use `MASOutput.loaded_variables`.
     """
-    def __init__(self, path):
-        self.path = Path(path)
-        # Leave data empty for now, as we want to load on demand
-        self._data = {}
-        self._variables = get_mas_variables(self.path)
+    def get_variables(self):
+        return get_mas_variables(self.path)
 
     def __repr__(self):
         return f'psipy.model.mas.MASOutput("{self.path}")'
@@ -81,17 +74,6 @@ class MASOutput:
         else:
             raise RuntimeError('Do not know what units are for '
                                f'variable "{var}"')
-
-    @property
-    def loaded_variables(self):
-        """
-        List of loaded variable names.
-        """
-        return list(self._data.keys())
-
-    @property
-    def variables(self):
-        return self._variables
 
 
 class Variable:
