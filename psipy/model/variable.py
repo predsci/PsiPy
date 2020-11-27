@@ -5,6 +5,9 @@ import xarray as xr
 import psipy.visualization as viz
 
 
+__all__ = ['Variable']
+
+
 class Variable:
     """
     A single scalar variable.
