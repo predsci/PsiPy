@@ -14,6 +14,11 @@ you want to download the source too, and run::
   cd PsiPy
   pip install .
 
+To load hdf4 files you will need a working installation of the HDF4 library.
+If you are using the conda environment manager this can be installed with::
+
+  conda install hdf4
+
 Getting data
 ------------
 The PSI `MHDWeb pages`_ give access to MAS model runs. The runs are indexed by
