@@ -88,5 +88,4 @@ def read_hdf5(path, dataset_name='Data'):
                   range(np.ndim(data))]
         coords = coords[::-1]
 
-    print(data.shape)
     return data, coords
