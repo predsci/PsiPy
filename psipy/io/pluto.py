@@ -8,6 +8,9 @@ import numpy as np
 import xarray as xr
 
 
+__all__ = ['read_pluto_files', 'read_pluto_grid']
+
+
 def read_pluto_files(directory, var):
     """
     Read in a single variable from a set of PLUTO output files.
