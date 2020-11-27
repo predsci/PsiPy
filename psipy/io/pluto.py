@@ -87,6 +87,11 @@ def read_pluto_dbl(path):
 
     Returns
     -------
+    data : numpy.ndarray
+        3D array of data values
+    grid : list
+        Each item is a (n, 2) shaped array of the min/max limits of the cells
+        in each coordinate.
 
     Notes
     -----
