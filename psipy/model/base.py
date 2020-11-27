@@ -9,7 +9,17 @@ __all__ = ['ModelOutput']
 
 class ModelOutput(abc.ABC):
     """
-    An abstract base class to store the output from a single run of a model.
+    The results from a single model run.
+
+    This is a storage object that contains a number of `Variable` objects. It
+    is not designed to be used directly, but must be sub-classed for different
+    models.
+
+    Notes
+    -----
+    Variables are loaded on demand. To see the list of available variables
+    use `ModelOutput.variables`, and to see the list of already loaded variables
+    use `ModelOutput.loaded_variables`.
 
     Parameters
     ----------

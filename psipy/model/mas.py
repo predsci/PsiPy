@@ -1,14 +1,8 @@
-import copy
-from pathlib import Path
-
 import astropy.constants as const
 import astropy.units as u
-import numpy as np
-import xarray
 
 from .base import ModelOutput
 from psipy.io import read_mas_file, get_mas_variables
-import psipy.visualization as viz
 
 __all__ = ['MASOutput']
 
