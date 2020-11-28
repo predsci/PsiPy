@@ -69,3 +69,4 @@ intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
 
 default_role = 'any'
 automodapi_inheritance_diagram = False
+automodsumm_inherited_members = True

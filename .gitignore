@@ -5,6 +5,7 @@ docs/_build/*
 docs/api/*
 docs/auto_examples
 *.automodsumm
+*.automodapi
 
 *.DS_Store
 
