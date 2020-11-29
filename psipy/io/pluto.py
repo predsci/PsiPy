@@ -8,7 +8,7 @@ import numpy as np
 import xarray as xr
 
 
-__all__ = ['read_pluto_files', 'read_pluto_grid']
+__all__ = ['read_pluto_files', 'get_pluto_variables', 'read_pluto_grid']
 
 
 def read_pluto_files(directory, var):
