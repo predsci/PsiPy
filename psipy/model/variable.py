@@ -67,12 +67,12 @@ class Variable:
         """
         return self._data.coords['phi'].values
 
-
     def radial_normalized(self, radial_exponent):
-        """
+        r"""
         Return a radially normalised copy of this variable.
 
-        Returns var**gamma, where gamma is the given exponent.
+        Multiplies the variable by :math:`(r / r_{\odot})^{\gamma}`,
+        where :math:`\gamma` = ``radial_exponent`` is the given exponent.
 
         Parameters
         ----------
