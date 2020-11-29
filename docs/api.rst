@@ -3,6 +3,8 @@ API reference
 
 .. automodapi:: psipy.model.mas
 
+.. automodapi:: psipy.model.pluto
+
 .. automodapi:: psipy.model.variable
 
 .. automodapi:: psipy.model.base
