@@ -46,6 +46,28 @@ class Variable:
         """
         return self._unit
 
+    @property
+    def r_coords(self):
+        """
+        Radial coordinate values.
+        """
+        return self._data.coords['r'].values
+
+    @property
+    def theta_coords(self):
+        """
+        Latitude coordinate values.
+        """
+        return self._data.coords['theta'].values
+
+    @property
+    def phi_coords(self):
+        """
+        Longitude coordinate values.
+        """
+        return self._data.coords['phi'].values
+
+
     def radial_normalized(self, radial_exponent):
         """
         Return a radially normalised copy of this variable.
