@@ -277,7 +277,7 @@ class Variable:
         return kwargs
 
     @u.quantity_input
-    def sample_at_coords(self, phi: u.rad, theta: u.rad, r: const.R_sun):
+    def sample_at_coords(self, coords):
         """
         Sample this variable along a 1D trajectory of coordinates.
 
@@ -295,6 +295,9 @@ class Variable:
         points[0] = np.append(points[0], points[0][0] + 2 * np.pi)
         values = np.append(values, values[0:1, ...], axis=0)
 
+        phi = coords.lon
+        theta = coords.lat
+        r = coords.radius
         xi = np.column_stack([phi.to_value(u.rad),
                               theta.to_value(u.rad),
                               r.to_value(const.R_sun)])
