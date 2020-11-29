@@ -32,6 +32,10 @@ class ModelOutput(abc.ABC):
         self._data = {}
         self._variables = self.get_variables()
 
+    def __str__(self):
+        return (f'{self.__class__.__name__}\n'
+                f'Variables: {self.variables}')
+
     def __getitem__(self, var):
         if var not in self.variables:
             raise RuntimeError(f'{var} not in list of known variables: '
