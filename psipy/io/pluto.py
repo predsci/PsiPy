@@ -35,16 +35,12 @@ def read_pluto_files(directory, var):
     for file in files:
         data, grid = read_pluto_dbl(file)
         # Take grid centers as the grid points
-        grid = [np.mean(g, axis=1) for g in grid]
+        coords = [np.mean(g, axis=1) for g in grid]
         # Construct the coordiantes
         dims = ['phi', 'theta', 'r']
-        # Change the order to be consistent with the order we use for MAS
-        coords = [grid[2], grid[1], grid[0]]
-        data = data.T
 
         # Convert from co-latitude to latitude
         coords[1] = np.pi / 2 - np.array(coords[1])
-
         data = xr.DataArray(data=data, coords=coords, dims=dims)
         # TODO: read in all time slices
         break
@@ -109,8 +105,8 @@ def read_pluto_dbl(path):
     data = np.fromfile(path, np.float64)
     grid = read_pluto_grid(path.parent / 'grid.out')
 
-    # Reshape the data from a 1D to 3D array
-    grid_dims = tuple(g.shape[0] for g in grid)
+    grid = grid[::-1]
+    grid_dims = list(g.shape[0] for g in grid)
     data = data.reshape(grid_dims)
 
     return data, grid
