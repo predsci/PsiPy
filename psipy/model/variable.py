@@ -3,6 +3,7 @@ import copy
 import astropy.constants as const
 import astropy.units as u
 import numpy as np
+from scipy import interpolate
 import xarray as xr
 
 import psipy.visualization as viz
@@ -29,6 +30,8 @@ class Variable:
     """
     def __init__(self, data, name, unit):
         self._data = data
+        # Sort the data once now for any interpolation later
+        self._data = self._data.sortby(['phi', 'theta', 'r'])
         self.name = name
         self._unit = unit
 
@@ -272,3 +275,28 @@ class Variable:
         cbar_kwargs['label'] = cbar_kwargs.pop('label', label)
         kwargs['cbar_kwargs'] = cbar_kwargs
         return kwargs
+
+    @u.quantity_input
+    def sample_at_coords(self, phi: u.rad, theta: u.rad, r: const.R_sun):
+        """
+        Sample this variable along a 1D trajectory of coordinates.
+
+        Parameters
+        ----------
+        phi : astropy.units.Quantity
+        theta : astropy.units.Quantity
+        r : astropy.units.Quantity
+        """
+        points = [self.data.coords[dim].values for dim in ['phi', 'theta', 'r']]
+        values = self.data.values
+
+        # Pad phi points so it's possible to interpolate all the way from
+        # 0 to 360 deg
+        points[0] = np.append(points[0], points[0][0] + 2 * np.pi)
+        values = np.append(values, values[0:1, ...], axis=0)
+
+        xi = np.column_stack([phi.to_value(u.rad),
+                              theta.to_value(u.rad),
+                              r.to_value(const.R_sun)])
+        values_x = interpolate.interpn(points, values, xi)
+        return values_x * self._unit
