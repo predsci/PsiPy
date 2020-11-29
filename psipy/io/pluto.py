@@ -11,6 +11,16 @@ import xarray as xr
 __all__ = ['read_pluto_files', 'get_pluto_variables', 'read_pluto_grid']
 
 
+def get_timestep(path):
+    """
+    Get the timestep from a filename.
+    """
+    path = Path(path)
+    fname = path.stem
+    tstep = fname.split('.')[-1]
+    return int(tstep)
+
+
 def read_pluto_files(directory, var):
     """
     Read in a single variable from a set of PLUTO output files.
@@ -32,20 +42,23 @@ def read_pluto_files(directory, var):
     if not len(files):
         raise FileNotFoundError(f'Could not find any files for variable "{var}" in '
                                 f'directory {directory}')
+    files.sort()
+    all_data = []
+    times = []
     for file in files:
+        times.append(get_timestep(file))
         data, grid = read_pluto_dbl(file)
-        # Take grid centers as the grid points
-        coords = [np.mean(g, axis=1) for g in grid]
-        # Construct the coordiantes
-        dims = ['phi', 'theta', 'r']
+        all_data.append(data)
 
-        # Convert from co-latitude to latitude
-        coords[1] = np.pi / 2 - np.array(coords[1])
-        data = xr.DataArray(data=data, coords=coords, dims=dims)
-        # TODO: read in all time slices
-        break
+    # Take grid centers as the grid points
+    coords = [np.mean(g, axis=1) for g in grid]
+    # Convert from co-latitude to latitude
+    coords[1] = np.pi / 2 - np.array(coords[1])
+    coords = [times] + coords
 
-    return data
+    dims = ['time', 'phi', 'theta', 'r']
+    data = xr.DataArray(data=all_data, coords=coords, dims=dims)
+    return data.isel(time=1)
 
 
 def read_pluto_grid(path):
