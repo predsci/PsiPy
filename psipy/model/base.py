@@ -43,6 +43,7 @@ class ModelOutput(abc.ABC):
         if var not in self.loaded_variables:
             self._data[var] = self.load_file(var)
 
+        # Get units
         try:
             unit, factor = self.get_unit(var)
         except Exception as e:
