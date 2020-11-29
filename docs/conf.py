@@ -65,7 +65,9 @@ nitpicky = True
 
 
 intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
-                       'xarray': ('http://xarray.pydata.org/en/stable', None)}
+                       'xarray': ('http://xarray.pydata.org/en/stable', None),
+                       'astropy': ('https://docs.astropy.org/en/stable/', None),
+                       }
 
 default_role = 'any'
 automodapi_inheritance_diagram = False
