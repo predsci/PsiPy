@@ -8,16 +8,23 @@ and running with obtaining, loading, and visualising some model results.
 Installing
 ----------
 Currently the only way to install psipy is from source. Change to the directory
-you want to download the source too, and run::
+you want to download the source too, and run:
+
+.. code-block:: bash
 
   git clone https://github.com/predsci/PsiPy
   cd PsiPy
   pip install .
 
-To load hdf4 files you will need a working installation of the HDF4 library.
-If you are using the conda environment manager this can be installed with::
+To load hdf4 files you will need a working installation of the `HDF4 library`_.
+If you are using the conda environment manager this can be installed with:
+
+.. code-block:: bash
 
   conda install hdf4
+
+
+.. _HDF4 library: https://portal.hdfgroup.org/display/support/Download+HDF4
 
 Getting data
 ------------
@@ -46,15 +53,12 @@ To see which variables have been loaded, we can look at the ``.variables``
 attribute::
 
     print(mas_output.variables)
-    # TODO: PUT OUTPUT HERE
 
 This will print a list of the variables that have been loaded. Each individual
 variable can then be accessed with square brackets, for example to get the
 radial magnetic field component::
 
     br = mas_output['br']
-    print(br)
-    # TODO: PUT OUTPUT HERE
 
 This will return a `Variable` object, which stores the underlying data as a
 `xarray.DataArray` under `Variable.data`.
@@ -65,10 +69,10 @@ The data stored in `Variable.data` contains values of the data as a normal
 array, but in addition also stores the coordinates of each data point.
 
 MAS model outputs are defined on a 3D grid of points on a spherical grid. The
-coordinate names are ``'r', 'theta', 'phi'``.
+coordinate names are ``'r', 'theta', 'phi'``. The coordinate values can be
+accessed using the ``r_coords, theta_coords, phi_coords`` properties, e.g.::
 
-TODO: explain how to get coordinates
-
+  rvals = br.r_coords
 
 Plotting data
 -------------
