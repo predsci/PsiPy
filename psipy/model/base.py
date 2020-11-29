@@ -8,12 +8,21 @@ __all__ = ['ModelOutput']
 
 
 class ModelOutput(abc.ABC):
-    """
+    r"""
     The results from a single model run.
 
     This is a storage object that contains a number of `Variable` objects. It
     is not designed to be used directly, but must be sub-classed for different
     models.
+
+    Data is stored in the ``_data`` attribute. This is a mapping of variable
+    names to `xarray.DataArray` variables. Each data array must have
+
+    - Three dimensions
+    - These dimensions must be labelled ``['r', 'theta', 'phi']``
+    - The phi values must be latitude and *not* co-latitude (ie. must be in
+      the range :math:`[-\pi / 2, \pi / 2]`)
+    - The theta values must be in the range :math:`[0, 2\pi]`
 
     Notes
     -----
