@@ -64,6 +64,18 @@ class ModelOutput(abc.ABC):
         """
         pass
 
+    @abc.abstractmethod
+    def get_units(self):
+        """
+        Return a mapping from variable names to astropy units, and the
+        conversion factor needed to go from the model output to those units.
+
+        Returns
+        -------
+        list[`astropy.units.Unit`, float]
+        """
+        pass
+
     @property
     def loaded_variables(self):
         """

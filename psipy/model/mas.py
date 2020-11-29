@@ -45,7 +45,8 @@ class MASOutput(ModelOutput):
     use `MASOutput.variables`, and to see the list of already loaded variables
     use `MASOutput.loaded_variables`.
     """
-    _units = _mas_units
+    def get_units(self):
+        return _mas_units
 
     def get_variables(self):
         return get_mas_variables(self.path)
