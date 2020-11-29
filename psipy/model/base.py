@@ -62,6 +62,10 @@ class ModelOutput(abc.ABC):
         data = self._data[var] * factor
         return Variable(data, var, unit)
 
+    # Abstract methods start here
+    #
+    # These are methods that must be defined by classes that inherit from this
+    # class
     @abc.abstractmethod
     def get_variables(self):
         """
@@ -92,6 +96,7 @@ class ModelOutput(abc.ABC):
         """
         pass
 
+    # Properties start here
     @property
     def loaded_variables(self):
         """
