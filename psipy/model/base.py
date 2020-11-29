@@ -39,14 +39,14 @@ class ModelOutput(abc.ABC):
         if var not in self.loaded_variables:
             self._data[var] = self.load_file(var)
 
-        units = self.get_units()
-        if var in units:
-            unit = units[var][0]
-            data = self._data[var] * units[var][1]
-            return Variable(data, var, unit)
-        else:
+        try:
+            unit, factor = self.get_unit(var)
+        except Exception as e:
             raise RuntimeError('Do not know what units are for '
-                               f'variable "{var}"')
+                               f'variable "{var}"') from e
+
+        data = self._data[var] * factor
+        return Variable(data, var, unit)
 
     @abc.abstractmethod
     def get_variables(self):
@@ -66,14 +66,15 @@ class ModelOutput(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def get_units(self):
+    def get_unit(self, var):
         """
-        Return a mapping from variable names to astropy units, and the
-        conversion factor needed to go from the model output to those units.
+        Return the units for a variable, and the factor needed to convert
+        from the model output to those units.
 
         Returns
         -------
-        list[`astropy.units.Unit`, float]
+        unit : `astropy.units.Unit`
+        factor : float
         """
         pass
 
