@@ -42,7 +42,11 @@ def read_pluto_files(directory, var):
         coords = [grid[2], grid[1], grid[0]]
         data = data.T
 
+        # Convert from co-latitude to latitude
+        coords[1] = np.pi / 2 - np.array(coords[1])
+
         data = xr.DataArray(data=data, coords=coords, dims=dims)
+        # TODO: read in all time slices
         break
 
     return data
