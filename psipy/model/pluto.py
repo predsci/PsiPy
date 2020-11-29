@@ -24,7 +24,7 @@ class PLUTOOutput(ModelOutput):
     use `PLUTOOutput.loaded_variables`.
     """
     def get_unit(self, var):
-        return u.dimensionless_unscaled
+        return u.dimensionless_unscaled, 1
 
     def get_variables(self):
         return get_pluto_variables(self.path)
