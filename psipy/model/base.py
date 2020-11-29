@@ -39,9 +39,10 @@ class ModelOutput(abc.ABC):
         if var not in self.loaded_variables:
             self._data[var] = self.load_file(var)
 
-        if var in self._units:
-            unit = self._units[var][0]
-            data = self._data[var] * self._units[var][1]
+        units = self.get_units()
+        if var in units:
+            unit = units[var][0]
+            data = self._data[var] * units[var][1]
             return Variable(data, var, unit)
         else:
             raise RuntimeError('Do not know what units are for '
