@@ -27,6 +27,17 @@ def setup_polar_ax(ax):
     return ax
 
 
+def format_polar_ax(ax):
+    # Plot formatting
+    ax.set_rlim(0)
+    ax.set_thetalim(-np.pi / 2, np.pi / 2)
+    viz.clear_axes_labels(ax)
+
+    # Tick label formatting
+    # Set theta ticks
+    ax.set_xticks([])
+
+
 def format_equatorial_ax(ax):
     # Plot formatting
     ax.set_rlim(0)

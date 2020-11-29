@@ -156,19 +156,8 @@ class Variable:
         title = ax.get_title()
         xr.plot.contour(sliced, x='phi', y='theta', ax=ax,
                         levels=levels, **kwargs)
-        # self._format_polar_ax(ax, sliced)
         ax.set_title(title)
         self._format_radial_ax(ax)
-
-    def _format_polar_ax(self, ax, data):
-        # Plot formatting
-        ax.set_rlim(0)
-        ax.set_thetalim(-np.pi / 2, np.pi / 2)
-        viz.clear_axes_labels(ax)
-
-        # Tick label formatting
-        # Set theta ticks
-        ax.set_xticks([])
 
     def plot_phi_cut(self, i, ax=None, **kwargs):
         """
@@ -189,7 +178,7 @@ class Variable:
         # Take slice of data and plot
         sliced = self.data.isel(phi=i)
         sliced.plot(x='theta', y='r', ax=ax, **kwargs)
-        self._format_polar_ax(ax, sliced)
+        viz.format_polar_ax(ax)
         phi = np.rad2deg(sliced['phi'].values)
         ax.set_title(f'{self.name}, ' + r'$\phi$= ' + f'{phi:.2f}' + '$^{\circ}$')
 
@@ -215,7 +204,7 @@ class Variable:
         title = ax.get_title()
         xr.plot.contour(sliced, x='theta', y='r', ax=ax,
                         levels=levels, **kwargs)
-        self._format_polar_ax(ax, sliced)
+        viz.format_polar_ax(ax)
         ax.set_title(title)
 
     @property
