@@ -42,7 +42,9 @@ Loading data
 ------------
 psipy stores the output variables from a single MAS run in the
 `MASOutput` object. To create one of these, specify the directory
-which has all of the outputs ``.hdf`` files you want to load::
+which has all of the outputs ``.hdf`` files you want to load:
+
+.. code-block:: python
 
     from psipy.model import MASOutput
 
@@ -50,13 +52,17 @@ which has all of the outputs ``.hdf`` files you want to load::
     mas_output = MASOutput(directory)
 
 To see which variables have been loaded, we can look at the ``.variables``
-attribute::
+attribute:
+
+.. code-block:: python
 
     print(mas_output.variables)
 
 This will print a list of the variables that have been loaded. Each individual
 variable can then be accessed with square brackets, for example to get the
-radial magnetic field component::
+radial magnetic field component:
+
+.. code-block:: python
 
     br = mas_output['br']
 
@@ -70,13 +76,17 @@ array, but in addition also stores the coordinates of each data point.
 
 MAS model outputs are defined on a 3D grid of points on a spherical grid. The
 coordinate names are ``'r', 'theta', 'phi'``. The coordinate values can be
-accessed using the ``r_coords, theta_coords, phi_coords`` properties, e.g.::
+accessed using the ``r_coords, theta_coords, phi_coords`` properties, e.g.:
+
+.. code-block:: python
 
   rvals = br.r_coords
 
 Plotting data
 -------------
-A `MASOutput` instance can be indexed to get individual `Variable` data, e.g.::
+A `MASOutput` instance can be indexed to get individual `Variable` data, e.g.:
+
+.. code-block:: python
 
   br = mas_output['br']
 
@@ -87,7 +97,9 @@ methods are:
 - `Variable.plot_equatorial_cut`
 - `Variable.plot_radial_cut`
 
-A typical use looks like this::
+A typical use looks like this:
+
+.. code-block:: python
 
   ax = plt.subplot(1, 1, 1, projection='polar')
   model['rho'].plot_phi_cut(index, ax=ax, ...)
@@ -108,7 +120,9 @@ heliospheric current sheet, by contouring :math:`B_{r} = 0`. These methods are
 - `Variable.contour_equatorial_cut`
 - `Variable.contour_radial_cut`
 
-A typical use looks like this::
+A typical use looks like this:
+
+.. code-block:: python
 
   ax = plt.subplot(1, 1, 1, projection='polar')
   model['rho'].plot_phi_cut(index, ax=ax, ...)
@@ -130,7 +144,9 @@ Normalising data before plotting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sometimes it is helpful to multiply data by an expected radial falloff, e.g.
 multiplying the density by :math:`r^{2}`. This can be done using the
-`Variable.radial_normalized` method, e.g.::
+`Variable.radial_normalized` method, e.g.:
+
+.. code-block:: python
 
   rho = mas_output['rho']
   rho_r_squared = rho.radial_normalized(-2)
