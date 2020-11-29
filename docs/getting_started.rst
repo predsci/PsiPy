@@ -122,6 +122,10 @@ and produces outputs like this:
 For more examples of how to use these methods, see the
 :ref:`sphx_glr_auto_examples` gallery.
 
+Customising plots
+~~~~~~~~~~~~~~~~~
+TODO: add info about customising plots
+
 Normalising data before plotting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sometimes it is helpful to multiply data by an expected radial falloff, e.g.
