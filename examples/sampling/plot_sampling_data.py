@@ -40,6 +40,8 @@ for latitude in [0, 1] * u.deg:
 
 ax.legend()
 ax.set_xlim(0, 360)
+ax.set_ylim(bottom=0)
 ax.set_xlabel('Longitude (deg)')
 ax.set_ylabel(r'$\rho$ (cm$^{-3}$)')
+ax.set_xticks([0, 90, 180, 270, 360])
 plt.show()
