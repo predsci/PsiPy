@@ -67,6 +67,7 @@ nitpicky = True
 intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
                        'xarray': ('http://xarray.pydata.org/en/stable', None),
                        'astropy': ('https://docs.astropy.org/en/stable/', None),
+                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
                        }
 
 default_role = 'any'
