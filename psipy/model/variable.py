@@ -293,7 +293,7 @@ class Variable:
         Notes
         -----
         Linear interpolation is used to interpoalte between cells. See the
-        docstring of `scipy.interoplate.interpn` for more information.
+        docstring of `scipy.interpolate.interpn` for more information.
         """
         points = [self.data.coords[dim].values for dim in ['phi', 'theta', 'r']]
         values = self.data.values
