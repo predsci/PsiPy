@@ -106,7 +106,7 @@ A typical use looks like this:
 
 and produces an output like this:
 
-.. image:: auto_examples/images/sphx_glr_plot_visualising_mas_002.png
+.. image:: auto_examples/visualisation/images/sphx_glr_plot_visualising_mas_002.png
    :width: 600
 
 For more examples of how to use these methods, see the
@@ -130,7 +130,7 @@ A typical use looks like this:
 
 and produces outputs like this:
 
-.. image:: auto_examples/images/sphx_glr_plot_visualising_mas_003.png
+.. image:: auto_examples/visualisation/images/sphx_glr_plot_visualising_mas_003.png
    :width: 600
 
 For more examples of how to use these methods, see the
@@ -151,3 +151,15 @@ multiplying the density by :math:`r^{2}`. This can be done using the
   rho = mas_output['rho']
   rho_r_squared = rho.radial_normalized(-2)
   rho_r_squared.plot_phi_cut(...)
+
+
+Sampling data
+-------------
+Variable objects have a `Variable.sample_at_coords` method, to take a sample of
+the 3D data cube along a 1D trajectory. This is helpful for flying a 'virtual
+spacecraft' through the model, in order to compare model results with in-situ
+measurements.
+
+`sample_at_coords` requires arrays of longitude, latitude, and radial distance.
+Given these coordinates, it uses linear interpolation to extract the values
+of the variable at each of the coordinate points.
