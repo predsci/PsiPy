@@ -284,8 +284,16 @@ class Variable:
         Parameters
         ----------
         lon : astropy.units.Quantity
+            Longitudes.
         lat : astropy.units.Quantity
+            Latitudes.
         r : astropy.units.Quantity
+            Radial distances.
+
+        Notes
+        -----
+        Linear interpolation is used to interpoalte between cells. See the
+        docstring of `scipy.interoplate.interpn` for more information.
         """
         points = [self.data.coords[dim].values for dim in ['phi', 'theta', 'r']]
         values = self.data.values
