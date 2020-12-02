@@ -7,6 +7,7 @@ Sampling data from a 3D model
 from psipy.model import MASOutput
 import astropy.constants as const
 import astropy.units as u
+
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -16,17 +17,29 @@ mas_path = '/Users/dstansby/github/psipy/data/helio'
 model = MASOutput(mas_path)
 
 ###############################################################################
-# Each MAS model contains a number of variables. The variable names can be
-# accessed using the ``.variables`` attribute.
+# Get the number density variable from the model run
 rho = model['rho']
-n = 500
 
-for thet in [0, 1]:
-    r = 50 * np.ones(n) * const.R_sun
-    theta = thet * np.ones(n) * u.deg
-    phi = np.linspace(0, 360, n) * u.deg
+###############################################################################
+# Choose a set of 1D points to interpolate the model output at.
+#
+# Here we keep a constant radius, and a set of longitudes that go all the way
+# from 0 to 360 degrees. Then we choose two different, but close latitude
+# values, and plot the results.
+fig, ax = plt.subplots()
 
-    sample = rho.sample_at_coords(phi, theta, r)
+npoints = 1000
+r = 50 * np.ones(npoints) * const.R_sun
+lon = np.linspace(0, 360, npoints) * u.deg
 
-    plt.plot(phi, sample)
+for latitude in [0, 1] * u.deg:
+    lat = latitude * np.ones(npoints)
+    samples = rho.sample_at_coords(lon, lat, r)
+
+    ax.plot(lon, samples, label='lat = ' + str(latitude))
+
+ax.legend()
+ax.set_xlim(0, 360)
+ax.set_xlabel('Longitude (deg)')
+ax.set_ylabel(r'$\rho$ (cm$^{-3}$)')
 plt.show()

@@ -277,14 +277,14 @@ class Variable:
         return kwargs
 
     @u.quantity_input
-    def sample_at_coords(self, coords):
+    def sample_at_coords(self, lon, lat, r):
         """
         Sample this variable along a 1D trajectory of coordinates.
 
         Parameters
         ----------
-        phi : astropy.units.Quantity
-        theta : astropy.units.Quantity
+        lon : astropy.units.Quantity
+        lat : astropy.units.Quantity
         r : astropy.units.Quantity
         """
         points = [self.data.coords[dim].values for dim in ['phi', 'theta', 'r']]
@@ -295,11 +295,8 @@ class Variable:
         points[0] = np.append(points[0], points[0][0] + 2 * np.pi)
         values = np.append(values, values[0:1, ...], axis=0)
 
-        phi = coords.lon
-        theta = coords.lat
-        r = coords.radius
-        xi = np.column_stack([phi.to_value(u.rad),
-                              theta.to_value(u.rad),
+        xi = np.column_stack([lon.to_value(u.rad),
+                              lat.to_value(u.rad),
                               r.to_value(const.R_sun)])
         values_x = interpolate.interpn(points, values, xi)
         return values_x * self._unit
