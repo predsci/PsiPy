@@ -1,6 +1,9 @@
 """
 Sampling data from a 3D model
 =============================
+
+In this example we'll see how to sample a 3D model output at arbitrary points
+within the model domain.
 """
 ###############################################################################
 # First, load the required modules.
@@ -12,12 +15,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 ###############################################################################
-# Load a set of MAS output files.
+# Load a set of MAS output files, and get the number density variable from the
+# model run.
 mas_path = '/Users/dstansby/github/psipy/data/helio'
 model = MASOutput(mas_path)
-
-###############################################################################
-# Get the number density variable from the model run
 rho = model['rho']
 
 ###############################################################################
@@ -26,6 +27,9 @@ rho = model['rho']
 # Here we keep a constant radius, and a set of longitudes that go all the way
 # from 0 to 360 degrees. Then we choose two different, but close latitude
 # values, and plot the results.
+#
+# As expected, the values at 0 and 360 degrees are the same, and the profiles
+# are similar, but different, due to the small difference in latitude.
 fig, ax = plt.subplots()
 
 npoints = 1000
