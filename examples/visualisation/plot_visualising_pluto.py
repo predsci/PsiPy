@@ -1,6 +1,6 @@
 """
-Reading and visualising MAS runs
-================================
+Reading and visualising PLUTO runs
+==================================
 """
 ###############################################################################
 # First, load the required modules.
@@ -8,12 +8,12 @@ from psipy.model import PLUTOOutput
 import matplotlib.pyplot as plt
 
 ###############################################################################
-# Load a set of MAS output files.
+# Load a set of PLUTO output files.
 pluto_path = '/Users/dstansby/github/psipy/data/pluto-test-output'
 model = PLUTOOutput(pluto_path)
 
 ###############################################################################
-# Each MAS model contains a number of variables. The variable names can be
+# Each PLUTO model contains a number of variables. The variable names can be
 # accessed using the ``.variables`` attribute.
 print(model.variables)
 
