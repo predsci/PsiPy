@@ -306,5 +306,13 @@ class Variable:
         xi = np.column_stack([lon.to_value(u.rad),
                               lat.to_value(u.rad),
                               r.to_value(const.R_sun)])
+        # Check that coordinates are increasing
+        if not np.all(np.diff(xi[:, 0]) > 0):
+            raise RuntimeError('Longitude coordinates are not monotonically increasing')
+        if not np.all(np.diff(xi[:, 1]) > 0):
+            raise RuntimeError('Latitude coordinates are not monotonically increasing')
+        if not np.all(np.diff(xi[:, 0]) > 0):
+            raise RuntimeError('Radial coordinates are not monotonically increasing')
+
         values_x = interpolate.interpn(points, values, xi)
         return values_x * self._unit
