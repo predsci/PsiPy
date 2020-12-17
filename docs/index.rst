@@ -1,13 +1,17 @@
-Welcome to psipy's documentation!
-=================================
+psipy
+=====
+
+psipy is a package for loading and visualising the output of PSI's MAS model
+runs.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   getting_started
+   guide/installing
+   guide/getting_started
    auto_examples/index
-   api
+   reference/api
 
 
 Indices and tables

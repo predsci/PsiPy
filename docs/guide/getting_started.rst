@@ -5,27 +5,6 @@ psipy is a package for loading and visualising the output of PSI's MAS model
 runs. This page provides some narrative documentation that should get you up
 and running with obtaining, loading, and visualising some model results.
 
-Installing
-----------
-Currently the only way to install psipy is from source. Change to the directory
-you want to download the source too, and run:
-
-.. code-block:: bash
-
-  git clone https://github.com/predsci/PsiPy
-  cd PsiPy
-  pip install .
-
-To load hdf4 files you will need a working installation of the `HDF4 library`_.
-If you are using the conda environment manager this can be installed with:
-
-.. code-block:: bash
-
-  conda install hdf4
-
-
-.. _HDF4 library: https://portal.hdfgroup.org/display/support/Download+HDF4
-
 Getting data
 ------------
 The PSI `MHDWeb pages`_ give access to MAS model runs. The runs are indexed by
@@ -106,7 +85,7 @@ A typical use looks like this:
 
 and produces an output like this:
 
-.. image:: auto_examples/visualisation/images/sphx_glr_plot_visualising_mas_002.png
+.. image:: /auto_examples/visualisation/images/sphx_glr_plot_visualising_mas_002.png
    :width: 600
 
 For more examples of how to use these methods, see the
@@ -130,7 +109,7 @@ A typical use looks like this:
 
 and produces outputs like this:
 
-.. image:: auto_examples/visualisation/images/sphx_glr_plot_visualising_mas_003.png
+.. image:: /auto_examples/visualisation/images/sphx_glr_plot_visualising_mas_003.png
    :width: 600
 
 For more examples of how to use these methods, see the
