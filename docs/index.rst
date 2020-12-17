@@ -12,6 +12,7 @@ runs.
    guide/getting_started
    auto_examples/index
    reference/api
+   developer/index
 
 
 Indices and tables

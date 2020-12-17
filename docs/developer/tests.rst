@@ -15,4 +15,5 @@ folder within the source directory called :file:`data`, which itself should
 contain the following test file directories:
 
 - :file:`mas_hdf4`: the files from a MAS output in HDF4 format
-- :file:`mas_hdf5`: at least one file from a MAS output in HDF5 format
+- :file:`mas_hdf5`: the files from a MAS output in HDF5 format
+- :file:`pluto`: the files from a PLUTO output
