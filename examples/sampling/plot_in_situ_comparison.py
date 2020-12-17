@@ -10,8 +10,8 @@ This consists of three steps:
 2. Generate the spacecraft trajectory at the in-situ data timestamps
 3. Use this trajectory to take samples in the 3D model output
 
-The first two steps are accomplished using `heliopy.data`
-(to get the in-situ data) and `heliopy.spice` (to get the trajectory). This
+The first two steps are accomplished using ``heliopy.data``
+(to get the in-situ data) and ``heliopy.spice`` (to get the trajectory). This
 is then fed into `Variable.sample_at_coords` to get the model values, which
 we then compare to the in-situ data.
 """
