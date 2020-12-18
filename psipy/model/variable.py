@@ -1,4 +1,5 @@
 import copy
+import textwrap
 
 import astropy.constants as const
 import astropy.units as u
@@ -34,6 +35,14 @@ class Variable:
         self._data = self._data.sortby(['phi', 'theta', 'r'])
         self.name = name
         self._unit = unit
+
+    def __str__(self):
+        return textwrap.dedent(f'''
+        Variable
+        --------
+        Name: {self.name}
+        Grid size: {self._data.shape}
+        ''')
 
     @property
     def data(self):
