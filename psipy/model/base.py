@@ -40,6 +40,7 @@ class ModelOutput(abc.ABC):
         # Leave data empty for now, as we want to load on demand
         self._data = {}
         self._variables = self.get_variables()
+        self._variables.sort()
 
     def __str__(self):
         return (f'{self.__class__.__name__}\n'
