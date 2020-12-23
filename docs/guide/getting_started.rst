@@ -46,16 +46,17 @@ radial magnetic field component:
     br = mas_output['br']
 
 This will return a `Variable` object, which stores the underlying data as a
-`xarray.DataArray` under `Variable.data`.
+`xarray.DataArray` under the `Variable.data` property.
 
 Data coordinates
 ----------------
-The data stored in `Variable.data` contains values of the data as a normal
-array, but in addition also stores the coordinates of each data point.
+The data stored in `Variable.data` contains the values of the data as a normal
+array, and in addition stores the coordinates of each data point.
 
 MAS model outputs are defined on a 3D grid of points on a spherical grid. The
-coordinate names are ``'r', 'theta', 'phi'``. The coordinate values can be
-accessed using the ``r_coords, theta_coords, phi_coords`` properties, e.g.:
+coordinate names are ``'r', 'theta', 'phi'``. The coordinate values along each
+dimension can be accessed using the ``r_coords, theta_coords, phi_coords``
+properties, e.g.:
 
 .. code-block:: python
 
@@ -63,13 +64,7 @@ accessed using the ``r_coords, theta_coords, phi_coords`` properties, e.g.:
 
 Plotting data
 -------------
-A `MASOutput` instance can be indexed to get individual `Variable` data, e.g.:
-
-.. code-block:: python
-
-  br = mas_output['br']
-
-These `Variable` objects have methods to plot 2D slices of the data. These
+`Variable` objects have methods to plot 2D slices of the data. These
 methods are:
 
 - `Variable.plot_phi_cut`
@@ -128,7 +123,7 @@ multiplying the density by :math:`r^{2}`. This can be done using the
 .. code-block:: python
 
   rho = mas_output['rho']
-  rho_r_squared = rho.radial_normalized(-2)
+  rho_r_squared = rho.radial_normalized(2)
   rho_r_squared.plot_phi_cut(...)
 
 
