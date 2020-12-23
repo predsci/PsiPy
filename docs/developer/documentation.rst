@@ -10,6 +10,10 @@ source directory run::
 
   pip install .[docs]
 
+To build the docs locally, change to the :file:`docs` folder, and run::
+
+  make html
+
 Hosted builds
 -------------
 The documentation is automatically `built <https://readthedocs.org/projects/psipy/builds/>`__
