@@ -9,6 +9,10 @@ version: 2
 sphinx:
   configuration: docs/conf.py
 
+# Need to use conda to get the hdf4 dependency
+conda:
+  environment: .readthedocs-conda-env.yml
+
 # Optionally set the version of Python and requirements required to build your docs
 python:
   version: 3.8
