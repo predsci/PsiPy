@@ -25,7 +25,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        sudo apt-get install -y hdf4-tools
+        sudo apt-get install -y hdf4-tools libhdf4-dev
         python -m pip install --upgrade pip
         python -m pip install .[tests]
     - name: Run tests
