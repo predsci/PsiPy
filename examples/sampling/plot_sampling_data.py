@@ -8,6 +8,8 @@ within the model domain.
 ###############################################################################
 # First, load the required modules.
 from psipy.model import MASOutput
+from psipy.data import sample_data
+
 import astropy.constants as const
 import astropy.units as u
 
@@ -17,7 +19,7 @@ import numpy as np
 ###############################################################################
 # Load a set of MAS output files, and get the number density variable from the
 # model run.
-mas_path = '/Users/dstansby/github/psipy/data/helio'
+mas_path = sample_data.mas_helio()
 model = MASOutput(mas_path)
 rho = model['rho']
 

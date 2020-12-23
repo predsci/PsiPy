@@ -5,11 +5,13 @@ Reading and visualising MAS runs
 ###############################################################################
 # First, load the required modules.
 from psipy.model import MASOutput
+from psipy.data import sample_data
+
 import matplotlib.pyplot as plt
 
 ###############################################################################
 # Load a set of MAS output files.
-mas_path = '/Users/dstansby/github/psipy/data/helio'
+mas_path = sample_data.mas_helio()
 model = MASOutput(mas_path)
 
 ###############################################################################

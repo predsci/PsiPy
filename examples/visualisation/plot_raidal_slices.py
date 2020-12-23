@@ -8,12 +8,14 @@ output.
 ###############################################################################
 # First, load the required modules.
 from psipy.model import MASOutput
+from psipy.data import sample_data
+
 import matplotlib.pyplot as plt
 
 ###############################################################################
 # Next, load a set of MAS output files. You will need to change this line to
 # point to a folder with MAS files in them.
-mas_path = '/Users/dstansby/github/psipy/data/helio'
+mas_path = sample_data.mas_helio()
 model = MASOutput(mas_path)
 
 ###############################################################################
@@ -31,23 +33,16 @@ r_idx = 139
 
 ###############################################################################
 # Plot the slices
-fig, axs = plt.subplots(nrows=2, ncols=3)
+fig, axs = plt.subplots(ncols=3)
 
-ax = axs[0, 0]
+ax = axs[0]
 model['vr'].plot_radial_cut(r_idx, ax=ax, cbar_kwargs=cbar_kwargs)
 model['br'].contour_radial_cut(r_idx, levels=[0], ax=ax, colors='white')
-ax = axs[0, 1]
-model['vp'].plot_radial_cut(r_idx, ax=ax, cbar_kwargs=cbar_kwargs)
-model['br'].contour_radial_cut(r_idx, levels=[0], ax=ax, colors='black')
-ax = axs[0, 2]
-model['vt'].plot_radial_cut(r_idx, ax=ax, cbar_kwargs=cbar_kwargs)
-model['br'].contour_radial_cut(r_idx, levels=[0], ax=ax, colors='black')
-
-ax = axs[1, 0]
+ax = axs[1]
 model['rho'].plot_radial_cut(r_idx, ax=ax, cbar_kwargs=cbar_kwargs)
-model['br'].contour_radial_cut(r_idx, levels=[0], ax=ax, colors='white')
-ax = axs[1, 1]
-model['p'].plot_radial_cut(r_idx, ax=ax, cbar_kwargs=cbar_kwargs)
-model['br'].contour_radial_cut(r_idx, levels=[0], ax=ax, colors='white')
+model['br'].contour_radial_cut(r_idx, levels=[0], ax=ax, colors='black')
+ax = axs[2]
+model['br'].plot_radial_cut(r_idx, ax=ax, cbar_kwargs=cbar_kwargs)
+model['br'].contour_radial_cut(r_idx, levels=[0], ax=ax, colors='black')
 
 plt.show()

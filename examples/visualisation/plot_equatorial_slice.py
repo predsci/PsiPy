@@ -9,6 +9,7 @@ output.
 # First, load the required modules.
 from psipy.model import MASOutput
 from psipy.data import sample_data
+
 import matplotlib.pyplot as plt
 
 ###############################################################################
