@@ -145,5 +145,7 @@ def get_pluto_variables(directory):
     var_names = [Path(f).stem[:3].split('.')[0] for f in files]
     # Only return unique names
     var_names = list(set(var_names))
+    if not len(var_names):
+        raise FileNotFoundError(f'No variable files found in {directory}')
     var_names.sort()
     return var_names

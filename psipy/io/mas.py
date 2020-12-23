@@ -66,4 +66,6 @@ def get_mas_variables(path):
     # Here we take the filename before .hdf, and remove the last three
     # characters which give the timestep
     var_names = [Path(f).stem.split('.h')[0][:-3] for f in files]
+    if not len(var_names):
+        raise FileNotFoundError(f'No variable files found in {path}')
     return var_names
