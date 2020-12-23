@@ -75,14 +75,12 @@ class ModelOutput(abc.ABC):
         list :
             A list of all variable names present in the directory.
         """
-        pass
 
     @abc.abstractmethod
     def load_file(self, var):
         """
         Load data for variable *var*.
         """
-        pass
 
     @abc.abstractmethod
     def get_unit(self, var):
@@ -95,7 +93,6 @@ class ModelOutput(abc.ABC):
         unit : `astropy.units.Unit`
         factor : float
         """
-        pass
 
     # Properties start here
     @property
