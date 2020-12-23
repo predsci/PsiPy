@@ -306,6 +306,13 @@ class Variable:
         """
         points = [self.data.coords[dim].values for dim in ['phi', 'theta', 'r']]
         values = self.data.values
+        # Check that coordinates are increasing
+        if not np.all(np.diff(points[0]) >= 0):
+            raise RuntimeError('Longitude coordinates are not monotonically increasing')
+        if not np.all(np.diff(points[1]) >= 0):
+            raise RuntimeError('Latitude coordinates are not monotonically increasing')
+        if not np.all(np.diff(points[2]) > 0):
+            raise RuntimeError('Radial coordinates are not monotonically increasing')
 
         # Pad phi points so it's possible to interpolate all the way from
         # 0 to 360 deg
@@ -315,13 +322,6 @@ class Variable:
         xi = np.column_stack([lon.to_value(u.rad),
                               lat.to_value(u.rad),
                               r.to_value(const.R_sun)])
-        # Check that coordinates are increasing
-        if not np.all(np.diff(xi[:, 0]) > 0):
-            raise RuntimeError('Longitude coordinates are not monotonically increasing')
-        if not np.all(np.diff(xi[:, 1]) > 0):
-            raise RuntimeError('Latitude coordinates are not monotonically increasing')
-        if not np.all(np.diff(xi[:, 0]) > 0):
-            raise RuntimeError('Radial coordinates are not monotonically increasing')
 
         values_x = interpolate.interpn(points, values, xi)
         return values_x * self._unit
