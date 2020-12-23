@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 ###############################################################################
 # Load a set of PLUTO output files.
-pluto_path = '/Users/dstansby/github/psipy/data/pluto-test-output'
+pluto_path = '/Users/dstansby/github/psipy/data/pluto'
 model = PLUTOOutput(pluto_path)
 
 ###############################################################################
