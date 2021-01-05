@@ -21,8 +21,14 @@ On ubuntu this can be installed with:
 
 Installing psipy
 ----------------
-Currently the only way to install psipy is from source. Change to the directory
-you want to download the source too, and run:
+To install psipy, run
+
+.. code-block:: bash
+
+  pip install psipy
+
+If you want to install the bleeding edge version, change to the directory you
+want to download the source code too, and run:
 
 .. code-block:: bash
 
