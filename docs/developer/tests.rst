@@ -27,6 +27,11 @@ contain the following test file directories:
 Continuous integration
 ----------------------
 Every time a new commit is pushed to the 'main' branch on github, github actions
-runs the tests automatically. The coverage (ie. which lines are/aren't covered
+runs the tests automatically. The most recent runs can be seen at
+https://github.com/predsci/PsiPy/actions
+
+Code coverage
+-------------
+The coverage (ie. which lines are/aren't covered
 by the tests) is also automatically reported by codecov, and can be seen at
 https://codecov.io/gh/predsci/PsiPy.
