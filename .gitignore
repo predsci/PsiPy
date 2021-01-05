@@ -6,6 +6,8 @@ docs/api/*
 docs/auto_examples
 *.automodsumm
 *.automodapi
+dist/*
+.eggs/*
 
 .coverage
 
