@@ -11,7 +11,7 @@ download_dir = Path(__file__).parent / '..' / '..' / 'data'
 def mas_helio():
     """
     Get some MAS heliospheric data files. These are taken from CR2210, which
-    is used for the PSP data comparisons.
+    is used for PSP data comparisons in the documentation examples.
     """
     mas_helio_dir = download_dir / 'mas_helio'
     mas_helio_dir.mkdir(parents=True, exist_ok=True)
