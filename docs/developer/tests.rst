@@ -1,5 +1,8 @@
 Testing
 =======
+Several unit tests are present in the ``psipy/*/tests`` directories. These
+are written to protect against code being unintentionally changed such that
+either the code itself raises an error or what the code returns is unexpected.
 
 Local testing
 -------------
