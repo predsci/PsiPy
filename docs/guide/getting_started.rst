@@ -110,10 +110,6 @@ and produces outputs like this:
 For more examples of how to use these methods, see the
 :ref:`sphx_glr_auto_examples` gallery.
 
-Customising plots
-~~~~~~~~~~~~~~~~~
-TODO: add info about customising plots
-
 Normalising data before plotting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sometimes it is helpful to multiply data by an expected radial falloff, e.g.
@@ -137,3 +133,5 @@ measurements.
 `sample_at_coords` requires arrays of longitude, latitude, and radial distance.
 Given these coordinates, it uses linear interpolation to extract the values
 of the variable at each of the coordinate points.
+
+For an example of how all this works, see :ref:`sphx_glr_auto_examples_sampling_plot_in_situ_comparison.py`.
