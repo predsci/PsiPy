@@ -12,6 +12,7 @@ runs.
    guide/getting_started
    auto_examples/index
    reference/api
+   reference/changelog
    developer/index
 
 
