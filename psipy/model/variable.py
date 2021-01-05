@@ -299,6 +299,11 @@ class Variable:
         r : astropy.units.Quantity
             Radial distances.
 
+        Returns
+        -------
+        astropy.units.Quantity
+            The sampled data.
+
         Notes
         -----
         Linear interpolation is used to interpoalte between cells. See the
