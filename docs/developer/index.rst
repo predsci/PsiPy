@@ -7,3 +7,4 @@ Developer docs
 
    documentation
    tests
+   release
