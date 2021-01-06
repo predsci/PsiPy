@@ -47,7 +47,7 @@ class Variable:
     @property
     def data(self):
         """
-        DataFrame with the data.
+        `xarray.DataArray` with the data.
         """
         return self._data
 
