@@ -41,7 +41,7 @@ class Variable:
         Variable
         --------
         Name: {self.name}
-        Grid size: {self._data.shape}
+        Grid size: {self._data.shape} (phi, theta, r)
         ''')
 
     @property
