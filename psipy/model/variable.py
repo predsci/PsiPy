@@ -58,6 +58,13 @@ class Variable:
         """
         return self._unit
 
+    @unit.setter
+    def unit(self, new_unit):
+        # This line will error if untis aren't compatible
+        conversion = float(1 * self._unit / new_unit)
+        self._data *= conversion
+        self._unit = new_unit
+
     @property
     def r_coords(self):
         """
