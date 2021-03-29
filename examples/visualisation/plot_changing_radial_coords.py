@@ -2,15 +2,15 @@
 Changing the units of a plot
 =============================
 
-This example shows how to change the units of data. This is helpful if you
-want to plot data in units differently to how it is stored in a
-`~psipy.model.ModelOutput`.
+This example shows how to change the radial coordiantes. This is helpful if you
+want to change the radial coordinates e.g. from solar radii to AU.
 """
 ###############################################################################
 # First, load the required modules.
 from psipy.model import MASOutput
 from psipy.data import sample_data
 
+import astropy.constants as const
 import astropy.units as u
 import matplotlib.pyplot as plt
 
@@ -21,12 +21,14 @@ mas_path = sample_data.mas_helio()
 model = MASOutput(mas_path)
 
 ###############################################################################
-# The units of each within ``model`` can't be changed, but we can get
-# individual variables and change their units before plotting
+# Define a conversion factor from solar radii to AU, and apply this to the
+# coordinates of a variable
+rsun_to_au = float(const.R_sun / const.au)
+
 br = model['br']
-print(f'Old unit: {br.unit}')
-br.unit = u.nT
-print(f'New unit: {br.unit}')
+print(f'Old coords: {br.r_coords}')
+br.r_coords = br.r_coords * rsun_to_au
+print(f'New coords: {br.r_coords}')
 
 ###############################################################################
 # Plot

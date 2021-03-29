@@ -72,6 +72,10 @@ class Variable:
         """
         return self._data.coords['r'].values
 
+    @r_coords.setter
+    def r_coords(self, coords):
+        self._data.coords['r'] = coords
+
     @property
     def theta_coords(self):
         """
