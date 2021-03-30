@@ -63,6 +63,39 @@ class MASOutput(ModelOutput):
     def __str__(self):
         return f"MAS output in directory {self.path}"
 
+    def cell_centered_b(self, extra_phi_coord=False):
+        if not set(['br', 'bt', 'bp']) <= set(self.variables):
+            raise RuntimeError('MAS output must have the vr, vt, vp variables loaded')
+
+        # Interpolate new radial coordiantes
+        new_rcoord = self['bt'].r_coords
+        br = scipy.interpolate.interp1d(self['br'].r_coords,
+                                        self['br'].data,
+                                        axis=2)(new_rcoord)
+
+        # Interpolate new theta coordinates
+        new_tcoord = self['br'].theta_coords
+        bt = scipy.interpolate.interp1d(self['bt'].theta_coords,
+                                        self['bt'].data,
+                                        axis=1)(new_tcoord)
+        # Don't need to interpolate phi coords, but get a copy
+        new_pcoord = self['bt'].phi_coords
+        bp = self['bp'].data
+
+        if extra_phi_coord:
+            dphi = np.mean(np.diff(new_pcoord))
+            assert np.allclose(new_pcoord[0] + 2 * np.pi, new_pcoord[-1] + dphi)
+
+            new_pcoord = np.append(new_pcoord, new_pcoord[-1] + dphi)
+            bp = np.append(bp, bp[0:1, :, :], axis=0)
+            bt = np.append(bt, bt[0:1, :, :], axis=0)
+            br = np.append(br, br[0:1, :, :], axis=0)
+
+        return xr.DataArray(np.stack([bp, bt, br], axis=-1),
+                            dims=['phi', 'theta', 'r', 'component'],
+                            coords=[new_pcoord, new_tcoord, new_rcoord,
+                                    ['bp', 'bt', 'br']])
+
     def cell_centered_v(self, extra_phi_coord=False):
         """
         Get the velocity vector at the cell centres.

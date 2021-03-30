@@ -20,7 +20,34 @@ def mas_helio():
     # Create a downloader to queue the files to be downloaded
     dl = Downloader()
 
-    vars = ['rho', 'vr', 'br']
+    vars = ['rho', 'vr', 'br', 'bp', 'bt', 'vp', 'vt']
+    for var in vars:
+        file = mas_helio_dir / f'{var}002.hdf'
+        if file.exists():
+            continue
+        else:
+            remote_file = base_url.format(var=var)
+            dl.enqueue_file(remote_file, path=mas_helio_dir)
+
+    # Download the files
+    if dl.queued_downloads > 0:
+        dl.download()
+    return mas_helio_dir.resolve()
+
+
+def mas_corona():
+    """
+    Get some MAS heliospheric data files. These are taken from CR2210, which
+    is used for PSP data comparisons in the documentation examples.
+    """
+    mas_helio_dir = download_dir / 'mas_corona'
+    mas_helio_dir.mkdir(parents=True, exist_ok=True)
+    base_url = 'http://www.predsci.com/data/runs/cr2210-medium/hmi_masp_mas_std_0201/corona/{var}002.hdf'
+
+    # Create a downloader to queue the files to be downloaded
+    dl = Downloader()
+
+    vars = ['rho', 'vr', 'br', 'bp', 'bt', 'vp', 'vt']
     for var in vars:
         file = mas_helio_dir / f'{var}002.hdf'
         if file.exists():
