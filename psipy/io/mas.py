@@ -34,7 +34,12 @@ def read_mas_file(directory, var):
     if not len(files):
         raise FileNotFoundError(f'Could not find file for variable "{var}" in '
                                 f'directory {directory}')
-    f = Path(files[0])
+
+    return _read_mas(files[0])
+
+
+def _read_mas(path):
+    f = Path(path)
     if f.suffix == '.hdf':
         data, coords = read_hdf4(f)
     elif f.suffix == '.h5':
@@ -45,6 +50,32 @@ def read_mas_file(directory, var):
     coords[1] = np.pi / 2 - np.array(coords[1])
     data = xr.DataArray(data=data, coords=coords, dims=dims)
     return data
+
+
+def convert_hdf_to_netcdf(directory, var):
+    """
+    Read in a set of HDF files, and save them out to NetCDF files.
+
+    This is helpful to convert files for loading lazily using dask.
+
+    Warnings
+    --------
+    This will create a new set of files that same size as *all* the files
+    read in. Make sure you have enough disk space before using this function!
+    """
+    directory = Path(directory)
+    pattern = str(directory / f'{var}[0-9][0-9][0-9].h*')
+    files = glob.glob(pattern)
+
+    for f in files:
+        print(f'Processing {f}...')
+        f = Path(f)
+        data = _read_mas(f)
+        new_dir = (f.parent / '..' / 'netcdf').resolve()
+        new_dir.mkdir(exist_ok=True)
+        new_path = (new_dir / f.name).with_suffix('.nc')
+        data.to_netcdf(new_path)
+        del data
 
 
 def get_mas_variables(path):
