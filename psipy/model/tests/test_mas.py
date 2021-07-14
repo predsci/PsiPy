@@ -17,6 +17,16 @@ def test_mas_model(mas_directory):
     assert rho.unit == u.N / u.cm**3
 
 
+def test_persistance(mas_directory):
+    # Check that a variable requested twice only makes one copy of the data in
+    # memory
+    mas_model = mas.MASOutput(mas_directory)
+    rho1 = mas_model['rho']
+    rho2 = mas_model['rho']
+    # This checks that rho1 and rho2 reference the same underlying data
+    assert rho1 is rho2
+
+
 def test_change_units(mas_directory):
     # Check that loading a single file works
     mas_model = mas.MASOutput(mas_directory)

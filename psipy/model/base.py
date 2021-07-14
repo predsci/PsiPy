@@ -50,8 +50,10 @@ class ModelOutput(abc.ABC):
         if var not in self.variables:
             raise RuntimeError(f'{var} not in list of known variables: '
                                f'{self._variables}')
-        if var not in self.loaded_variables:
-            self._data[var] = self.load_file(var)
+        if var in self.loaded_variables:
+            return self._data[var]
+
+        data = self.load_file(var)
 
         # Get units
         try:
@@ -60,8 +62,9 @@ class ModelOutput(abc.ABC):
             raise RuntimeError('Do not know what units are for '
                                f'variable "{var}"') from e
 
-        data = self._data[var] * factor
-        return Variable(data, var, unit)
+        data *= factor
+        self._data[var] = Variable(data, var, unit)
+        return self._data[var]
 
     # Abstract methods start here
     #
