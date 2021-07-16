@@ -1,5 +1,12 @@
 """
 Tools for reading MAS (Magnetohydrodynamics on a sphere) model outputs.
+
+Files come in two types, .hdf or .h5. In both cases filenames always have the
+structure '{var}{timestep}.{extension}', where:
+
+- 'var' is the variable name
+- 'timestep' is the three digit (zero padded) timestep
+- 'extension' is '.hdf' or '.h5'
 """
 import glob
 from pathlib import Path
@@ -11,6 +18,11 @@ from .util import read_hdf4, read_hdf5
 
 
 __all__ = ['read_mas_file', 'get_mas_variables']
+
+
+def get_mas_filenames(directory, var):
+    directory = Path(directory)
+    return glob.glob(str(directory / f'{var}[0-9][0-9][0-9].h*'))
 
 
 def read_mas_file(directory, var):
@@ -29,8 +41,7 @@ def read_mas_file(directory, var):
     data : xarray.DataArray
         Loaded data.
     """
-    directory = Path(directory)
-    files = glob.glob(str(directory / f'{var}[0-9][0-9][0-9].h*'))
+    files = get_mas_filenames(directory, var)
     if not len(files):
         raise FileNotFoundError(f'Could not find file for variable "{var}" in '
                                 f'directory {directory}')
@@ -63,9 +74,7 @@ def convert_hdf_to_netcdf(directory, var):
     This will create a new set of files that same size as *all* the files
     read in. Make sure you have enough disk space before using this function!
     """
-    directory = Path(directory)
-    pattern = str(directory / f'{var}[0-9][0-9][0-9].h*')
-    files = glob.glob(pattern)
+    files = get_mas_filenames(directory, var)
 
     for f in files:
         print(f'Processing {f}...')
@@ -99,4 +108,5 @@ def get_mas_variables(path):
     var_names = [Path(f).stem.split('.h')[0][:-3] for f in files]
     if not len(var_names):
         raise FileNotFoundError(f'No variable files found in {path}')
-    return var_names
+    # Use list(set()) to get unique values
+    return list(set(var_names))
