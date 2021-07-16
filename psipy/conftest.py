@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from psipy.data import sample_data
+from psipy.model import mas
 
 test_data_dir = (Path(__file__) / '..' / '..' / 'data').resolve()
 
@@ -24,6 +25,11 @@ def mas_directory(request):
         pytest.xfail(f'Could not find MAS data directory at {directory}')
 
     return directory
+
+
+@pytest.fixture(scope='module')
+def mas_model(mas_directory):
+    return mas.MASOutput(mas_directory)
 
 
 @pytest.fixture(scope="module")
