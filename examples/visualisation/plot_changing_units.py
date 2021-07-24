@@ -4,7 +4,7 @@ Changing the units of a plot
 
 This example shows how to change the units of data. This is helpful if you
 want to plot data in units differently to how it is stored in a
-`~psipy.model.ModelOutput`.
+a model.
 """
 ###############################################################################
 # First, load the required modules.
