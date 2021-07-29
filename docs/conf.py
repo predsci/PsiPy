@@ -62,6 +62,8 @@ html_theme = "sphinx_rtd_theme"
 
 # Raise an error for missing doc references
 nitpicky = True
+nitpick_ignore = [("py:class", "Unit('deg')"),
+                  ("py:class", "Unit('m')")]
 
 
 intersphinx_mapping = {'python': ('https://docs.python.org/3', None),

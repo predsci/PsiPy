@@ -38,6 +38,7 @@ class ModelOutput(abc.ABC):
     def __init__(self, path):
         self.path = Path(path)
         # Leave data empty for now, as we want to load on demand
+        # This is a mapping from variable name to xr.DataSet
         self._data = {}
         self._variables = self.get_variables()
         self._variables.sort()

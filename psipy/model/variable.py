@@ -19,7 +19,8 @@ class Variable:
     A single scalar variable.
 
     This class primarily contains methods for plotting data. It can be created
-    with any `xarray.DataArray` that has ``['theta', 'phi', 'r']`` fields.
+    with any `xarray.DataArray` that has ``['theta', 'phi', 'r', 'time']``
+    fields.
 
     Parameters
     ----------
@@ -33,7 +34,7 @@ class Variable:
     def __init__(self, data, name, unit):
         self._data = data
         # Sort the data once now for any interpolation later
-        self._data = self._data.sortby(['phi', 'theta', 'r'])
+        self._data = self._data.sortby(['phi', 'theta', 'r', 'time'])
         self.name = name
         self._unit = unit
 
@@ -42,7 +43,8 @@ class Variable:
         Variable
         --------
         Name: {self.name}
-        Grid size: {self._data.shape} (phi, theta, r)
+        Grid size: {self._data.shape[0:3]} (phi, theta, r)
+        Timesteps: {self._data.shape[-1]}
         ''')
 
     @property
@@ -90,6 +92,13 @@ class Variable:
         Longitude coordinate values.
         """
         return self._data.coords['phi'].values
+
+    @property
+    def time_coords(self):
+        """
+        Timestep coordinate values.
+        """
+        return self._data.coords['time'].values
 
     def radial_normalized(self, radial_exponent):
         r"""
@@ -151,7 +160,7 @@ class Variable:
 
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
         # Take slice of data, and plot
-        sliced = self.data.isel(r=i)
+        sliced = self.data.isel(r=i, time=0)
         sliced.plot(x='phi', y='theta', ax=ax, **kwargs)
 
         # Plot formatting
@@ -175,7 +184,7 @@ class Variable:
             Additional keyword arguments are passed to `xarray.plot.contour`.
         """
         ax = self._setup_radial_ax(ax)
-        sliced = self.data.isel(r=i)
+        sliced = self.data.isel(r=i, time=0)
         # Need to save a copy of the title to reset it later, since xarray
         # tries to set it's own title that we don't want
         title = ax.get_title()
@@ -202,7 +211,7 @@ class Variable:
 
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
         # Take slice of data and plot
-        sliced = self.data.isel(phi=i)
+        sliced = self.data.isel(phi=i, time=0)
         sliced.plot(x='theta', y='r', ax=ax, **kwargs)
         viz.format_polar_ax(ax)
         phi = np.rad2deg(sliced['phi'].values)
@@ -225,7 +234,7 @@ class Variable:
             Additional keyword arguments are passed to `xarray.plot.contour`.
         """
         ax = viz.setup_polar_ax(ax)
-        sliced = self.data.isel(phi=i)
+        sliced = self.data.isel(phi=i, time=0)
         # Need to save a copy of the title to reset it later, since xarray
         # tries to set it's own title that we don't want
         title = ax.get_title()
@@ -279,7 +288,7 @@ class Variable:
             Additional keyword arguments are passed to `xarray.plot.contour`.
         """
         ax = viz.setup_polar_ax(ax)
-        sliced = self.data.isel(theta=self._equator_theta_idx)
+        sliced = self.data.isel(theta=self._equator_theta_idx, time=0)
         # Need to save a copy of the title to reset it later, since xarray
         # tries to set it's own title that we don't want
         title = ax.get_title()
@@ -302,7 +311,7 @@ class Variable:
         return kwargs
 
     @u.quantity_input
-    def sample_at_coords(self, lon, lat, r):
+    def sample_at_coords(self, lon: u.deg, lat: u.deg, r: u.m, t=None):
         """
         Sample this variable along a 1D trajectory of coordinates.
 
@@ -314,6 +323,9 @@ class Variable:
             Latitudes.
         r : astropy.units.Quantity
             Radial distances.
+        t : array-like, optional
+            Timsteps. If the variable only has a single timstep, this argument
+            is not required.
 
         Returns
         -------
@@ -326,27 +338,38 @@ class Variable:
         docstring of `scipy.interpolate.interpn` for more information.
         """
         points = [self.data.coords[dim].values for dim in
-                  ['phi', 'theta', 'r']]
+                  ['time', 'phi', 'theta', 'r']]
         values = self.data.values
+
         # Check that coordinates are increasing
-        if not np.all(np.diff(points[0]) >= 0):
-            raise RuntimeError(
-                'Longitude coordinates are not monotonically increasing')
         if not np.all(np.diff(points[1]) >= 0):
             raise RuntimeError(
+                'Longitude coordinates are not monotonically increasing')
+        if not np.all(np.diff(points[2]) >= 0):
+            raise RuntimeError(
                 'Latitude coordinates are not monotonically increasing')
-        if not np.all(np.diff(points[2]) > 0):
+        if not np.all(np.diff(points[3]) > 0):
             raise RuntimeError(
                 'Radial coordinates are not monotonically increasing')
 
         # Pad phi points so it's possible to interpolate all the way from
         # 0 to 360 deg
-        points[0] = np.append(points[0], points[0][0] + 2 * np.pi)
-        values = np.append(values, values[0:1, ...], axis=0)
+        points[1] = np.append(points[1], points[1][0] + 2 * np.pi)
+        values = np.append(values, values[:, 0:1, :, :], axis=1)
 
-        xi = np.column_stack([lon.to_value(u.rad),
-                              lat.to_value(u.rad),
-                              r.to_value(const.R_sun)])
+        if len(points[0]) == 1:
+            # Only one timestep
+            xi = np.column_stack([lon.to_value(u.rad),
+                                  lat.to_value(u.rad),
+                                  r.to_value(const.R_sun)])
+            values = values[0, :, :, :]
+            points = points[1:]
+        else:
+            xi = np.column_stack([t,
+                                  lon.to_value(u.rad),
+                                  lat.to_value(u.rad),
+                                  r.to_value(const.R_sun)])
 
+        print(values.shape)
         values_x = interpolate.interpn(points, values, xi)
         return values_x * self._unit

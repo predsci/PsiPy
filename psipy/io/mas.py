@@ -12,6 +12,7 @@ import glob
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import xarray as xr
 
 from .util import read_hdf4, read_hdf5
@@ -22,7 +23,7 @@ __all__ = ['read_mas_file', 'get_mas_variables']
 
 def get_mas_filenames(directory, var):
     directory = Path(directory)
-    return glob.glob(str(directory / f'{var}[0-9][0-9][0-9].h*'))
+    return sorted(glob.glob(str(directory / f'{var}[0-9][0-9][0-9].h*')))
 
 
 def read_mas_file(directory, var):
@@ -46,10 +47,16 @@ def read_mas_file(directory, var):
         raise FileNotFoundError(f'Could not find file for variable "{var}" in '
                                 f'directory {directory}')
 
-    return _read_mas(files[0])
+    data = {get_timestep(f): _read_mas(f) for f in files}
+    return xr.concat(data.values(),
+                     dim=pd.Index(data.keys(), name='time'),
+                     compat='identical')
 
 
 def _read_mas(path):
+    """
+    Read a single MAS file.
+    """
     f = Path(path)
     if f.suffix == '.hdf':
         data, coords = read_hdf4(f)
@@ -110,3 +117,10 @@ def get_mas_variables(path):
         raise FileNotFoundError(f'No variable files found in {path}')
     # Use list(set()) to get unique values
     return list(set(var_names))
+
+
+def get_timestep(path):
+    """
+    Extract the timestep from a given MAS output filename.
+    """
+    return int(Path(path).stem[-3:])
