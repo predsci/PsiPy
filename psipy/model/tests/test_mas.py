@@ -6,9 +6,8 @@ import xarray as xr
 from psipy.model import base, mas
 
 
-def test_mas_model(mas_directory):
+def test_mas_model(mas_model):
     # Check that loading a single file works
-    mas_model = mas.MASOutput(mas_directory)
     assert isinstance(mas_model, base.ModelOutput)
 
     rho = mas_model['rho']
@@ -17,19 +16,17 @@ def test_mas_model(mas_directory):
     assert rho.unit == u.N / u.cm**3
 
 
-def test_persistance(mas_directory):
+def test_persistance(mas_model):
     # Check that a variable requested twice only makes one copy of the data in
     # memory
-    mas_model = mas.MASOutput(mas_directory)
     rho1 = mas_model['rho']
     rho2 = mas_model['rho']
     # This checks that rho1 and rho2 reference the same underlying data
     assert rho1 is rho2
 
 
-def test_change_units(mas_directory):
+def test_change_units(mas_model):
     # Check that loading a single file works
-    mas_model = mas.MASOutput(mas_directory)
     rho = mas_model['rho']
     assert rho.unit == u.N / u.cm**3
     old_data = rho._data.copy()

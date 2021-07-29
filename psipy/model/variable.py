@@ -3,6 +3,7 @@ import textwrap
 
 import astropy.constants as const
 import astropy.units as u
+import matplotlib.pyplot as plt
 import numpy as np
 from scipy import interpolate
 import xarray as xr
@@ -143,7 +144,8 @@ class Variable:
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
         kwargs :
-            Additional keyword arguments are passed to `xarray.plot.pcolormesh`.
+            Additional keyword arguments are passed to
+            `xarray.plot.pcolormesh`.
         """
         ax = self._setup_radial_ax(ax)
 
@@ -193,7 +195,8 @@ class Variable:
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
         kwargs :
-            Additional keyword arguments are passed to `xarray.plot.pcolormesh`.
+            Additional keyword arguments are passed to
+            `xarray.plot.pcolormesh`.
         """
         ax = viz.setup_polar_ax(ax)
 
@@ -203,7 +206,8 @@ class Variable:
         sliced.plot(x='theta', y='r', ax=ax, **kwargs)
         viz.format_polar_ax(ax)
         phi = np.rad2deg(sliced['phi'].values)
-        ax.set_title(f'{self.name}, ' + r'$\phi$= ' + f'{phi:.2f}' + '$^{\circ}$')
+        ax.set_title(f'{self.name}, ' + r'$\phi$= ' + f'{phi:.2f}' +
+                     r'$^{\circ}$')
 
     def contour_phi_cut(self, i, levels, ax=None, **kwargs):
         """
@@ -247,7 +251,8 @@ class Variable:
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
         kwargs :
-            Additional keyword arguments are passed to `xarray.plot.pcolormesh`.
+            Additional keyword arguments are passed to
+            `xarray.plot.pcolormesh`.
         """
         ax = viz.setup_polar_ax(ax)
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
@@ -320,15 +325,19 @@ class Variable:
         Linear interpolation is used to interpoalte between cells. See the
         docstring of `scipy.interpolate.interpn` for more information.
         """
-        points = [self.data.coords[dim].values for dim in ['phi', 'theta', 'r']]
+        points = [self.data.coords[dim].values for dim in
+                  ['phi', 'theta', 'r']]
         values = self.data.values
         # Check that coordinates are increasing
         if not np.all(np.diff(points[0]) >= 0):
-            raise RuntimeError('Longitude coordinates are not monotonically increasing')
+            raise RuntimeError(
+                'Longitude coordinates are not monotonically increasing')
         if not np.all(np.diff(points[1]) >= 0):
-            raise RuntimeError('Latitude coordinates are not monotonically increasing')
+            raise RuntimeError(
+                'Latitude coordinates are not monotonically increasing')
         if not np.all(np.diff(points[2]) > 0):
-            raise RuntimeError('Radial coordinates are not monotonically increasing')
+            raise RuntimeError(
+                'Radial coordinates are not monotonically increasing')
 
         # Pad phi points so it's possible to interpolate all the way from
         # 0 to 360 deg
