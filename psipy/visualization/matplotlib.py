@@ -1,5 +1,7 @@
-from matplotlib.projections.polar import ThetaFormatter
 import numpy as np
+import matplotlib.pyplot as plt
+
+from matplotlib.projections.polar import ThetaFormatter
 
 
 def clear_axes_labels(ax):
@@ -17,6 +19,24 @@ def set_theta_formatters(ax):
     for axis in [ax.xaxis, ax.yaxis]:
         axis.set_major_formatter(ThetaFormatter())
         axis.set_minor_formatter(ThetaFormatter())
+
+
+def setup_radial_ax(ax):
+    if ax is None:
+        ax = plt.gca()
+    return ax
+
+
+def format_radial_ax(ax):
+    ax.set_aspect('equal')
+    ax.set_xlim(0, 2 * np.pi)
+    ax.set_ylim(-np.pi / 2, np.pi / 2)
+    clear_axes_labels(ax)
+
+    # Tick label formatting
+    set_theta_formatters(ax)
+    ax.set_xticks(np.deg2rad(np.linspace(0, 360, 7, endpoint=True)))
+    ax.set_yticks(np.deg2rad(np.linspace(-90, 90, 7, endpoint=True)))
 
 
 def setup_polar_ax(ax):
