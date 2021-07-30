@@ -123,14 +123,16 @@ class Variable:
         return Variable(data, name, units)
 
     # Methods for radial cuts
-    def plot_radial_cut(self, i, ax=None, **kwargs):
+    def plot_radial_cut(self, r_idx, t_idx=0, ax=None, **kwargs):
         """
         Plot a radial cut.
 
         Parameters
         ----------
-        i : int
-            Index at which to slice the data.
+        r_idx : int
+            Radial index at which to slice the data.
+        t_idx : int, optional
+            Time index at which to slice the data.
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
         kwargs :
@@ -141,7 +143,7 @@ class Variable:
 
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
         # Take slice of data, and plot
-        sliced = self.data.isel(r=i, time=0)
+        sliced = self.data.isel(r=r_idx, time=t_idx)
         sliced.plot(x='phi', y='theta', ax=ax, **kwargs)
 
         # Plot formatting
@@ -149,23 +151,25 @@ class Variable:
         ax.set_title(f'{self.name}, r={r:.2f}' + r'$R_{\odot}$')
         viz.format_radial_ax(ax)
 
-    def contour_radial_cut(self, i, levels, ax=None, **kwargs):
+    def contour_radial_cut(self, r_idx, levels, t_idx=0, ax=None, **kwargs):
         """
         Plot contours on a radial cut.
 
         Parameters
         ----------
-        i : int
-            Index at which to slice the data.
+        r_idx : int
+            Radial index at which to slice the data.
         levels : list
             List of levels to contour.
+        t_idx : int, optional
+            Time index at which to slice the data.
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
         kwargs :
             Additional keyword arguments are passed to `xarray.plot.contour`.
         """
         ax = viz.setup_radial_ax(ax)
-        sliced = self.data.isel(r=i, time=0)
+        sliced = self.data.isel(r=r_idx, time=t_idx)
         # Need to save a copy of the title to reset it later, since xarray
         # tries to set it's own title that we don't want
         title = ax.get_title()
