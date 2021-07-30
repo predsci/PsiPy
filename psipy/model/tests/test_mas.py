@@ -9,11 +9,19 @@ from psipy.model import base, mas
 def test_mas_model(mas_model):
     # Check that loading a single file works
     assert isinstance(mas_model, base.ModelOutput)
+    assert "MAS output in directory" in str(mas_model)
 
     rho = mas_model['rho']
     assert isinstance(rho, base.Variable)
     assert isinstance(rho.data, xr.DataArray)
     assert rho.unit == u.N / u.cm**3
+    assert str(rho) == """
+Variable
+--------
+Name: rho
+Grid size: (1, 128, 111) (phi, theta, r)
+Timesteps: 141
+"""
 
 
 def test_persistance(mas_model):
