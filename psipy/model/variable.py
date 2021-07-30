@@ -178,7 +178,7 @@ class Variable:
         ax.set_title(title)
         viz.format_radial_ax(ax)
 
-    def plot_phi_cut(self, i, ax=None, **kwargs):
+    def plot_phi_cut(self, i, t_idx=0, ax=None, **kwargs):
         """
         Plot a phi cut.
 
@@ -186,6 +186,8 @@ class Variable:
         ----------
         i : int
             Index at which to slice the data.
+        t_idx : int, optional
+            Time index at which to slice the data.
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
         kwargs :
@@ -196,14 +198,14 @@ class Variable:
 
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
         # Take slice of data and plot
-        sliced = self.data.isel(phi=i, time=0)
+        sliced = self.data.isel(phi=i, time=t_idx)
         sliced.plot(x='theta', y='r', ax=ax, **kwargs)
         viz.format_polar_ax(ax)
         phi = np.rad2deg(sliced['phi'].values)
         ax.set_title(f'{self.name}, ' + r'$\phi$= ' + f'{phi:.2f}' +
                      r'$^{\circ}$')
 
-    def contour_phi_cut(self, i, levels, ax=None, **kwargs):
+    def contour_phi_cut(self, i, levels, t_idx=0, ax=None, **kwargs):
         """
         Plot contours on a phi cut.
 
@@ -213,13 +215,15 @@ class Variable:
             Index at which to slice the data.
         levels : list
             List of levels to contour.
+        t_idx : int, optional
+            Time index at which to slice the data.
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
         kwargs :
             Additional keyword arguments are passed to `xarray.plot.contour`.
         """
         ax = viz.setup_polar_ax(ax)
-        sliced = self.data.isel(phi=i, time=0)
+        sliced = self.data.isel(phi=i, time=t_idx)
         # Need to save a copy of the title to reset it later, since xarray
         # tries to set it's own title that we don't want
         title = ax.get_title()
@@ -236,7 +240,7 @@ class Variable:
         return (self.data.shape[1] - 1) // 2
 
     # Methods for equatorial cuts
-    def plot_equatorial_cut(self, ax=None, **kwargs):
+    def plot_equatorial_cut(self, t_idx=0, ax=None, **kwargs):
         """
         Plot an equatorial cut.
 
@@ -244,6 +248,8 @@ class Variable:
         ----------
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
+        t_idx : int, optional
+            Time index at which to slice the data.
         kwargs :
             Additional keyword arguments are passed to
             `xarray.plot.pcolormesh`.
@@ -251,7 +257,7 @@ class Variable:
         ax = viz.setup_polar_ax(ax)
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
         # Get data slice
-        sliced = self.data.isel(theta=self._equator_theta_idx)
+        sliced = self.data.isel(theta=self._equator_theta_idx, time=t_idx)
         # Plot
         sliced.plot(x='phi', y='r', ax=ax, **kwargs)
         # Plot formatting
@@ -259,7 +265,7 @@ class Variable:
         theta = np.rad2deg(sliced['theta'].values)
         ax.set_title(f'{self.name}, equatorial plane')
 
-    def contour_equatorial_cut(self, levels, ax=None, **kwargs):
+    def contour_equatorial_cut(self, levels, t_idx=0, ax=None, **kwargs):
         """
         Plot contours on an equatorial cut.
 
@@ -269,11 +275,13 @@ class Variable:
             List of levels to contour.
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
+        t_idx : int, optional
+            Time index at which to slice the data.
         kwargs :
             Additional keyword arguments are passed to `xarray.plot.contour`.
         """
         ax = viz.setup_polar_ax(ax)
-        sliced = self.data.isel(theta=self._equator_theta_idx, time=0)
+        sliced = self.data.isel(theta=self._equator_theta_idx, time=t_idx)
         # Need to save a copy of the title to reset it later, since xarray
         # tries to set it's own title that we don't want
         title = ax.get_title()
