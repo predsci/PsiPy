@@ -273,8 +273,8 @@ class Variable:
         # Need to save a copy of the title to reset it later, since xarray
         # tries to set it's own title that we don't want
         title = ax.get_title()
-        xarray.plot.contour(sliced, x='phi', y='r', ax=ax,
-                            levels=levels, **kwargs)
+        xr.plot.contour(sliced, x='phi', y='r', ax=ax,
+                        levels=levels, **kwargs)
         viz.format_equatorial_ax(ax)
         ax.set_title(title)
 

@@ -41,8 +41,8 @@ def format_radial_ax(ax):
 
 def setup_polar_ax(ax):
     if ax is None:
-        ax = plt.gca(projection='polar')
-    if ax.name != 'polar':
+        ax = plt.subplot(projection='polar')
+    elif ax.name != 'polar':
         raise ValueError('ax must have a polar projection')
     return ax
 
