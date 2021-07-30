@@ -123,25 +123,6 @@ class Variable:
         return Variable(data, name, units)
 
     # Methods for radial cuts
-    @staticmethod
-    def _setup_radial_ax(ax):
-        if ax is None:
-            ax = plt.gca()
-        return ax
-
-    @staticmethod
-    def _format_radial_ax(ax):
-        # Plot formatting
-        ax.set_aspect('equal')
-        ax.set_xlim(0, 2 * np.pi)
-        ax.set_ylim(-np.pi / 2, np.pi / 2)
-        viz.clear_axes_labels(ax)
-
-        # Tick label formatting
-        viz.set_theta_formatters(ax)
-        ax.set_xticks(np.deg2rad(np.linspace(0, 360, 7, endpoint=True)))
-        ax.set_yticks(np.deg2rad(np.linspace(-90, 90, 7, endpoint=True)))
-
     def plot_radial_cut(self, i, ax=None, **kwargs):
         """
         Plot a radial cut.
@@ -156,7 +137,7 @@ class Variable:
             Additional keyword arguments are passed to
             `xarray.plot.pcolormesh`.
         """
-        ax = self._setup_radial_ax(ax)
+        ax = viz.setup_radial_ax(ax)
 
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
         # Take slice of data, and plot
@@ -166,7 +147,7 @@ class Variable:
         # Plot formatting
         r = sliced['r'].values
         ax.set_title(f'{self.name}, r={r:.2f}' + r'$R_{\odot}$')
-        self._format_radial_ax(ax)
+        viz.format_radial_ax(ax)
 
     def contour_radial_cut(self, i, levels, ax=None, **kwargs):
         """
@@ -183,7 +164,7 @@ class Variable:
         kwargs :
             Additional keyword arguments are passed to `xarray.plot.contour`.
         """
-        ax = self._setup_radial_ax(ax)
+        ax = viz.setup_radial_ax(ax)
         sliced = self.data.isel(r=i, time=0)
         # Need to save a copy of the title to reset it later, since xarray
         # tries to set it's own title that we don't want
@@ -191,7 +172,7 @@ class Variable:
         xr.plot.contour(sliced, x='phi', y='theta', ax=ax,
                         levels=levels, **kwargs)
         ax.set_title(title)
-        self._format_radial_ax(ax)
+        viz.format_radial_ax(ax)
 
     def plot_phi_cut(self, i, ax=None, **kwargs):
         """
