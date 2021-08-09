@@ -23,12 +23,12 @@ __all__ = ['read_mas_file', 'get_mas_variables']
 
 def get_mas_filenames(directory, var):
     directory = Path(directory)
-    return sorted(glob.glob(str(directory / f'{var}[0-9][0-9][0-9].h*')))
+    return sorted(glob.glob(str(directory / f'{var}[0-9][0-9][0-9].*')))
 
 
 def read_mas_file(directory, var):
     """
-    Read in a single MAS output file.
+    Read in a set of MAS output files.
 
     Parameters
     ----------
@@ -109,11 +109,11 @@ def get_mas_variables(path):
     var_names : list
         List of variable names present in the given directory.
     """
-    files = glob.glob(str(path / '*[0-9][0-9][0-9].h*'))
+    files = glob.glob(str(path / '*[0-9][0-9][0-9].*'))
     # Get the variable name from the filename
     # Here we take the filename before .hdf, and remove the last three
     # characters which give the timestep
-    var_names = [Path(f).stem.split('.h')[0][:-3] for f in files]
+    var_names = [Path(f).stem.split('.')[0][:-3] for f in files]
     if not len(var_names):
         raise FileNotFoundError(f'No variable files found in {path}')
     # Use list(set()) to get unique values
