@@ -331,7 +331,7 @@ class Variable:
         docstring of `scipy.interpolate.interpn` for more information.
         """
         points = [self.data.coords[dim].values for dim in
-                  ['time', 'phi', 'theta', 'r']]
+                  ['phi', 'theta', 'r', 'time']]
         values = self.data.values
 
         # Check that coordinates are increasing
@@ -347,22 +347,21 @@ class Variable:
 
         # Pad phi points so it's possible to interpolate all the way from
         # 0 to 360 deg
-        points[1] = np.append(points[1], points[1][0] + 2 * np.pi)
-        values = np.append(values, values[:, 0:1, :, :], axis=1)
+        points[0] = np.append(points[0], points[0][0] + 2 * np.pi)
+        values = np.append(values, values[0:1, :, :, :], axis=0)
 
-        if len(points[0]) == 1:
+        if len(points[3]) == 1:
             # Only one timestep
             xi = np.column_stack([lon.to_value(u.rad),
                                   lat.to_value(u.rad),
                                   r.to_value(const.R_sun)])
-            values = values[0, :, :, :]
-            points = points[1:]
+            values = values[:, :, :, 0]
+            points = points[:-1]
         else:
             xi = np.column_stack([t,
                                   lon.to_value(u.rad),
                                   lat.to_value(u.rad),
                                   r.to_value(const.R_sun)])
 
-        print(values.shape)
         values_x = interpolate.interpn(points, values, xi)
         return values_x * self._unit
