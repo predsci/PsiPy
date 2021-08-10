@@ -24,7 +24,7 @@ class Variable:
 
     Parameters
     ----------
-    data : xarray.DataArray
+    data : xarray.Dataset
         Variable data.
     name : str
         Variable name.
@@ -32,7 +32,8 @@ class Variable:
         Variable unit.
     """
     def __init__(self, data, name, unit):
-        self._data = data
+        # Convert from xarray Dataset to DataArray
+        self._data = data[name]
         # Sort the data once now for any interpolation later
         self._data = self._data.sortby(['phi', 'theta', 'r', 'time'])
         self.name = name
@@ -120,7 +121,7 @@ class Variable:
         data = self.data * (r * rsun_au)**radial_exponent
         units = self.unit * (u.AU)**radial_exponent
         name = self.name + f' $r^{radial_exponent}$'
-        return Variable(data, name, units)
+        return Variable(xr.Dataset({name: data}), name, units)
 
     # Methods for radial cuts
     def plot_radial_cut(self, r_idx, t_idx=0, ax=None, **kwargs):
