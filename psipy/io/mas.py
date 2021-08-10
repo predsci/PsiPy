@@ -47,13 +47,11 @@ def read_mas_file(directory, var):
         raise FileNotFoundError(f'Could not find file for variable "{var}" in '
                                 f'directory {directory}')
 
-    data = {get_timestep(f): _read_mas(f) for f in files}
-    return xr.concat(data.values(),
-                     dim=pd.Index(data.keys(), name='time'),
-                     compat='identical')
+    data = [_read_mas(f, var) for f in files]
+    return xr.concat(data, dim='time')
 
 
-def _read_mas(path):
+def _read_mas(path, var):
     """
     Read a single MAS file.
     """
@@ -63,10 +61,13 @@ def _read_mas(path):
     elif f.suffix == '.h5':
         data, coords = read_hdf5(f)
 
-    dims = ['phi', 'theta', 'r']
+    dims = ['phi', 'theta', 'r', 'time']
     # Convert from co-latitude to latitude
     coords[1] = np.pi / 2 - np.array(coords[1])
-    data = xr.DataArray(data=data, coords=coords, dims=dims)
+    # Add time
+    data = data.reshape(data.shape + (1,))
+    coords.append([get_timestep(path)])
+    data = xr.DataArray(data=data, coords=coords, dims=dims, name=var)
     return data
 
 
@@ -86,7 +87,7 @@ def convert_hdf_to_netcdf(directory, var):
     for f in files:
         print(f'Processing {f}...')
         f = Path(f)
-        data = _read_mas(f)
+        data = _read_mas(f, var)
         new_dir = (f.parent / '..' / 'netcdf').resolve()
         new_dir.mkdir(exist_ok=True)
         new_path = (new_dir / f.name).with_suffix('.nc')
