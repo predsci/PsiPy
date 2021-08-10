@@ -24,7 +24,7 @@ class Variable:
 
     Parameters
     ----------
-    data : xarray.DataArray
+    data : xarray.Dataset
         Variable data.
     name : str
         Variable name.
@@ -32,7 +32,7 @@ class Variable:
         Variable unit.
     """
     def __init__(self, data, name, unit):
-        self._data = data
+        self._data = data[name]
         # Sort the data once now for any interpolation later
         self._data = self._data.sortby(['phi', 'theta', 'r', 'time'])
         self.name = name
