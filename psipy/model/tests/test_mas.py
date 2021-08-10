@@ -19,8 +19,8 @@ def test_mas_model(mas_model):
 Variable
 --------
 Name: rho
-Grid size: (1, 128, 111) (phi, theta, r)
-Timesteps: 141
+Grid size: (128, 111, 141) (phi, theta, r)
+Timesteps: 1
 """
 
 

@@ -87,7 +87,7 @@ def convert_hdf_to_netcdf(directory, var):
     for f in files:
         print(f'Processing {f}...')
         f = Path(f)
-        data = _read_mas(f)
+        data = _read_mas(f, var)
         new_dir = (f.parent / '..' / 'netcdf').resolve()
         new_dir.mkdir(exist_ok=True)
         new_path = (new_dir / f.name).with_suffix('.nc')

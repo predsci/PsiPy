@@ -43,8 +43,8 @@ class Variable:
         Variable
         --------
         Name: {self.name}
-        Grid size: {self._data.shape[0:3]} (phi, theta, r)
-        Timesteps: {self._data.shape[-1]}
+        Grid size: {len(self.phi_coords), len(self.theta_coords), len(self.r_coords)} (phi, theta, r)
+        Timesteps: {len(self.time_coords)}
         ''')
 
     @property
