@@ -67,7 +67,7 @@ def _read_mas(path, var):
     # Add time
     data = data.reshape(data.shape + (1,))
     coords.append([get_timestep(path)])
-    data = xr.DataArray(data=data, coords=coords, dims=dims, name=var)
+    data = xr.Dataset({var: xr.DataArray(data=data, coords=coords, dims=dims)})
     return data
 
 
