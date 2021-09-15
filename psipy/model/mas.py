@@ -61,7 +61,7 @@ class MASOutput(ModelOutput):
         return f'psipy.model.mas.MASOutput("{self.path}")'
 
     def __str__(self):
-        return f"MAS output in directory {self.path}"
+        return f"MAS output in directory {self.path}\n" + super().__str__()
 
     def cell_centered_v(self, extra_phi_coord=False):
         """
