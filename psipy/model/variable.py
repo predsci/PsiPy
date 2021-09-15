@@ -101,6 +101,13 @@ class Variable:
         """
         return self._data.coords['time'].values
 
+    @property
+    def n_timesteps(self):
+        """
+        Number of timesteps.
+        """
+        return len(self.time_coords)
+
     def radial_normalized(self, radial_exponent):
         r"""
         Return a radially normalised copy of this variable.

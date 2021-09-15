@@ -16,6 +16,7 @@ def test_mas_model(mas_model):
     assert isinstance(rho, base.Variable)
     assert isinstance(rho.data, xr.DataArray)
     assert rho.unit == u.N / u.cm**3
+    assert rho.n_timesteps == 1
     assert str(rho) == """
 Variable
 --------
