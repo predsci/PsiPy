@@ -17,3 +17,6 @@ psi_code/*
 data/*
 
 *.pdf
+
+dask-worker-space/*
+dask-report.html

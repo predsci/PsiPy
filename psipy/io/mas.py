@@ -47,6 +47,9 @@ def read_mas_file(directory, var):
         raise FileNotFoundError(f'Could not find file for variable "{var}" in '
                                 f'directory {directory}')
 
+    if Path(files[0]).suffix == '.nc':
+        return xr.open_mfdataset(files, parallel=True)
+
     data = [_read_mas(f, var) for f in files]
     return xr.concat(data, dim='time')
 
