@@ -10,6 +10,7 @@ def test_mas_model(mas_model):
     # Check that loading a single file works
     assert isinstance(mas_model, base.ModelOutput)
     assert "MAS output in directory" in str(mas_model)
+    assert 'rho' in str(mas_model)
 
     rho = mas_model['rho']
     assert isinstance(rho, base.Variable)
