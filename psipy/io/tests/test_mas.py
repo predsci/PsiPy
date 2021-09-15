@@ -5,6 +5,14 @@ from psipy.io import mas
 from psipy.model import MASOutput
 
 
+def test_read_mas_error(tmp_path):
+    with pytest.raises(FileNotFoundError):
+        mas.read_mas_file(tmp_path, 'rho')
+
+    with pytest.raises(FileNotFoundError):
+        mas.get_mas_variables(tmp_path)
+
+
 def test_read_mas_file(mas_directory):
     # Check that loading a single file works
     data = mas.read_mas_file(mas_directory, 'rho')
