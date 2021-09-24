@@ -35,8 +35,9 @@ extensions = ['sphinx_automodapi.automodapi',
 
 numpydoc_show_class_members = False
 sphinx_gallery_conf = {
-    'examples_dirs': '../examples',   # path to your example scripts
-    'gallery_dirs': 'auto_examples',  # path to where to save gallery generated output
+    'examples_dirs': '../examples',
+    'gallery_dirs': 'auto_examples',
+    'matplotlib_animations': True,
 }
 
 # Add any paths that contain templates here, relative to this directory.
@@ -70,7 +71,8 @@ intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
                        'xarray': ('http://xarray.pydata.org/en/stable', None),
                        'astropy': ('https://docs.astropy.org/en/stable/', None),
                        'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
-                       'heliopy': ('https://docs.heliopy.org/en/stable/', None)
+                       'heliopy': ('https://docs.heliopy.org/en/stable/', None),
+                       'matplotlib': ('https://matplotlib.org/', None),
                        }
 
 default_role = 'any'
