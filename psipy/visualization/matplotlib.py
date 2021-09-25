@@ -1,6 +1,7 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
+from matplotlib.animation import FuncAnimation
+import matplotlib.pyplot as plt
 from matplotlib.projections.polar import ThetaFormatter
 
 
@@ -67,3 +68,17 @@ def format_equatorial_ax(ax):
     # Tick label formatting
     # Remove theta ticks
     ax.set_xticks([])
+
+
+def animate_time(ax, slice, quad_mesh):
+    """
+    Animate *slice* over the *time* dimension.
+    """
+    n_timesteps = len(slice.coords['time'])
+
+    def animate(frame_number):
+        time_slice = slice.isel(time=frame_number)
+        quad_mesh.set_array(time_slice.data.T)
+        return quad_mesh
+
+    return FuncAnimation(ax.figure, animate, frames=n_timesteps)
