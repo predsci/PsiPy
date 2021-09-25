@@ -19,9 +19,9 @@ interested in to a directory on your computer.
 
 Loading data
 ------------
-psipy stores the output variables from a single MAS run in the
-`MASOutput` object. To create one of these, specify the directory
-which has all of the outputs ``.hdf`` files you want to load:
+psipy stores the output variables from a single MAS run in the `MASOutput`
+object. To create one of these, specify the directory which has all of the
+output ``.hdf`` files you want to load:
 
 .. code-block:: python
 
@@ -29,6 +29,10 @@ which has all of the outputs ``.hdf`` files you want to load:
 
     directory = '/path/to/files'
     mas_output = MASOutput(directory)
+
+It is assmumed that the files have the filename structure
+``'{var}{timestep}.hdf'``, where ``var`` is a variable name, and ``timestep``
+is a three-digit zero-padded integer timestep.
 
 To see which variables have been loaded, we can look at the ``.variables``
 attribute:
@@ -86,9 +90,22 @@ and produces an output like this:
 For more examples of how to use these methods, see the
 :ref:`sphx_glr_auto_examples` gallery.
 
+Animating timesteps
+~~~~~~~~~~~~~~~~~~~
+If multiple timesteps have been loaded, each of the above methods can either
+be used to plot animations over time, or single time slices. By default they
+will produce animations which then need to be manually saved. As an example,
+to create and save an animated cut in the phi direction:
+
+.. code-block:: python
+
+  animation = model['rho'].plot_phi_cut(phi_index, ...)
+  animation.save('my_animation.mp4')
+
+Contouring data
+~~~~~~~~~~~~~~~
 There are also methods that can be used to plot contours of the data on top
-of these 2D slices. As an example, this can be helpful for plotting the
-heliospheric current sheet, by contouring :math:`B_{r} = 0`. These methods are
+of 2D slices. As an example, this can be helpful for plotting the heliospheric current sheet, by contouring :math:`B_{r} = 0`. These methods are
 
 - `Variable.contour_phi_cut`
 - `Variable.contour_equatorial_cut`

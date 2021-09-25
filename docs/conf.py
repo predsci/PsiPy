@@ -67,12 +67,12 @@ nitpick_ignore = [("py:class", "Unit('deg')"),
                   ("py:class", "Unit('m')")]
 
 
-intersphinx_mapping = {'python': ('https://docs.python.org/3', None),
-                       'xarray': ('http://xarray.pydata.org/en/stable', None),
+intersphinx_mapping = {'python': ('https://docs.python.org/3/', None),
+                       'xarray': ('http://xarray.pydata.org/en/stable/', None),
                        'astropy': ('https://docs.astropy.org/en/stable/', None),
                        'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
                        'heliopy': ('https://docs.heliopy.org/en/stable/', None),
-                       'matplotlib': ('https://matplotlib.org/', None),
+                       'matplotlib': ('https://matplotlib.org/stable/', None),
                        }
 
 default_role = 'any'

@@ -8,10 +8,22 @@ import numpy as np
 from scipy import interpolate
 import xarray as xr
 
+from psipy.util.decorators import add_common_docstring
 import psipy.visualization as viz
 
 
 __all__ = ['Variable']
+
+
+# Some docstrings that are used more than once
+quad_mesh_link = ':class:`~matplotlib.collections.QuadMesh`'
+animation_link = ':class:`~matplotlib.animation.Animation`'
+
+returns_doc = textwrap.indent(f"""
+{quad_mesh_link} or {animation_link}
+    If a timestep is specified, the {quad_mesh_link} of the plot is returned.
+    Otherwise an {animation_link} is returned.
+""", '        ')
 
 
 class Variable:
@@ -131,7 +143,8 @@ class Variable:
         return Variable(xr.Dataset({name: data}), name, units)
 
     # Methods for radial cuts
-    def plot_radial_cut(self, r_idx, t_idx=0, ax=None, **kwargs):
+    @add_common_docstring(returns_doc=returns_doc)
+    def plot_radial_cut(self, r_idx, t_idx=None, ax=None, **kwargs):
         """
         Plot a radial cut.
 
@@ -140,24 +153,35 @@ class Variable:
         r_idx : int
             Radial index at which to slice the data.
         t_idx : int, optional
-            Time index at which to slice the data.
+            Time index at which to slice the data. If not given, an anmiation
+            will be created across all time indices.
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
         kwargs :
             Additional keyword arguments are passed to
             `xarray.plot.pcolormesh`.
+
+        Returns
+        -------
+        {returns_doc}
         """
+        r_slice = self.data.isel(r=r_idx)
+        time_slice = r_slice.isel(time=t_idx or 0)
+
+        # Setup axes
         ax = viz.setup_radial_ax(ax)
-
+        # Set colorbar string
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
-        # Take slice of data, and plot
-        sliced = self.data.isel(r=r_idx, time=t_idx)
-        sliced.plot(x='phi', y='theta', ax=ax, **kwargs)
-
+        quad_mesh = time_slice.plot(x='phi', y='theta', ax=ax, **kwargs)
         # Plot formatting
-        r = sliced['r'].values
+        r = r_slice['r'].values
         ax.set_title(f'{self.name}, r={r:.2f}' + r'$R_{\odot}$')
         viz.format_radial_ax(ax)
+
+        if t_idx is not None or self.n_timesteps == 1:
+            return quad_mesh
+        else:
+            return viz.animate_time(ax, r_slice, quad_mesh)
 
     def contour_radial_cut(self, r_idx, levels, t_idx=0, ax=None, **kwargs):
         """
@@ -186,32 +210,45 @@ class Variable:
         ax.set_title(title)
         viz.format_radial_ax(ax)
 
-    def plot_phi_cut(self, i, t_idx=0, ax=None, **kwargs):
+    @add_common_docstring(returns_doc=returns_doc)
+    def plot_phi_cut(self, phi_idx, t_idx=None, ax=None, **kwargs):
         """
         Plot a phi cut.
 
         Parameters
         ----------
-        i : int
+        phi_idx : int
             Index at which to slice the data.
         t_idx : int, optional
-            Time index at which to slice the data.
+            Time index at which to slice the data. If not given, an anmiation
+            will be created across all time indices.
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
         kwargs :
             Additional keyword arguments are passed to
             `xarray.plot.pcolormesh`.
-        """
-        ax = viz.setup_polar_ax(ax)
 
+        Returns
+        -------
+        {returns_doc}
+        """
+        phi_slice = self.data.isel(phi=phi_idx)
+        time_slice = phi_slice.isel(time=t_idx or 0)
+
+        ax = viz.setup_polar_ax(ax)
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
         # Take slice of data and plot
-        sliced = self.data.isel(phi=i, time=t_idx)
-        sliced.plot(x='theta', y='r', ax=ax, **kwargs)
+        quad_mesh = time_slice.plot(x='theta', y='r', ax=ax, **kwargs)
         viz.format_polar_ax(ax)
-        phi = np.rad2deg(sliced['phi'].values)
+
+        phi = np.rad2deg(time_slice['phi'].values)
         ax.set_title(f'{self.name}, ' + r'$\phi$= ' + f'{phi:.2f}' +
                      r'$^{\circ}$')
+
+        if t_idx is not None or self.n_timesteps == 1:
+            return quad_mesh
+        else:
+            return viz.animate_time(ax, phi_slice, quad_mesh)
 
     def contour_phi_cut(self, i, levels, t_idx=0, ax=None, **kwargs):
         """
@@ -248,7 +285,8 @@ class Variable:
         return (self.data.shape[1] - 1) // 2
 
     # Methods for equatorial cuts
-    def plot_equatorial_cut(self, t_idx=0, ax=None, **kwargs):
+    @add_common_docstring(returns_doc=returns_doc)
+    def plot_equatorial_cut(self, t_idx=None, ax=None, **kwargs):
         """
         Plot an equatorial cut.
 
@@ -257,21 +295,32 @@ class Variable:
         ax : matplolit.axes.Axes, optional
             axes on which to plot. Defaults to current axes if not specified.
         t_idx : int, optional
-            Time index at which to slice the data.
+            Time index at which to slice the data. If not given, an anmiation
+            will be created across all time indices.
         kwargs :
             Additional keyword arguments are passed to
             `xarray.plot.pcolormesh`.
+
+        Returns
+        -------
+        {returns_doc}
         """
+        theta_slice = self.data.isel(theta=self._equator_theta_idx)
+        time_slice = theta_slice.isel(time=t_idx or 0)
+
         ax = viz.setup_polar_ax(ax)
         kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
-        # Get data slice
-        sliced = self.data.isel(theta=self._equator_theta_idx, time=t_idx)
-        # Plot
-        sliced.plot(x='phi', y='r', ax=ax, **kwargs)
-        # Plot formatting
+        # Take slice of data and plot
+        quad_mesh = time_slice.plot(x='phi', y='r', ax=ax, **kwargs)
         viz.format_equatorial_ax(ax)
-        theta = np.rad2deg(sliced['theta'].values)
+
+        theta = np.rad2deg(time_slice['theta'].values)
         ax.set_title(f'{self.name}, equatorial plane')
+
+        if t_idx is not None or self.n_timesteps == 1:
+            return quad_mesh
+        else:
+            return viz.animate_time(ax, theta_slice, quad_mesh)
 
     def contour_equatorial_cut(self, levels, t_idx=0, ax=None, **kwargs):
         """
