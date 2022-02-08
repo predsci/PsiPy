@@ -6,7 +6,7 @@ from pathlib import Path
 from parfive import Downloader
 
 download_dir = Path(__file__).parent / '..' / '..' / 'data'
-data_url = 'http://www.predsci.com/data/runs'
+data_url = 'https://www.predsci.com/data/runs'
 
 
 def get_mas_helio_dir():
