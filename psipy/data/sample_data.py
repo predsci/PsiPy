@@ -41,7 +41,11 @@ def mas_helio():
 
     # Download the files
     if dl.queued_downloads > 0:
-        dl.download()
+        result = dl.download()
+        if len(result.errors):
+            raise RuntimeError(
+                'Failed to download files with the following errors:'
+                f'{result.errors}')
     return mas_helio_dir
 
 
