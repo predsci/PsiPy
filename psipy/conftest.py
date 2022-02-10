@@ -17,7 +17,7 @@ test_data_dir = (Path(__file__) / '..' / '..' / 'data').resolve()
 def mas_directory(request):
     if request.param == 'mas_helio':
         # Check for and download data if not present
-        directory = sample_data.mas_helio()
+        directory = sample_data.mas_sample_data(type='helio')
     else:
         # Directories with MAS outputs
         directory = test_data_dir / request.param

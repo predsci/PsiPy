@@ -9,7 +9,7 @@ docs/auto_examples
 dist/*
 .eggs/*
 
-.coverage
+.coverage*
 
 *.DS_Store
 
