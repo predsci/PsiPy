@@ -19,7 +19,7 @@ import numpy as np
 ###############################################################################
 # Load a set of MAS output files, and get the number density variable from the
 # model run.
-mas_path = sample_data.mas_helio()
+mas_path = sample_data.mas_sample_data()
 model = MASOutput(mas_path)
 rho = model['rho']
 

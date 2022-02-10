@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 ###############################################################################
 # Next, load a set of MAS output files. You will need to change this line to
 # point to a folder with MAS files in them.
-mas_path = sample_data.mas_helio()
+mas_path = sample_data.mas_sample_data()
 model = MASOutput(mas_path)
 
 ###############################################################################
