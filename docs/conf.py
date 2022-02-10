@@ -68,9 +68,9 @@ nitpick_ignore = [("py:class", "Unit('deg')"),
 
 
 intersphinx_mapping = {'python': ('https://docs.python.org/3/', None),
-                       'xarray': ('http://xarray.pydata.org/en/stable/', None),
+                       'xarray': ('https://xarray.pydata.org/en/stable/', None),
                        'astropy': ('https://docs.astropy.org/en/stable/', None),
-                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
+                       'scipy': ('https://docs.scipy.org/doc/scipy', None),
                        'heliopy': ('https://heliopy.readthedocs.io/en/0.15.4/', None),
                        'matplotlib': ('https://matplotlib.org/stable/', None),
                        }
