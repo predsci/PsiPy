@@ -71,7 +71,7 @@ intersphinx_mapping = {'python': ('https://docs.python.org/3/', None),
                        'xarray': ('http://xarray.pydata.org/en/stable/', None),
                        'astropy': ('https://docs.astropy.org/en/stable/', None),
                        'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
-                       'heliopy': ('https://docs.heliopy.org/en/stable/', None),
+                       'heliopy': ('https://heliopy.readthedocs.io/en/0.15.4/', None),
                        'matplotlib': ('https://matplotlib.org/stable/', None),
                        }
 
