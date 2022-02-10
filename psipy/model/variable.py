@@ -17,7 +17,8 @@ __all__ = ['Variable']
 
 # Some docstrings that are used more than once
 quad_mesh_link = ':class:`~matplotlib.collections.QuadMesh`'
-animation_link = ':class:`~matplotlib.animation.Animation`'
+# TODO: fix this to ':class:`~matplotlib.animation.FuncAnimation`'
+animation_link = 'animation'
 
 returns_doc = textwrap.indent(f"""
 {quad_mesh_link} or {animation_link}
