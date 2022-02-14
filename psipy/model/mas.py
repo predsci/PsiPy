@@ -1,11 +1,10 @@
-import astropy.constants as const
 import astropy.units as u
 import numpy as np
 import scipy.interpolate
 import xarray as xr
 
+from psipy.io import get_mas_variables, read_mas_file
 from .base import ModelOutput
-from psipy.io import read_mas_file, get_mas_variables
 
 __all__ = ['MASOutput']
 

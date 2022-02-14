@@ -12,11 +12,9 @@ import glob
 from pathlib import Path
 
 import numpy as np
-import pandas as pd
 import xarray as xr
 
 from .util import read_hdf4, read_hdf5
-
 
 __all__ = ['read_mas_file', 'get_mas_variables', 'convert_hdf_to_netcdf']
 

@@ -4,10 +4,10 @@ Reading and visualising MAS runs
 """
 ###############################################################################
 # First, load the required modules.
-from psipy.model import MASOutput
-from psipy.data import sample_data
-
 import matplotlib.pyplot as plt
+
+from psipy.data import sample_data
+from psipy.model import MASOutput
 
 ###############################################################################
 # Load a set of MAS output files.

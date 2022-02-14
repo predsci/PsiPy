@@ -17,14 +17,13 @@ we then compare to the in-situ data.
 """
 ###############################################################################
 # First, load the required modules.
-import matplotlib.pyplot as plt
-
-from heliopy.data import psp
 import heliopy.data.spice as spicedata
 import heliopy.spice as spice
+import matplotlib.pyplot as plt
+from heliopy.data import psp
 
-from psipy.model import MASOutput
 from psipy.data import sample_data
+from psipy.model import MASOutput
 
 ###############################################################################
 # Load a set of MAS output files.

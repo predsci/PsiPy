@@ -3,14 +3,12 @@ import textwrap
 
 import astropy.constants as const
 import astropy.units as u
-import matplotlib.pyplot as plt
 import numpy as np
-from scipy import interpolate
 import xarray as xr
+from scipy import interpolate
 
-from psipy.util.decorators import add_common_docstring
 import psipy.visualization as viz
-
+from psipy.util.decorators import add_common_docstring
 
 __all__ = ['Variable']
 
@@ -315,7 +313,6 @@ class Variable:
         quad_mesh = time_slice.plot(x='phi', y='r', ax=ax, **kwargs)
         viz.format_equatorial_ax(ax)
 
-        theta = np.rad2deg(time_slice['theta'].values)
         ax.set_title(f'{self.name}, equatorial plane')
 
         if t_idx is not None or self.n_timesteps == 1:

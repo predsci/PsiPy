@@ -1,7 +1,6 @@
-import numpy as np
-
-from matplotlib.animation import FuncAnimation
 import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.animation import FuncAnimation
 from matplotlib.projections.polar import ThetaFormatter
 
 
