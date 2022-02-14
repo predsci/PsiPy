@@ -17,8 +17,8 @@ class ModelOutput(abc.ABC):
     Data is stored in the ``_data`` attribute. This is a mapping of variable
     names to `xarray.DataArray` variables. Each data array must have
 
-    - Three dimensions
-    - These dimensions must be labelled ``['r', 'theta', 'phi']``
+    - Four dimensions
+    - These dimensions must be labelled ``['r', 'theta', 'phi', 'time']``
     - The phi values must be latitude and *not* co-latitude (ie. must be in
       the range :math:`[-\pi / 2, \pi / 2]`)
     - The theta values must be in the range :math:`[0, 2\pi]`

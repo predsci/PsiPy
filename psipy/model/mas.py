@@ -1,3 +1,4 @@
+
 import astropy.units as u
 import numpy as np
 import scipy.interpolate
@@ -29,6 +30,7 @@ _mas_units = {'vr': _vunit,
               'jt': _junit,
               'jp': _junit
               }
+_2pi = 2 * np.pi
 
 
 class MASOutput(ModelOutput):
@@ -61,6 +63,70 @@ class MASOutput(ModelOutput):
 
     def __str__(self):
         return f"MAS output in directory {self.path}\n" + super().__str__()
+
+    def cell_corner_b(self, t_idx=None):
+        """
+        Get the magnetic field vector at the cell corners.
+
+        Parameters
+        ----------
+        t_idx : int, optional
+            If more than one timestep is present in the loaded model, a
+            timestep index at which to get the vectors must be provided.
+
+        Returns
+        -------
+        xarray.DataArray
+
+        Notes
+        -----
+        The phi limits go from 0 to 2pi inclusive, with the vectors at phi=0
+        equal to the vectors at phi=2pi.
+        """
+        if not set(['br', 'bt', 'bp']) <= set(self.variables):
+            raise RuntimeError('MAS output must have the br, bt, bp variables loaded')
+
+        # Interpolate radial coordinate
+        new_rcoord = self['bt'].r_coords
+        br = scipy.interpolate.interp1d(self['br'].r_coords,
+                                        self['br'].data.isel(time=t_idx or 0),
+                                        axis=2,
+                                        fill_value='extrapolate')(new_rcoord)
+
+        # Interpolate theta coordinate
+        new_tcoord = self['bp'].theta_coords
+        bt = scipy.interpolate.interp1d(self['bt'].theta_coords,
+                                        self['bt'].data.isel(time=t_idx or 0),
+                                        axis=1,
+                                        fill_value='extrapolate')(new_tcoord)
+
+        # Interoplate phi coordinate
+        new_pcoord = self['br'].phi_coords
+        bp = scipy.interpolate.interp1d(self['bp'].phi_coords,
+                                        self['bp'].data.isel(time=t_idx or 0),
+                                        axis=0,
+                                        fill_value='extrapolate')(new_pcoord)
+        # Calculate edge/cyclic phi value
+        old_pcoord = self['bp'].phi_coords
+        edge_pcoord = [old_pcoord[-1],
+                       old_pcoord[0] + _2pi]
+        edge_data = self['bp'].data.isel(time=t_idx or 0)
+        edge_data = np.stack([edge_data[-1, :, :],
+                              edge_data[0, :, :]], axis=0)
+        bp_edge = scipy.interpolate.interp1d(
+            edge_pcoord, edge_data, axis=0)(_2pi)
+        bp_edge = bp_edge.reshape((1, *bp_edge.shape))
+
+        # Add an extra layer of cells at phi=2pi for the tracer
+        br = np.concatenate((br, br[0:1]), axis=0)
+        bt = np.concatenate((bt, bt[0:1]), axis=0)
+        bp = np.concatenate((bp_edge, bp[1:, :, :], bp_edge), axis=0)
+        new_pcoord = np.append(new_pcoord, _2pi)
+
+        return xr.DataArray(np.stack([bp, bt, br], axis=-1),
+                            dims=['phi', 'theta', 'r', 'component'],
+                            coords=[new_pcoord, new_tcoord, new_rcoord,
+                                    ['bp', 'bt', 'br']])
 
     def cell_centered_v(self, extra_phi_coord=False):
         """
