@@ -42,7 +42,7 @@ def mas_sample_data(type='helio'):
 
     # Create a downloader to queue the files to be downloaded
     dl = Downloader()
-    for var in ['rho', 'vr', 'br']:
+    for var in ['rho', 'vr', 'br', 'bt', 'bp']:
         file = mas_dl_dir / f'{var}002.hdf'
         if file.exists():
             continue
