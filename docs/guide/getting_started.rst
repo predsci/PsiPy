@@ -152,3 +152,15 @@ Given these coordinates, it uses linear interpolation to extract the values
 of the variable at each of the coordinate points.
 
 For an example of how all this works, see :ref:`sphx_glr_auto_examples_sampling_plot_in_situ_comparison.py`.
+
+Field line tracing
+------------------
+PsiPy uses the `streamtracer` library to trace magnetic field lines through
+models. In spherical coordinates the streamline equations are:
+
+.. math:: \frac{dr}{ds} = \hat{B}_{r}
+.. math:: \frac{d\theta}{ds} = \frac{\hat{B}_{\theta}}{r}
+.. math:: \frac{d\phi}{ds} = \frac{\hat{B}_{\phi}}{r\cos(\theta)}
+
+PsiPy evaluates the right hand side of these equations, and uses those
+components to trace the streamlines.
