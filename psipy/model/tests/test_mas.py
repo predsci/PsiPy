@@ -1,9 +1,8 @@
 import astropy.units as u
 import numpy as np
-import pytest
 import xarray as xr
 
-from psipy.model import base, mas
+from psipy.model import base
 
 
 def test_mas_model(mas_model):

@@ -7,10 +7,10 @@ output.
 """
 ###############################################################################
 # First, load the required modules.
-from psipy.model import MASOutput
-from psipy.data import sample_data
-
 import matplotlib.pyplot as plt
+
+from psipy.data import sample_data
+from psipy.model import MASOutput
 
 ###############################################################################
 # Next, load a set of MAS output files. You will need to change this line to

@@ -3,7 +3,6 @@ from pathlib import Path
 
 from .variable import Variable
 
-
 __all__ = ['ModelOutput']
 
 

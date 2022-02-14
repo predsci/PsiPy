@@ -1,8 +1,7 @@
-import astropy.constants as const
 import astropy.units as u
 
+from psipy.io import get_pluto_variables, read_pluto_files
 from .base import ModelOutput
-from psipy.io import read_pluto_files, get_pluto_variables
 
 __all__ = ['PLUTOOutput']
 

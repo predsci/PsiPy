@@ -7,14 +7,13 @@ within the model domain.
 """
 ###############################################################################
 # First, load the required modules.
-from psipy.model import MASOutput
-from psipy.data import sample_data
-
 import astropy.constants as const
 import astropy.units as u
-
 import matplotlib.pyplot as plt
 import numpy as np
+
+from psipy.data import sample_data
+from psipy.model import MASOutput
 
 ###############################################################################
 # Load a set of MAS output files, and get the number density variable from the

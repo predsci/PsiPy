@@ -1,9 +1,8 @@
 import os
 
+import h5py as h5
 import numpy as np
 import pyhdf.SD as h4
-import h5py as h5
-
 
 __all__ = ['read_hdf4', 'read_hdf5']
 

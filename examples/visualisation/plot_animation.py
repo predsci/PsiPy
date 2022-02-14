@@ -11,10 +11,6 @@ any of the plotting methods associated with a `Variable` object.
 from psipy.data import sample_data
 from psipy.model import MASOutput
 
-import astropy.constants as const
-import astropy.units as u
-import matplotlib.pyplot as plt
-
 ###############################################################################
 # Next, load a set of MAS output files. Here we just download two succesive
 # Carrington rotations, but you can change this line to point to any directory
