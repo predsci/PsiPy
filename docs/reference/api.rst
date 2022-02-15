@@ -9,6 +9,8 @@ API reference
 
 .. automodapi:: psipy.model.base
 
+.. automodapi:: psipy.tracing
+
 .. automodapi:: psipy.io.mas
 
 .. automodapi:: psipy.io.pluto
