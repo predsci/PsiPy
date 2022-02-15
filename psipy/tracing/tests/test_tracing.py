@@ -1,4 +1,6 @@
 
+import astropy.units as u
+
 from psipy.data import sample_data
 from psipy.model import MASOutput
 from psipy.tracing import FortranTracer
@@ -21,10 +23,10 @@ def test_step_size():
     tracer = FortranTracer()
 
     r = 40
-    lat = 0
-    lon = 0
+    lat = 0 * u.deg
+    lon = 0 * u.deg
 
-    xs = tracer.trace(model, [lon, lat, r])
+    xs = tracer.trace(model, lon=lon, lat=lat, r=r)
     assert len(xs) == 1
 
     # Check that with auto step size, number of steps is close to number of
@@ -33,6 +35,6 @@ def test_step_size():
     assert xs[0].shape == (141, 3)
 
     tracer = FortranTracer(step_size=0.5)
-    xs = tracer.trace(model, [lon, lat, r])
+    xs = tracer.trace(model, lon=lon, lat=lat, r=r)
     # Check that changing step size has an effect
     assert xs[0].shape == (280, 3)
