@@ -23,17 +23,16 @@ model = MASOutput(mas_path)
 # seed points at which the field lines are drawn from.
 tracer = FortranTracer()
 
-nseeds = 15
+nseeds = 5
 # Radius
 r = np.ones(nseeds**2) * 40
 # Some points near the equatorial plane
-lat = np.linspace(-np.pi / 10, np.pi / 10, nseeds**2, endpoint=False)
+lat = np.linspace(-10, 10, nseeds**2, endpoint=False) * u.deg
 # Choose random longitudes
-lon = np.random.rand(nseeds**2) * 2 * np.pi
+lon = np.random.rand(nseeds**2) * 360 * u.deg
 
-seeds = np.column_stack([lon, lat, r])
 # Do the tracing!
-xs = tracer.trace(model, seeds)
+xs = tracer.trace(model, r=r, lat=lat, lon=lon)
 
 ###############################################################################
 # xs is a list, with each item containing the field line coordinates.
