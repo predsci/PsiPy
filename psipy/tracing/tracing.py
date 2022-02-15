@@ -7,12 +7,12 @@ class FortranTracer:
 
     Parameters
     ----------
-    max_steps: int
+    max_steps: 'auto', int
         Maximum number of steps each streamline can take before stopping. This
         directly sets the memory allocated to the traced streamlines, so do not
-        set it too large.
+        set it too large. If set to ``'auto'`` (the default),
     step_size : float
-        Step size in solar radii.
+        Step size as a fraction of the smallest radial grid spacing.
 
     Notes
     -----
@@ -20,17 +20,18 @@ class FortranTracer:
     singularity at the poles, which means seeds placed directly on the poles
     will not go anywhere.
     """
-    def __init__(self, max_steps=200, step_size=0.1):
+    def __init__(self, max_steps='auto', step_size=1):
         try:
-            from streamtracer import StreamTracer
+            import streamtracer  # NoQA
         except ModuleNotFoundError as e:
             raise RuntimeError(
-                'Using FortranTracer requires the streamtracer module '
-                'to be installed.') from e
-        # TODO: allow max_steps = 'auto'
+                'Using FortranTracer requires the streamtracer module, '
+                'but streamtracer could not be loaded') from e
         self.max_steps = max_steps
         self.step_size = step_size
-        self.tracer = StreamTracer(max_steps, step_size)
+        self.max_steps = max_steps
+        max_steps = 1 if max_steps == 'auto' else max_steps
+        # We have to set max_steps and step_size here to create a tracer,
 
     def _vector_grid(self, mas_output, t_idx):
         """
@@ -103,6 +104,15 @@ class FortranTracer:
         return self._trace_from_grid(vector_grid, seeds)
 
     def _trace_from_grid(self, grid, seeds):
+        from streamtracer import StreamTracer
         seeds = np.atleast_2d(seeds)
+        if self.max_steps == 'auto':
+            max_steps = int(4 * len(grid.zcoords) / self.step_size)
+        else:
+            max_steps = self.max_steps
+
+        # Normalize step size to radial cell size
+        step_size = grid.grid_spacing[2] * self.step_size
+        self.tracer = StreamTracer(max_steps, step_size)
         self.tracer.trace(seeds, grid)
         return self.tracer.xs
