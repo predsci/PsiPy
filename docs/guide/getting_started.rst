@@ -155,12 +155,36 @@ For an example of how all this works, see :ref:`sphx_glr_auto_examples_sampling_
 
 Field line tracing
 ------------------
-PsiPy uses the `streamtracer` library to trace magnetic field lines through
+The `streamtracer` library is used to trace magnetic field lines through
 models. In spherical coordinates the streamline equations are:
 
 .. math:: \frac{dr}{ds} = \hat{B}_{r}
 .. math:: \frac{d\theta}{ds} = \frac{\hat{B}_{\theta}}{r}
 .. math:: \frac{d\phi}{ds} = \frac{\hat{B}_{\phi}}{r\cos(\theta)}
 
-PsiPy evaluates the right hand side of these equations, and uses those
-components to trace the streamlines.
+To trace magnetic field lines the :class:`~psipy.tracing.FortranTracer` can be used.
+From a set of seed points with defined radius, longitude, latitude, the tracer
+is called to trace field lines from these points:
+
+.. code-block:: python
+
+  import astropy.units as u
+  from psipy.tracing import FortranTracer
+  tracer = FortranTracer()
+
+  # Radius
+  r = [40, 45]
+  lat = [0, 10] * u.deg
+  lon = [0, np.pi / 4] * u.rad
+  xs = tracer.trace(model, r=r, lat=lat, lon=lon)
+
+The tracer has two configurable options:
+
+- ``max_steps`` is the maximum number of steps that an individual field line
+  can have. This is set to ``'auto'`` by default, which will allocate four
+  times the steps needed to travel radially from the inner to the outer
+  boundary of the model.
+- ``step_size`` is the size of individual steps along the field line, as a
+  multiple of the radial cell size. This is set to ``1`` by default.
+
+For a full example see :ref:`sphx_glr_auto_examples_tracing_plot_tracing_connections.py`.
