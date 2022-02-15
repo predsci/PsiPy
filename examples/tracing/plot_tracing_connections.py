@@ -1,6 +1,6 @@
 """
-Reading and visualising MAS runs
-================================
+Tracing magnetic field lines
+============================
 """
 ###############################################################################
 # First, load the required modules.
