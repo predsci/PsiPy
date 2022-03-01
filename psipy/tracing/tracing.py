@@ -52,38 +52,14 @@ class FortranTracer:
         bs.loc[..., 'bp'] /= bs.coords['r']
         bs.loc[..., 'bt'] /= bs.coords['r']
 
-        grid_spacing = self._get_spacing(bs.coords)
         # cyclic only in the phi direction
         cyclic = [True, False, False]
-        origin_coord = np.array([bs.coords['phi'][0].values,
-                                 bs.coords['theta'][0].values,
-                                 bs.coords['r'][0].values])
-        vector_grid = VectorGrid(bs.data, grid_spacing, cyclic=cyclic,
-                                 origin_coord=origin_coord)
+        grid_coords = [bs.coords['phi'].values,
+                       bs.coords['theta'].values,
+                       bs.coords['r'].values]
+        vector_grid = VectorGrid(bs.data, cyclic=cyclic,
+                                 grid_coords=grid_coords)
         return vector_grid
-
-    @staticmethod
-    def _get_spacing(coords):
-        """
-        Returns
-        -------
-        spacing : list
-            Spacing in [phi, theta, r].
-
-        Raises
-        ------
-        ValueError
-            If any one of the coordinates are not regularly spaced.
-        """
-        spacing = []
-        for coord in ['phi', 'theta', 'r']:
-            all_spacing = np.diff(coords[coord])
-            if not np.allclose(all_spacing, all_spacing[0], rtol=1e-5, atol=0):
-                raise ValueError('Tracer currently only works with '
-                                 f'regularly spaced grid in {coord}.')
-            spacing.append(np.mean(all_spacing))
-
-        return spacing
 
     @u.quantity_input
     def trace(self, mas_output, *, r, lat: u.rad, lon: u.rad, t_idx=None):
@@ -121,7 +97,8 @@ class FortranTracer:
             max_steps = self.max_steps
 
         # Normalize step size to radial cell size
-        step_size = grid.grid_spacing[2] * self.step_size
+        rcoords = grid.zcoords
+        step_size = self.step_size * np.min(np.diff(rcoords))
         self.tracer = StreamTracer(max_steps, step_size)
         self.tracer.trace(seeds, grid)
         return self.tracer.xs

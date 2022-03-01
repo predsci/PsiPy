@@ -6,7 +6,8 @@ from psipy.model import MASOutput
 from psipy.tracing import FortranTracer
 
 
-def test_step_size():
+def test_tracer(mas_model):
+    # Simple smoke test of field line tracing
     mas_path = sample_data.mas_sample_data()
     model = MASOutput(mas_path)
     bs = model.cell_corner_b()
@@ -32,9 +33,9 @@ def test_step_size():
     # Check that with auto step size, number of steps is close to number of
     # radial coordinates
     assert len(bs.coords['r']) == 140
-    assert xs[0].shape == (141, 3)
+    assert xs[0].shape == (139, 3)
 
     tracer = FortranTracer(step_size=0.5)
     xs = tracer.trace(model, lon=lon, lat=lat, r=r)
     # Check that changing step size has an effect
-    assert xs[0].shape == (280, 3)
+    assert xs[0].shape == (278, 3)
