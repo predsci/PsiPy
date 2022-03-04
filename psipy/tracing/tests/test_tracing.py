@@ -32,9 +32,9 @@ def test_step_size():
     # Check that with auto step size, number of steps is close to number of
     # radial coordinates
     assert len(bs.coords['r']) == 140
-    assert xs[0].shape == (141, 3)
+    assert xs[0].shape == (139, 3)
 
     tracer = FortranTracer(step_size=0.5)
     xs = tracer.trace(model, lon=lon, lat=lat, r=r)
     # Check that changing step size has an effect
-    assert xs[0].shape == (280, 3)
+    assert xs[0].shape == (278, 3)
