@@ -187,4 +187,4 @@ The tracer has two configurable options:
 - ``step_size`` is the size of individual steps along the field line, as a
   multiple of the radial cell size. This is set to ``1`` by default.
 
-For a full example see :ref:`sphx_glr_auto_examples_tracing_plot_tracing_connections.py`.
+For a full example see :ref:`sphx_glr_auto_examples_tracing_tracing_pyvista.py`.
