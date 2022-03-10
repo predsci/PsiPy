@@ -1,0 +1,18 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: PsiPy
+message: >-
+  Please use this citation if you rely on PsiPy for
+  your research.
+type: software
+authors:
+  - name-particle: David
+    family-names: Stansby
+    email: dstansby@protonmail.com
+    affiliation: UCL
+  - name-particle: Pete
+    family-names: Riley
+    email: pete@predsci.com
+    affiliation: Predictive Science Inc.
