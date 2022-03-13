@@ -33,11 +33,11 @@ lat = np.linspace(-10, 10, nseeds**2, endpoint=False) * u.deg
 lon = np.random.rand(nseeds**2) * 360 * u.deg
 
 # Do the tracing!
-xs = tracer.trace(model, r=r, lat=lat, lon=lon)
+flines = tracer.trace(model, r=r, lat=lat, lon=lon)
 
 ###############################################################################
-# xs is a list, with each item containing the field line coordinates.
-print(xs[0])
+# flines is a list, with each item containing a field line object
+print(flines[0])
 
 ###############################################################################
 # To easily visualise the result, here we use Matplotlib. Note that Matplotlib
@@ -46,16 +46,13 @@ fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 
 br = model['br']
-for line in xs:
+for fline in flines:
     # Set color with polarity on the inner boundary
-    color = br.sample_at_coords(np.mod(line[2, 0], 2 * np.pi) * u.rad,
-                                line[2, 1] * u.rad,
-                                line[2, 2] * const.R_sun) > 0
-    x = line[:, 2] * np.cos(line[:, 1]) * np.cos(line[:, 0])
-    y = line[:, 2] * np.cos(line[:, 1]) * np.sin(line[:, 0])
-    z = line[:, 2] * np.sin(line[:, 1])
+    color = br.sample_at_coords(np.mod(fline.lon[0], 2 * np.pi * u.rad),
+                                fline.lat[0],
+                                fline.r[0] * const.R_sun) > 0
     color = {0: 'red', 1: 'blue'}[int(color)]
-    ax.plot(x, y, z, color=color, linewidth=2)
+    ax.plot(*fline.xyz, color=color, linewidth=2)
 
 lim = 60
 ax.set_xlim(-lim, lim)
