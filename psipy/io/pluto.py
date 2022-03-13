@@ -56,8 +56,8 @@ def read_pluto_files(directory, var):
     coords = [times] + coords
 
     dims = ['time', 'phi', 'theta', 'r']
-    data = xr.DataArray(data=all_data, coords=coords, dims=dims)
-    return data.isel(time=1)
+    return xr.Dataset(
+        {var: xr.DataArray(data=all_data, coords=coords, dims=dims)})
 
 
 def read_pluto_grid(path):
