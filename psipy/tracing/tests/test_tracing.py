@@ -6,7 +6,8 @@ from psipy.model import MASOutput
 from psipy.tracing import FortranTracer
 
 
-def test_step_size():
+def test_tracer(mas_model):
+    # Simple smoke test of field line tracing
     mas_path = sample_data.mas_sample_data()
     model = MASOutput(mas_path)
     bs = model.cell_corner_b()
