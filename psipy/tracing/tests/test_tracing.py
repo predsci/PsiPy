@@ -27,15 +27,15 @@ def test_tracer(mas_model):
     lat = 0 * u.deg
     lon = 0 * u.deg
 
-    xs = tracer.trace(model, lon=lon, lat=lat, r=r)
-    assert len(xs) == 1
+    flines = tracer.trace(model, lon=lon, lat=lat, r=r)
+    assert len(flines) == 1
 
     # Check that with auto step size, number of steps is close to number of
     # radial coordinates
     assert len(bs.coords['r']) == 140
-    assert xs[0].shape == (139, 3)
+    assert flines[0].xyz.shape == (139, 3)
 
     tracer = FortranTracer(step_size=0.5)
-    xs = tracer.trace(model, lon=lon, lat=lat, r=r)
+    flines = tracer.trace(model, lon=lon, lat=lat, r=r)
     # Check that changing step size has an effect
-    assert xs[0].shape == (278, 3)
+    assert flines[0].xyz.shape == (278, 3)

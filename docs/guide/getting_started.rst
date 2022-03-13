@@ -156,7 +156,7 @@ For an example of how all this works, see :ref:`sphx_glr_auto_examples_sampling_
 Field line tracing
 ------------------
 The `streamtracer` library is used to trace magnetic field lines through
-models. Note that this must be installed prior to use (pip install streamtracer). 
+models. Note that this must be installed prior to use (pip install streamtracer).
 In spherical coordinates the streamline equations are:
 
 .. math:: \frac{dr}{ds} = \hat{B}_{r}

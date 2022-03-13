@@ -39,7 +39,7 @@ flines = tracer.trace(model, r=r, lat=lat, lon=lon)
 # To visualise the result we use the pyvista library, which is a Python
 # wrappper around VTK.
 
-plotter = MASPlotter(model)
+plotter = MASPlotter()
 br = model['br']
 for fline in flines:
     # Set color with polarity on the inner boundary
@@ -49,5 +49,4 @@ for fline in flines:
     color = {0: 'red', 1: 'blue'}[int(color)]
     plotter.add_fline(fline, color=color)
 
-plotter.add_sphere(np.min(br.r_coords))
 plotter.show()

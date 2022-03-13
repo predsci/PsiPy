@@ -1,6 +1,10 @@
 import astropy.units as u
 import numpy as np
 
+from .flines import FieldLines
+
+__all__ = ['FortranTracer']
+
 
 class FortranTracer:
     r"""
@@ -101,4 +105,4 @@ class FortranTracer:
         step_size = self.step_size * np.min(np.diff(rcoords))
         self.tracer = StreamTracer(max_steps, step_size)
         self.tracer.trace(seeds, grid)
-        return self.tracer.xs
+        return FieldLines(self.tracer.xs)

@@ -16,3 +16,5 @@ API reference
 .. automodapi:: psipy.io.pluto
 
 .. automodapi:: psipy.io.util
+
+.. automodapi:: psipy.visualization.pyvista
