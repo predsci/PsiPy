@@ -8,8 +8,7 @@ runs.
    :maxdepth: 2
    :caption: Contents:
 
-   guide/installing
-   guide/getting_started
+   guide/index
    auto_examples/index
    reference/api
    reference/changelog
