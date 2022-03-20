@@ -5,6 +5,10 @@ from pathlib import Path
 
 import pooch
 
+
+__all__ = ['mas_sample_data', 'mas_helio_timesteps']
+
+
 file_url = 'cr{cr}-medium/hmi_masp_mas_std_0201/{type}/{var}002.hdf'
 cache_dir = pooch.os_cache("psipy")
 
