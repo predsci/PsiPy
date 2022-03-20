@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 from psipy.data import sample_data
-from psipy.model import mas
+from psipy.model import mas, pluto
 
 test_data_dir = (Path(__file__) / '..' / '..' / 'data').resolve()
 
@@ -40,3 +40,8 @@ def pluto_directory():
         pytest.xfail(f'Could not find PLUTO data directory at {directory}')
 
     return directory
+
+
+@pytest.fixture(scope="module")
+def pluto_model(pluto_directory):
+    return pluto.PLUTOOutput(pluto_directory)
