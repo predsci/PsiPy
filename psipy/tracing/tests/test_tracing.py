@@ -1,12 +1,13 @@
 
 import astropy.units as u
+import numpy as np
 
 from psipy.data import sample_data
 from psipy.model import MASOutput
-from psipy.tracing import FortranTracer
+from psipy.tracing import FieldLines, FortranTracer
 
 
-def test_tracer(mas_model):
+def test_tracer():
     # Simple smoke test of field line tracing
     mas_path = sample_data.mas_sample_data()
     model = MASOutput(mas_path)
@@ -39,3 +40,26 @@ def test_tracer(mas_model):
     flines = tracer.trace(model, lon=lon, lat=lat, r=r)
     # Check that changing step size has an effect
     assert flines[0].xyz.shape == (278, 3)
+
+
+def test_fline_io(mas_model, tmpdir):
+    # Simple smoke test of field line tracing
+    mas_path = sample_data.mas_sample_data()
+    model = MASOutput(mas_path)
+    tracer = FortranTracer()
+
+    r = 40
+    lat = 0 * u.deg
+    lon = 0 * u.deg
+
+    flines = tracer.trace(model, lon=lon, lat=lat, r=r)
+    fline_0 = flines[0]
+    flines.save(tmpdir / 'flines.npz')
+    del flines
+
+    loaded_flines = FieldLines.load(tmpdir / 'flines.npz')
+    fline_1 = loaded_flines[0]
+
+    np.testing.assert_allclose(fline_0.r, fline_1.r)
+    np.testing.assert_allclose(fline_0.lon, fline_1.lon)
+    np.testing.assert_allclose(fline_0.lat, fline_1.lat)
