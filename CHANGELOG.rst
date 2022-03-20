@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 0.3.0
+-------------
+Updated requirements
+~~~~~~~~~~~~~~~~~~~~
+``psipy`` now requires the ``pooch`` package to handle sample data.
+
 Version 0.2.0
 -------------
 Support for multiple timesteps

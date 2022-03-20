@@ -18,3 +18,5 @@ API reference
 .. automodapi:: psipy.io.util
 
 .. automodapi:: psipy.visualization.pyvista
+
+.. automodapi:: psipy.data
