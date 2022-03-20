@@ -5,7 +5,6 @@ from pathlib import Path
 
 import pooch
 
-
 __all__ = ['mas_sample_data', 'mas_helio_timesteps']
 
 
