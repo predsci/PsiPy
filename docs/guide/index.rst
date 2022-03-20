@@ -8,3 +8,4 @@ Guide
    installing
    getting_started
    visualization
+   tracing
