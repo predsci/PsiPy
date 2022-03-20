@@ -23,7 +23,7 @@ is called to trace field lines from these points:
   r = [40, 45]
   lat = [0, 10] * u.deg
   lon = [0, np.pi / 4] * u.rad
-  xs = tracer.trace(model, r=r, lat=lat, lon=lon)
+  flines = tracer.trace(model, r=r, lat=lat, lon=lon)
 
 where ``model`` is a `MASOutput` which must have all three components of the
 magnetic field available.
@@ -38,3 +38,13 @@ The tracer has two configurable options:
   multiple of the radial cell size. This is set to ``1`` by default.
 
 For a full example see :ref:`sphx_glr_auto_examples_tracing_tracing_pyvista.py`.
+
+``flines`` is a :class:`~psipy.tracing.FieldLines` object, that stores a
+series of field lines. Each field line can be accessed by indexing the
+:class:`~psipy.tracing.FieldLines` with an integer.
+
+Saving and loading
+------------------
+Field lines can be saved using :meth:`~psipy.tracing.FieldLines.save` and
+:meth:`~psipy.tracing.FieldLines.load`. The field lines are saved to a
+``.npz`` file using `numpy.savez_compressed`.
