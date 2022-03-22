@@ -17,7 +17,7 @@ Tracing field lines
 components of the magnetic field available. For more information see new pages
 in the guide and new examples in the gallery.
 
-Bugfixes
+Bug fixes
 ~~~~~~~~
 - Fixed density units assigned to MAS models.
 - Loading PLUTO files was broken in version 0.2; this has now been fixed, and
