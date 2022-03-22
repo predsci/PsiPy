@@ -30,7 +30,7 @@ jobs:
         python -m pip install .[tests]
     - name: Run tests
       run: |
-        pytest --cov-report=xml
+        pytest --cov-report=xml --cov=psipy
     - name: Upload coverage
       uses: codecov/codecov-action@v2
       with:
