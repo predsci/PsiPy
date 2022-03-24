@@ -1,6 +1,6 @@
 """
-Interactive field line tracing
-==============================
+Manual field line seeds
+=======================
 How to interactively choose field line seed points using the mouse.
 """
 ###############################################################################
@@ -17,15 +17,15 @@ model = MASOutput(mas_path)
 
 ###############################################################################
 # To visualise the result create a pyvista plotter window. To interactively
-# trace field lines, we then to create a sphere to trace the field lines from.
+# trace field lines, we then create a sphere to trace the field lines from.
 #
 # Once the window pops up, you can place your mouse over somewhere on the
 # sphere and click "p" to trace a field line from that point.
 #
-# Note that we've used the second r coordinate in the model here. Choosing
-# the first coordinate (the inner boundary of the model) will lead to
-# surprising edge effects.
+# Note that we've used the second r coordinate in the model to trace the
+# field lines from. Choosing the first coordinate (the inner boundary of the
+# model) will lead to surprising edge effects.
 
 plotter = MASPlotter(model)
-plotter.add_tracing_seed_sphere(br.r_coords[1])
+plotter.add_tracing_seed_sphere(model['br'].r_coords[1])
 plotter.show()

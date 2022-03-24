@@ -32,6 +32,14 @@ class MASPlotter:
         """
         Add a sphere at a given radius.
 
+        Parameters
+        ----------
+        radius : float
+            Radius of the sphere.
+        kwargs :
+            Additional keyword arguments are passed to `pyvista.Sphere`, for
+            example to control the color or rednering of the sphere.
+
         Returns
         -------
         pyvista.Sphere
@@ -48,6 +56,14 @@ class MASPlotter:
     def add_tracing_seed_sphere(self, radius, **kwargs):
         """
         Add a sphere to trace field lines from.
+
+        Parameters
+        ----------
+        radius : float
+            Radius of the sphere.
+        kwargs :
+            Additional keyword arguments are passed to `pyvista.Sphere`, for
+            example to control the color or rednering of the sphere.
 
         Returns
         -------
@@ -66,9 +82,9 @@ class MASPlotter:
         self.pvplotter.iren.set_picker(cell_picker)
 
         # Now add text about cell-selection
-        show_message = "Press P to pick under the mouse"
+        show_message = "Press P to seed a field line under the mouse"
         self.pvplotter.add_text(show_message,
-                                font_size=18,
+                                font_size=14,
                                 name='_point_picking_message')
 
     def _trace_from_seed(self, pos):
