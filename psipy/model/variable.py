@@ -46,6 +46,7 @@ class Variable:
         # Convert from xarray Dataset to DataArray
         self._data = data[name]
         # Sort the data once now for any interpolation later
+        self._data = self._data.transpose(*['phi', 'theta', 'r', 'time'])
         self._data = self._data.sortby(['phi', 'theta', 'r', 'time'])
         self.name = name
         self._unit = unit
