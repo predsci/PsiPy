@@ -14,7 +14,7 @@ def test_mas_model(mas_model):
     rho = mas_model['rho']
     assert isinstance(rho, base.Variable)
     assert isinstance(rho.data, xr.DataArray)
-    assert rho.unit == u.N / u.cm**3
+    assert rho.unit == u.cm**-3
     assert rho.n_timesteps == 1
     assert str(rho) == """
 Variable
@@ -37,8 +37,8 @@ def test_persistance(mas_model):
 def test_change_units(mas_model):
     # Check that loading a single file works
     rho = mas_model['rho']
-    assert rho.unit == u.N / u.cm**3
+    assert rho.unit == u.cm**-3
     old_data = rho._data.copy()
-    rho.unit = u.N / u.m**3
-    assert rho.unit == u.N / u.m**3
+    rho.unit = u.m**-3
+    assert rho.unit == u.m**-3
     assert np.allclose(rho._data.values, 1e6 * old_data.values)
