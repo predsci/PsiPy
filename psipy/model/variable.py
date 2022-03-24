@@ -46,6 +46,7 @@ class Variable:
         # Convert from xarray Dataset to DataArray
         self._data = data[name]
         # Sort the data once now for any interpolation later
+        self._data = self._data.transpose(*['phi', 'theta', 'r', 'time'])
         self._data = self._data.sortby(['phi', 'theta', 'r', 'time'])
         self.name = name
         self._unit = unit
@@ -385,8 +386,8 @@ class Variable:
         Linear interpolation is used to interpoalte between cells. See the
         docstring of `scipy.interpolate.interpn` for more information.
         """
-        points = [self.data.coords[dim].values for dim in
-                  ['phi', 'theta', 'r', 'time']]
+        dims = ['phi', 'theta', 'r', 'time']
+        points = [self.data.coords[dim].values for dim in dims]
         values = self.data.values
 
         # Check that coordinates are increasing
@@ -402,8 +403,13 @@ class Variable:
 
         # Pad phi points so it's possible to interpolate all the way from
         # 0 to 360 deg
-        points[0] = np.append(points[0], points[0][0] + 2 * np.pi)
+        pcoords = points[0]
+        pcoords = np.append(pcoords, pcoords[0] + 2 * np.pi)
+        pcoords = np.insert(pcoords, 0, pcoords[-2] - 2 * np.pi)
+        points[0] = pcoords
+
         values = np.append(values, values[0:1, :, :, :], axis=0)
+        values = np.insert(values, 0, values[-2:-1, :, :, :], axis=0)
 
         if len(points[3]) == 1:
             # Only one timestep
@@ -413,10 +419,16 @@ class Variable:
             values = values[:, :, :, 0]
             points = points[:-1]
         else:
-            xi = np.column_stack([t,
-                                  lon.to_value(u.rad),
+            xi = np.column_stack([lon.to_value(u.rad),
                                   lat.to_value(u.rad),
-                                  r.to_value(const.R_sun)])
+                                  r.to_value(const.R_sun),
+                                  t])
+
+        for i, dim in enumerate(dims[:-1]):
+            bounds = np.min(points[i]), np.max(points[i])
+            if not (np.all(bounds[0] <= xi[:, i]) and np.all(xi[:, i] <= bounds[1])):
+                raise ValueError(f"At least one point is outside bounds {bounds} in {dim} dimension.")
+
 
         values_x = interpolate.interpn(points, values, xi)
         return values_x * self._unit
