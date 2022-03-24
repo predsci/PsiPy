@@ -35,6 +35,18 @@ mas_pooch = pooch.create(
     registry=registry,
 )
 
+# Add some PLUTO data
+pluto_reg = {}
+PLUTO_FILES = ['grid.out', 'dbl.out', 'rho.0000.dbl']
+for file in PLUTO_FILES:
+    pluto_reg[file] = None
+
+pluto_pooch = pooch.create(
+    path=cache_dir,
+    base_url='doi:10.6084/m9.figshare.19401089.v1/',
+    registry=pluto_reg,
+)
+
 
 def mas_sample_data(type='helio'):
     """
@@ -74,5 +86,20 @@ def mas_helio_timesteps():
     for cr in [2210, 2211]:
         path = mas_pooch.fetch(_get_url(cr=cr, type='helio', var='vr'),
                                progressbar=True)
+
+    return Path(path).parent
+
+
+def pluto_sample_data():
+    """
+    Get some sample PLUTO data.
+
+    Returns
+    -------
+    pathlib.Path
+        Download directory.
+    """
+    for file in PLUTO_FILES:
+        path = pluto_pooch.fetch(file, progressbar=True)
 
     return Path(path).parent
