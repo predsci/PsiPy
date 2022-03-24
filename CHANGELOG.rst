@@ -3,9 +3,24 @@ Changelog
 
 Version 0.3.0
 -------------
+Python support
+~~~~~~~~~~~~~~
+Running psipy on Python 3.10 is now officially supported.
+
 Updated requirements
 ~~~~~~~~~~~~~~~~~~~~
 ``psipy`` now requires the ``pooch`` package to handle sample data.
+
+Tracing field lines
+~~~~~~~~~~~~~~~~~~~
+``psipy`` can now trace field lines through models that have all three
+components of the magnetic field available. For more information see new pages
+in the guide and new examples in the gallery.
+
+PLUTO fixes
+~~~~~~~~~~~
+Loading PLUTO files was broken in version 0.2; this has now been fixed, and
+tests added to ensure this doesn't happen again in the future.
 
 Version 0.2.0
 -------------
