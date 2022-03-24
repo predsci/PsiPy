@@ -20,6 +20,6 @@ def test_pluto_model(pluto_model):
 Variable
 --------
 Name: rho
-Grid size: (129, 101, 101) (phi, theta, r)
+Grid size: (128, 111, 141) (phi, theta, r)
 Timesteps: 1
 """
