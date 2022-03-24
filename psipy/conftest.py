@@ -34,8 +34,7 @@ def mas_model(mas_directory):
 
 @pytest.fixture(scope="module")
 def pluto_directory():
-    # Directories with PLUTO outputs
-    directory = test_data_dir / 'pluto'
+    directory = sample_data.pluto_sample_data()
     if not directory.exists():
         pytest.xfail(f'Could not find PLUTO data directory at {directory}')
 
