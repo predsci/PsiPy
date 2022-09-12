@@ -6,6 +6,7 @@ Version 0.3.1
 Bug fixes
 ~~~~~~~~~
 - Fixed the in-situ sampling example.
+- Fixed the multiple-time step sample data only returning a single file.
 
 Version 0.3.0
 -------------
