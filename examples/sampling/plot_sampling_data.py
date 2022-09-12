@@ -17,7 +17,13 @@ from psipy.model import MASOutput
 
 ###############################################################################
 # Load a set of MAS output files, and get the number density variable from the
-# model run.
+# model run. This example works with PLUTO data too. Uncomment the comment
+# block below (and comment out the MAS block!)
+"""
+from psipy.model import PLUTOOutput
+pluto_path = sample_data.plut_sample_data()
+model = PLUTOOutput(mas_path)
+"""
 mas_path = sample_data.mas_sample_data()
 model = MASOutput(mas_path)
 rho = model["rho"]
