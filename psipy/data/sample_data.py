@@ -1,6 +1,7 @@
 """
 Helper functions for downloading sample model output data.
 """
+import shutil
 from pathlib import Path
 
 import pooch
@@ -82,12 +83,18 @@ def mas_helio_timesteps():
     pathlib.Path
         Download directory.
     """
-    for cr in [2210, 2211]:
-        path = mas_pooch.fetch(
-            _get_url(cr=cr, type="helio", var="vr"), progressbar=True
-        )
+    paths = [
+        mas_pooch.fetch(_get_url(cr=cr, type="helio", var="vr"), progressbar=True)
+        for cr in [2210, 2211]
+    ]
+    paths = [Path(p) for p in paths]
 
-    return Path(path).parent
+    helio_dir = cache_dir / "carrington"
+    helio_dir.mkdir(exist_ok=True)
+    for i, path in enumerate(paths):
+        shutil.copy(path, helio_dir / f"vr00{i+1}.hdf")
+
+    return helio_dir
 
 
 def pluto_sample_data():
