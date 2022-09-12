@@ -20,7 +20,7 @@ from psipy.model import MASOutput
 # model run.
 mas_path = sample_data.mas_sample_data()
 model = MASOutput(mas_path)
-rho = model['rho']
+rho = model["rho"]
 
 ###############################################################################
 # Choose a set of 1D points to interpolate the model output at.
@@ -41,12 +41,12 @@ for latitude in [0, 1] * u.deg:
     lat = latitude * np.ones(npoints)
     samples = rho.sample_at_coords(lon, lat, r)
 
-    ax.plot(lon, samples, label='lat = ' + str(latitude))
+    ax.plot(lon, samples, label="lat = " + str(latitude))
 
 ax.legend()
 ax.set_xlim(0, 360)
 ax.set_ylim(bottom=0)
-ax.set_xlabel('Longitude (deg)')
-ax.set_ylabel(r'$\rho$ (cm$^{-3}$)')
+ax.set_xlabel("Longitude (deg)")
+ax.set_ylabel(r"$\rho$ (cm$^{-3}$)")
 ax.set_xticks([0, 90, 180, 270, 360])
 plt.show()

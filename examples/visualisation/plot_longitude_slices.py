@@ -27,7 +27,7 @@ print(model.variables)
 # Set parameters for plotting. The first line will give us a horizontal
 # errorbar underneath the plots. The second line is the index to select for the
 # longitude slice.
-cbar_kwargs = {'orientation': 'horizontal'}
+cbar_kwargs = {"orientation": "horizontal"}
 phi_idx = 40
 
 ###############################################################################
@@ -36,20 +36,21 @@ phi_idx = 40
 # Note that for density (rho) and pressure (p) we first normalise the data
 # relative to a power law decrease, to make it easer to see spatial variations.
 fig = plt.figure()
-axs = [plt.subplot(1, 2, i + 1, projection='polar') for i in range(2)]
+axs = [plt.subplot(1, 2, i + 1, projection="polar") for i in range(2)]
 
 ax = axs[0]
-model['vr'].plot_phi_cut(phi_idx, ax=ax, cbar_kwargs=cbar_kwargs)
+model["vr"].plot_phi_cut(phi_idx, ax=ax, cbar_kwargs=cbar_kwargs)
 
 ax = axs[1]
-rho = model['rho']
+rho = model["rho"]
 rho_r2 = rho.radial_normalized(2)
 rho_r2.plot_phi_cut(phi_idx, ax=ax, cbar_kwargs=cbar_kwargs)
 
 
 # Add a contour of br = 0 (the heliopsheric current sheet) to all the axes
 for ax in axs:
-    model['br'].contour_phi_cut(phi_idx, levels=[0], ax=ax,
-                                colors='white', linestyles='--', linewidths=1)
+    model["br"].contour_phi_cut(
+        phi_idx, levels=[0], ax=ax, colors="white", linestyles="--", linewidths=1
+    )
 
 plt.show()

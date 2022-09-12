@@ -26,11 +26,11 @@ print(model.variables)
 ###############################################################################
 # Set parameters for plotting. This line will give us a horizontal
 # errorbar underneath the plots.
-cbar_kwargs = {'orientation': 'horizontal'}
+cbar_kwargs = {"orientation": "horizontal"}
 
 ###############################################################################
 # Plot the slices
-ax = plt.subplot(projection='polar')
-model['vr'].plot_equatorial_cut(ax=ax, cbar_kwargs=cbar_kwargs)
+ax = plt.subplot(projection="polar")
+model["vr"].plot_equatorial_cut(ax=ax, cbar_kwargs=cbar_kwargs)
 
 plt.show()

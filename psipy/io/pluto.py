@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 import xarray as xr
 
-__all__ = ['read_pluto_files', 'get_pluto_variables', 'read_pluto_grid']
+__all__ = ["read_pluto_files", "get_pluto_variables", "read_pluto_grid"]
 
 
 def get_timestep(path):
@@ -16,7 +16,7 @@ def get_timestep(path):
     """
     path = Path(path)
     fname = path.stem
-    tstep = fname.split('.')[-1]
+    tstep = fname.split(".")[-1]
     return int(tstep)
 
 
@@ -37,10 +37,12 @@ def read_pluto_files(directory, var):
         Loaded data.
     """
     directory = Path(directory)
-    files = glob.glob(str(directory / f'{var}*.dbl'))
+    files = glob.glob(str(directory / f"{var}*.dbl"))
     if not len(files):
-        raise FileNotFoundError(f'Could not find any files for variable "{var}" in '
-                                f'directory {directory}')
+        raise FileNotFoundError(
+            f'Could not find any files for variable "{var}" in '
+            f"directory {directory}"
+        )
     files.sort()
     all_data = []
     times = []
@@ -55,9 +57,8 @@ def read_pluto_files(directory, var):
     coords[1] = np.pi / 2 - np.array(coords[1])
     coords = [times] + coords
 
-    dims = ['time', 'phi', 'theta', 'r']
-    return xr.Dataset(
-        {var: xr.DataArray(data=all_data, coords=coords, dims=dims)})
+    dims = ["time", "phi", "theta", "r"]
+    return xr.Dataset({var: xr.DataArray(data=all_data, coords=coords, dims=dims)})
 
 
 def read_pluto_grid(path):
@@ -76,18 +77,20 @@ def read_pluto_grid(path):
         with the two columns being the minimum and maximum coordinate values
         of a given cell.
     """
-    with open(path, 'r') as f:
+    with open(path, "r") as f:
         lines = f.readlines()
-    n_header_lines = np.sum([line[0] == '#' for line in lines])
+    n_header_lines = np.sum([line[0] == "#" for line in lines])
     # Read size of dimensions
-    n_dim_1 = int(lines[n_header_lines].split('\n')[0])
-    n_dim_2 = int(lines[n_header_lines + n_dim_1 + 1].split('\n')[0])
-    n_dim_3 = int(lines[n_header_lines + n_dim_1 + n_dim_2 + 2].split('\n')[0])
+    n_dim_1 = int(lines[n_header_lines].split("\n")[0])
+    n_dim_2 = int(lines[n_header_lines + n_dim_1 + 1].split("\n")[0])
+    n_dim_3 = int(lines[n_header_lines + n_dim_1 + n_dim_2 + 2].split("\n")[0])
 
     # Read in coordinate values
     dim_1 = np.loadtxt(path, skiprows=n_header_lines + 1, max_rows=n_dim_1)
     dim_2 = np.loadtxt(path, skiprows=n_header_lines + n_dim_1 + 2, max_rows=n_dim_2)
-    dim_3 = np.loadtxt(path, skiprows=n_header_lines + n_dim_1 + n_dim_2 + 3, max_rows=n_dim_3)
+    dim_3 = np.loadtxt(
+        path, skiprows=n_header_lines + n_dim_1 + n_dim_2 + 3, max_rows=n_dim_3
+    )
     return dim_1[:, 1:], dim_2[:, 1:], dim_3[:, 1:]
 
 
@@ -115,7 +118,7 @@ def read_pluto_dbl(path):
     """
     path = Path(path)
     data = np.fromfile(path, np.float64)
-    grid = read_pluto_grid(path.parent / 'grid.out')
+    grid = read_pluto_grid(path.parent / "grid.out")
 
     grid = grid[::-1]
     grid_dims = list(g.shape[0] for g in grid)
@@ -138,13 +141,13 @@ def get_pluto_variables(directory):
     var_names : list
         List of variable names present in the given directory.
     """
-    files = glob.glob(str(Path(directory) / '*.dbl'))
+    files = glob.glob(str(Path(directory) / "*.dbl"))
     # Get the variable name from the filename
     # Take anything before the . in the first three characters
-    var_names = [Path(f).stem[:3].split('.')[0] for f in files]
+    var_names = [Path(f).stem[:3].split(".")[0] for f in files]
     # Only return unique names
     var_names = list(set(var_names))
     if not len(var_names):
-        raise FileNotFoundError(f'No variable files found in {directory}')
+        raise FileNotFoundError(f"No variable files found in {directory}")
     var_names.sort()
     return var_names

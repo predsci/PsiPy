@@ -43,15 +43,20 @@ print(flines[0])
 # To easily visualise the result, here we use Matplotlib. Note that Matplotlib
 # is not a 3D renderer, so has several drawbacks (including performance).
 fig = plt.figure()
-ax = fig.add_subplot(projection='3d')
+ax = fig.add_subplot(projection="3d")
 
-br = model['br']
+br = model["br"]
 for fline in flines:
     # Set color with polarity on the inner boundary
-    color = br.sample_at_coords(np.mod(fline.lon[0], 2 * np.pi * u.rad),
-                                fline.lat[0],
-                                fline.r[0] * const.R_sun) > 0
-    color = {0: 'red', 1: 'blue'}[int(color)]
+    color = (
+        br.sample_at_coords(
+            np.mod(fline.lon[0], 2 * np.pi * u.rad),
+            fline.lat[0],
+            fline.r[0] * const.R_sun,
+        )
+        > 0
+    )
+    color = {0: "red", 1: "blue"}[int(color)]
     ax.plot(*fline.xyz, color=color, linewidth=2)
 
 lim = 60

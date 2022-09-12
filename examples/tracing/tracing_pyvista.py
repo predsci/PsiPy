@@ -40,13 +40,18 @@ flines = tracer.trace(model, r=r, lat=lat, lon=lon)
 # Visualise the results
 
 plotter = MASPlotter(model)
-br = model['br']
+br = model["br"]
 for fline in flines:
     # Set color with polarity near the inner boundary
-    color = br.sample_at_coords(np.mod(fline.lon[1], 2 * np.pi * u.rad),
-                                fline.lat[1],
-                                fline.r[1] * const.R_sun) > 0
-    color = {0: 'red', 1: 'blue'}[int(color)]
+    color = (
+        br.sample_at_coords(
+            np.mod(fline.lon[1], 2 * np.pi * u.rad),
+            fline.lat[1],
+            fline.r[1] * const.R_sun,
+        )
+        > 0
+    )
+    color = {0: "red", 1: "blue"}[int(color)]
     plotter.add_fline(fline, color=color)
 
 # Add a sphere at the inner boundary of the model

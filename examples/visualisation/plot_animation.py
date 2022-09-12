@@ -21,8 +21,8 @@ model = MASOutput(mas_path)
 ###############################################################################
 # Get a variable from the model output. We can also inspect the variable to see
 # how many timesteps it has.
-vr = model['vr']
-print(f'Number of timesteps: {vr.n_timesteps}')
+vr = model["vr"]
+print(f"Number of timesteps: {vr.n_timesteps}")
 
 
 ###############################################################################

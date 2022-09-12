@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 0.3.1
+-------------
+Bug fixes
+~~~~~~~~~
+- Fixed the in-situ sampling example.
+
 Version 0.3.0
 -------------
 Python support
@@ -18,7 +24,7 @@ components of the magnetic field available. For more information see new pages
 in the guide and new examples in the gallery.
 
 Bug fixes
-~~~~~~~~
+~~~~~~~~~
 - Fixed density units assigned to MAS models.
 - Loading PLUTO files was broken in version 0.2; this has now been fixed, and
   tests added to ensure this doesn't happen again in the future.

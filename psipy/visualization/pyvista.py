@@ -4,7 +4,7 @@ from astropy.coordinates import cartesian_to_spherical
 from vtkmodules.vtkCommonCore import vtkCommand
 from vtkmodules.vtkRenderingCore import vtkCellPicker
 
-__all__ = ['MASPlotter']
+__all__ = ["MASPlotter"]
 
 
 class MASPlotter:
@@ -18,6 +18,7 @@ class MASPlotter:
     ----------
     plotter : pyvista.Plotter
     """
+
     def __init__(self, mas_output):
         self.pvplotter = pv.Plotter()
         self.mas_output = mas_output
@@ -25,7 +26,7 @@ class MASPlotter:
 
     def add_fline(self, fline, **kwargs):
         spline = pv.Spline(fline.xyz)
-        kwargs['pickable'] = kwargs.get('pickable', False)
+        kwargs["pickable"] = kwargs.get("pickable", False)
         self.pvplotter.add_mesh(spline, **kwargs)
 
     def add_sphere(self, radius, **kwargs):
@@ -44,9 +45,7 @@ class MASPlotter:
         -------
         pyvista.Sphere
         """
-        sphere = pv.Sphere(radius=radius,
-                           theta_resolution=180,
-                           phi_resolution=360)
+        sphere = pv.Sphere(radius=radius, theta_resolution=180, phi_resolution=360)
         self.pvplotter.add_mesh(sphere, **kwargs)
         return sphere
 
@@ -69,23 +68,22 @@ class MASPlotter:
         -------
         pyvista.Sphere
         """
-        kwargs['pickable'] = True
+        kwargs["pickable"] = True
         self.add_sphere(radius, **kwargs)
 
         # Setup picking
         cell_picker = vtkCellPicker()
         self.pvplotter.picker = cell_picker
-        cell_picker.AddObserver(vtkCommand.EndPickEvent,
-                                self._end_pick_event)
+        cell_picker.AddObserver(vtkCommand.EndPickEvent, self._end_pick_event)
 
         self.pvplotter.enable_trackball_style()
         self.pvplotter.iren.set_picker(cell_picker)
 
         # Now add text about cell-selection
         show_message = "Press P to seed a field line under the mouse"
-        self.pvplotter.add_text(show_message,
-                                font_size=14,
-                                name='_point_picking_message')
+        self.pvplotter.add_text(
+            show_message, font_size=14, name="_point_picking_message"
+        )
 
     def _trace_from_seed(self, pos):
         """
@@ -93,6 +91,7 @@ class MASPlotter:
         """
         if self.tracer is None:
             from psipy.tracing import FortranTracer
+
             self.tracer = FortranTracer()
 
         r, lat, lon = cartesian_to_spherical(*pos)
@@ -104,11 +103,13 @@ class MASPlotter:
 
     def _end_pick_event(self, picker, event):
         picked_point = np.array(picker.GetPickPosition())
-        self.pvplotter.add_mesh(picked_point,
-                                color='pink',
-                                point_size=20,
-                                name='_picked_point',
-                                pickable=False,
-                                reset_camera=False)
+        self.pvplotter.add_mesh(
+            picked_point,
+            color="pink",
+            point_size=20,
+            name="_picked_point",
+            pickable=False,
+            reset_camera=False,
+        )
 
         self._trace_from_seed(picked_point)
