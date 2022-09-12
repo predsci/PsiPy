@@ -16,6 +16,7 @@ is called to trace field lines from these points:
 .. code-block:: python
 
   import astropy.units as u
+  import numpy as np 
   from psipy.tracing import FortranTracer
   tracer = FortranTracer()
 
