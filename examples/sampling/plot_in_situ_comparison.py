@@ -17,6 +17,7 @@ we then compare to the in-situ data.
 """
 ###############################################################################
 # First, load the required modules.
+import astropy.units as u
 import heliopy.data.spice as spicedata
 import heliopy.spice as spice
 import matplotlib.pyplot as plt
@@ -39,6 +40,8 @@ print(model.variables)
 starttime = '2018-10-22'
 endtime = '2018-11-21'
 psp_data = psp.merged_mag_plasma(starttime, endtime)
+# Convert the density units to 1/cm**3 so they're the same as the MAS units
+psp_data.units['protonDensity'] /= u.N
 print(psp_data.columns)
 
 ###############################################################################
