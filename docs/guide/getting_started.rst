@@ -17,6 +17,13 @@ interested in to a directory on your computer.
 
 .. _MHDWeb pages: http://www.predsci.com/mhdweb/data_access.php
 
+MAS and PLUTO data
+------------------
+psipy supports data from both MAS model runs and PLUTO model runs.
+For simplicity the instructions in this guide are written with MAS model output in mind.
+Everything works the same way for PLUTO model output though - just load the files with the `PLUTOOutput` class instead of the `MASOutput` class.
+The one feature that is not yet implemented for PLUTO data is field line tracing.
+
 Loading data
 ------------
 psipy stores the output variables from a single MAS run in the `MASOutput`
