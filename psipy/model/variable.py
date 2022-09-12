@@ -10,19 +10,22 @@ from scipy import interpolate
 import psipy.visualization as viz
 from psipy.util.decorators import add_common_docstring
 
-__all__ = ['Variable']
+__all__ = ["Variable"]
 
 
 # Some docstrings that are used more than once
-quad_mesh_link = ':class:`~matplotlib.collections.QuadMesh`'
+quad_mesh_link = ":class:`~matplotlib.collections.QuadMesh`"
 # TODO: fix this to ':class:`~matplotlib.animation.FuncAnimation`'
-animation_link = 'animation'
+animation_link = "animation"
 
-returns_doc = textwrap.indent(f"""
+returns_doc = textwrap.indent(
+    f"""
 {quad_mesh_link} or {animation_link}
     If a timestep is specified, the {quad_mesh_link} of the plot is returned.
     Otherwise an {animation_link} is returned.
-""", '        ')
+""",
+    "        ",
+)
 
 
 class Variable:
@@ -42,23 +45,26 @@ class Variable:
     unit : astropy.units.Quantity
         Variable unit.
     """
+
     def __init__(self, data, name, unit):
         # Convert from xarray Dataset to DataArray
         self._data = data[name]
         # Sort the data once now for any interpolation later
-        self._data = self._data.transpose(*['phi', 'theta', 'r', 'time'])
-        self._data = self._data.sortby(['phi', 'theta', 'r', 'time'])
+        self._data = self._data.transpose(*["phi", "theta", "r", "time"])
+        self._data = self._data.sortby(["phi", "theta", "r", "time"])
         self.name = name
         self._unit = unit
 
     def __str__(self):
-        return textwrap.dedent(f'''
+        return textwrap.dedent(
+            f"""
         Variable
         --------
         Name: {self.name}
         Grid size: {len(self.phi_coords), len(self.theta_coords), len(self.r_coords)} (phi, theta, r)
         Timesteps: {len(self.time_coords)}
-        ''')
+        """
+        )
 
     @property
     def data(self):
@@ -86,32 +92,32 @@ class Variable:
         """
         Radial coordinate values.
         """
-        return self._data.coords['r'].values
+        return self._data.coords["r"].values
 
     @r_coords.setter
     def r_coords(self, coords):
-        self._data.coords['r'] = coords
+        self._data.coords["r"] = coords
 
     @property
     def theta_coords(self):
         """
         Latitude coordinate values.
         """
-        return self._data.coords['theta'].values
+        return self._data.coords["theta"].values
 
     @property
     def phi_coords(self):
         """
         Longitude coordinate values.
         """
-        return self._data.coords['phi'].values
+        return self._data.coords["phi"].values
 
     @property
     def time_coords(self):
         """
         Timestep coordinate values.
         """
-        return self._data.coords['time'].values
+        return self._data.coords["time"].values
 
     @property
     def n_timesteps(self):
@@ -135,11 +141,11 @@ class Variable:
         -------
         Variable
         """
-        r = self.data.coords['r']
+        r = self.data.coords["r"]
         rsun_au = float(u.AU / const.R_sun)
-        data = self.data * (r * rsun_au)**radial_exponent
-        units = self.unit * (u.AU)**radial_exponent
-        name = self.name + f' $r^{radial_exponent}$'
+        data = self.data * (r * rsun_au) ** radial_exponent
+        units = self.unit * (u.AU) ** radial_exponent
+        name = self.name + f" $r^{radial_exponent}$"
         return Variable(xr.Dataset({name: data}), name, units)
 
     # Methods for radial cuts
@@ -171,11 +177,11 @@ class Variable:
         # Setup axes
         ax = viz.setup_radial_ax(ax)
         # Set colorbar string
-        kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
-        quad_mesh = time_slice.plot(x='phi', y='theta', ax=ax, **kwargs)
+        kwargs = self._set_cbar_label(kwargs, self.unit.to_string("latex"))
+        quad_mesh = time_slice.plot(x="phi", y="theta", ax=ax, **kwargs)
         # Plot formatting
-        r = r_slice['r'].values
-        ax.set_title(f'{self.name}, r={r:.2f}' + r'$R_{\odot}$')
+        r = r_slice["r"].values
+        ax.set_title(f"{self.name}, r={r:.2f}" + r"$R_{\odot}$")
         viz.format_radial_ax(ax)
 
         if t_idx is not None or self.n_timesteps == 1:
@@ -205,8 +211,7 @@ class Variable:
         # Need to save a copy of the title to reset it later, since xarray
         # tries to set it's own title that we don't want
         title = ax.get_title()
-        xr.plot.contour(sliced, x='phi', y='theta', ax=ax,
-                        levels=levels, **kwargs)
+        xr.plot.contour(sliced, x="phi", y="theta", ax=ax, levels=levels, **kwargs)
         ax.set_title(title)
         viz.format_radial_ax(ax)
 
@@ -236,14 +241,13 @@ class Variable:
         time_slice = phi_slice.isel(time=t_idx or 0)
 
         ax = viz.setup_polar_ax(ax)
-        kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
+        kwargs = self._set_cbar_label(kwargs, self.unit.to_string("latex"))
         # Take slice of data and plot
-        quad_mesh = time_slice.plot(x='theta', y='r', ax=ax, **kwargs)
+        quad_mesh = time_slice.plot(x="theta", y="r", ax=ax, **kwargs)
         viz.format_polar_ax(ax)
 
-        phi = np.rad2deg(time_slice['phi'].values)
-        ax.set_title(f'{self.name}, ' + r'$\phi$= ' + f'{phi:.2f}' +
-                     r'$^{\circ}$')
+        phi = np.rad2deg(time_slice["phi"].values)
+        ax.set_title(f"{self.name}, " + r"$\phi$= " + f"{phi:.2f}" + r"$^{\circ}$")
 
         if t_idx is not None or self.n_timesteps == 1:
             return quad_mesh
@@ -272,8 +276,7 @@ class Variable:
         # Need to save a copy of the title to reset it later, since xarray
         # tries to set it's own title that we don't want
         title = ax.get_title()
-        xr.plot.contour(sliced, x='theta', y='r', ax=ax,
-                        levels=levels, **kwargs)
+        xr.plot.contour(sliced, x="theta", y="r", ax=ax, levels=levels, **kwargs)
         viz.format_polar_ax(ax)
         ax.set_title(title)
 
@@ -309,12 +312,12 @@ class Variable:
         time_slice = theta_slice.isel(time=t_idx or 0)
 
         ax = viz.setup_polar_ax(ax)
-        kwargs = self._set_cbar_label(kwargs, self.unit.to_string('latex'))
+        kwargs = self._set_cbar_label(kwargs, self.unit.to_string("latex"))
         # Take slice of data and plot
-        quad_mesh = time_slice.plot(x='phi', y='r', ax=ax, **kwargs)
+        quad_mesh = time_slice.plot(x="phi", y="r", ax=ax, **kwargs)
         viz.format_equatorial_ax(ax)
 
-        ax.set_title(f'{self.name}, equatorial plane')
+        ax.set_title(f"{self.name}, equatorial plane")
 
         if t_idx is not None or self.n_timesteps == 1:
             return quad_mesh
@@ -341,8 +344,7 @@ class Variable:
         # Need to save a copy of the title to reset it later, since xarray
         # tries to set it's own title that we don't want
         title = ax.get_title()
-        xr.plot.contour(sliced, x='phi', y='r', ax=ax,
-                        levels=levels, **kwargs)
+        xr.plot.contour(sliced, x="phi", y="r", ax=ax, levels=levels, **kwargs)
         viz.format_equatorial_ax(ax)
         ax.set_title(title)
 
@@ -354,9 +356,9 @@ class Variable:
         # Copy kwargs to prevent modifying them inplace
         kwargs = copy.deepcopy(kwargs)
         # Set the colobar label with units
-        cbar_kwargs = kwargs.pop('cbar_kwargs', {})
-        cbar_kwargs['label'] = cbar_kwargs.pop('label', label)
-        kwargs['cbar_kwargs'] = cbar_kwargs
+        cbar_kwargs = kwargs.pop("cbar_kwargs", {})
+        cbar_kwargs["label"] = cbar_kwargs.pop("label", label)
+        kwargs["cbar_kwargs"] = cbar_kwargs
         return kwargs
 
     @u.quantity_input
@@ -386,20 +388,17 @@ class Variable:
         Linear interpolation is used to interpoalte between cells. See the
         docstring of `scipy.interpolate.interpn` for more information.
         """
-        dims = ['phi', 'theta', 'r', 'time']
+        dims = ["phi", "theta", "r", "time"]
         points = [self.data.coords[dim].values for dim in dims]
         values = self.data.values
 
         # Check that coordinates are increasing
         if not np.all(np.diff(points[1]) >= 0):
-            raise RuntimeError(
-                'Longitude coordinates are not monotonically increasing')
+            raise RuntimeError("Longitude coordinates are not monotonically increasing")
         if not np.all(np.diff(points[2]) >= 0):
-            raise RuntimeError(
-                'Latitude coordinates are not monotonically increasing')
+            raise RuntimeError("Latitude coordinates are not monotonically increasing")
         if not np.all(np.diff(points[3]) > 0):
-            raise RuntimeError(
-                'Radial coordinates are not monotonically increasing')
+            raise RuntimeError("Radial coordinates are not monotonically increasing")
 
         # Pad phi points so it's possible to interpolate all the way from
         # 0 to 360 deg
@@ -413,22 +412,22 @@ class Variable:
 
         if len(points[3]) == 1:
             # Only one timestep
-            xi = np.column_stack([lon.to_value(u.rad),
-                                  lat.to_value(u.rad),
-                                  r.to_value(const.R_sun)])
+            xi = np.column_stack(
+                [lon.to_value(u.rad), lat.to_value(u.rad), r.to_value(const.R_sun)]
+            )
             values = values[:, :, :, 0]
             points = points[:-1]
         else:
-            xi = np.column_stack([lon.to_value(u.rad),
-                                  lat.to_value(u.rad),
-                                  r.to_value(const.R_sun),
-                                  t])
+            xi = np.column_stack(
+                [lon.to_value(u.rad), lat.to_value(u.rad), r.to_value(const.R_sun), t]
+            )
 
         for i, dim in enumerate(dims[:-1]):
             bounds = np.min(points[i]), np.max(points[i])
             if not (np.all(bounds[0] <= xi[:, i]) and np.all(xi[:, i] <= bounds[1])):
-                raise ValueError(f"At least one point is outside bounds {bounds} in {dim} dimension.")
-
+                raise ValueError(
+                    f"At least one point is outside bounds {bounds} in {dim} dimension."
+                )
 
         values_x = interpolate.interpn(points, values, xi)
         return values_x * self._unit

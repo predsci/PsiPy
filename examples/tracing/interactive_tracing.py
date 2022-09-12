@@ -27,5 +27,5 @@ model = MASOutput(mas_path)
 # model) will lead to surprising edge effects.
 
 plotter = MASPlotter(model)
-plotter.add_tracing_seed_sphere(model['br'].r_coords[1])
+plotter.add_tracing_seed_sphere(model["br"].r_coords[1])
 plotter.show()

@@ -24,9 +24,9 @@ class add_common_docstring:
         self.kwargs = kwargs
 
     def __call__(self, func):
-        func.__doc__ = func.__doc__ if func.__doc__ else ''
-        self.append = self.append if self.append else ''
-        self.prepend = self.prepend if self.prepend else ''
+        func.__doc__ = func.__doc__ if func.__doc__ else ""
+        self.append = self.append if self.append else ""
+        self.prepend = self.prepend if self.prepend else ""
         if self.append and isinstance(func.__doc__, str):
             func.__doc__ += self.append
         if self.prepend and isinstance(func.__doc__, str):

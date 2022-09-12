@@ -5,7 +5,7 @@ import astropy.units as u
 import numpy as np
 from astropy.coordinates import spherical_to_cartesian
 
-__all__ = ['FieldLines', 'FieldLine']
+__all__ = ["FieldLines", "FieldLine"]
 
 
 @dataclass
@@ -13,6 +13,7 @@ class FieldLine:
     """
     A single field line.
     """
+
     r: np.ndarray
     lat: np.ndarray
     lon: np.ndarray
@@ -44,9 +45,9 @@ class FieldLine:
         """
         Spherical coordinates as a (n, 3) shaped array.
         """
-        return np.column_stack([self.r,
-                                self.lat.to_value(u.rad),
-                                self.lon.to_value(u.rad)])
+        return np.column_stack(
+            [self.r, self.lat.to_value(u.rad), self.lon.to_value(u.rad)]
+        )
 
 
 @dataclass
@@ -54,6 +55,7 @@ class FieldLines:
     """
     A container for multiple field lines.
     """
+
     flines: List[FieldLine]
 
     def __init__(self, xs):
@@ -64,8 +66,7 @@ class FieldLines:
             Field lines. Each array must have lon, lat, r columns in that
             order.
         """
-        self.flines = [FieldLine(r=x[:, 2], lat=x[:, 1], lon=x[:, 0])
-                       for x in xs]
+        self.flines = [FieldLine(r=x[:, 2], lat=x[:, 1], lon=x[:, 0]) for x in xs]
 
     def __getitem__(self, i):
         return self.flines[i]
@@ -90,8 +91,7 @@ class FieldLines:
         -----
         Arrays are saved using `numpy.savez_compressed`.
         """
-        np.savez_compressed(
-            filename, *[fline._rlatlon for fline in self.flines])
+        np.savez_compressed(filename, *[fline._rlatlon for fline in self.flines])
 
     @classmethod
     def load(cls, filename):

@@ -1,4 +1,3 @@
-
 import astropy.units as u
 import numpy as np
 
@@ -13,9 +12,9 @@ def test_tracer():
     model = MASOutput(mas_path)
     bs = model.cell_corner_b()
     # Fake data to be unit vectors pointing in radial direction
-    bs.loc[..., 'bp'] = 0
-    bs.loc[..., 'bt'] = 0
-    bs.loc[..., 'br'] = 1
+    bs.loc[..., "bp"] = 0
+    bs.loc[..., "bt"] = 0
+    bs.loc[..., "br"] = 1
 
     def cell_corner_b(self):
         return bs
@@ -33,7 +32,7 @@ def test_tracer():
 
     # Check that with auto step size, number of steps is close to number of
     # radial coordinates
-    assert len(bs.coords['r']) == 140
+    assert len(bs.coords["r"]) == 140
     assert flines[0].xyz.shape == (139, 3)
 
     tracer = FortranTracer(step_size=0.5)
@@ -54,10 +53,10 @@ def test_fline_io(mas_model, tmpdir):
 
     flines = tracer.trace(model, lon=lon, lat=lat, r=r)
     fline_0 = flines[0]
-    flines.save(tmpdir / 'flines.npz')
+    flines.save(tmpdir / "flines.npz")
     del flines
 
-    loaded_flines = FieldLines.load(tmpdir / 'flines.npz')
+    loaded_flines = FieldLines.load(tmpdir / "flines.npz")
     fline_1 = loaded_flines[0]
 
     np.testing.assert_allclose(fline_0.r, fline_1.r)

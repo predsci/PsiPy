@@ -24,15 +24,15 @@ model = MASOutput(mas_path)
 # coordinates of a variable
 rsun_to_au = float(const.R_sun / const.au)
 
-br = model['br']
-print(f'Old coords: {br.r_coords}')
+br = model["br"]
+print(f"Old coords: {br.r_coords}")
 br.r_coords = br.r_coords * rsun_to_au
-print(f'New coords: {br.r_coords}')
+print(f"New coords: {br.r_coords}")
 
 ###############################################################################
 # Plot
-cbar_kwargs = {'orientation': 'horizontal'}
-ax = plt.subplot(projection='polar')
+cbar_kwargs = {"orientation": "horizontal"}
+ax = plt.subplot(projection="polar")
 br.plot_equatorial_cut(ax=ax, cbar_kwargs=cbar_kwargs)
 
 plt.show()

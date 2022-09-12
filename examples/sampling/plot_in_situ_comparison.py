@@ -37,11 +37,11 @@ print(model.variables)
 #
 # Here we load the merged magnetic field and plasma data product, which has
 # an hourly data cadence.
-starttime = '2018-10-22'
-endtime = '2018-11-21'
+starttime = "2018-10-22"
+endtime = "2018-11-21"
 psp_data = psp.merged_mag_plasma(starttime, endtime)
 # Convert the density units to 1/cm**3 so they're the same as the MAS units
-psp_data.units['protonDensity'] /= u.N
+psp_data.units["protonDensity"] /= u.N
 print(psp_data.columns)
 
 ###############################################################################
@@ -51,10 +51,10 @@ print(psp_data.columns)
 # to generate the trajectory at these times.
 times = psp_data.index
 
-spicedata.get_kernel('psp')
-spicedata.get_kernel('psp_pred')
-psp_traj = spice.Trajectory('SPP')
-psp_traj.generate_positions(times, 'Sun', 'IAU_SUN')
+spicedata.get_kernel("psp")
+spicedata.get_kernel("psp_pred")
+psp_traj = spice.Trajectory("SPP")
+psp_traj.generate_positions(times, "Sun", "IAU_SUN")
 psp_coords = psp_traj.coords
 print(psp_coords)
 
@@ -63,18 +63,18 @@ print(psp_coords)
 #
 # Here we start by getting the radial velocity `Variable` from the model, and
 # then use the PSP corodinate information to sample it.
-vr_model = model['vr']
-vr_sampled = vr_model.sample_at_coords(psp_coords.lon,
-                                       psp_coords.lat,
-                                       psp_coords.radius)
+vr_model = model["vr"]
+vr_sampled = vr_model.sample_at_coords(
+    psp_coords.lon, psp_coords.lat, psp_coords.radius
+)
 
 ###############################################################################
 # We can now plot a comparison between the model and in-situ measurements.
 fig, ax = plt.subplots()
-ax.plot(times, vr_sampled, label='Model')
-ax.plot(times, psp_data.quantity('VR'), label='PSP')
+ax.plot(times, vr_sampled, label="Model")
+ax.plot(times, psp_data.quantity("VR"), label="PSP")
 
-ax.set_ylabel(r'$v_{r}$ (km/s)')
+ax.set_ylabel(r"$v_{r}$ (km/s)")
 ax.legend()
 fig.autofmt_xdate()
 
@@ -82,19 +82,19 @@ fig.autofmt_xdate()
 # To finish, we'll perform the same comparison, but with a few different
 # variables.
 fig, axs = plt.subplots(nrows=3, sharex=True)
-for ax, mas_name, psp_name in zip(axs,
-                                  ['rho', 'vr', 'br'],
-                                  ['protonDensity', 'VR', 'BR']):
+for ax, mas_name, psp_name in zip(
+    axs, ["rho", "vr", "br"], ["protonDensity", "VR", "BR"]
+):
     model_var = model[mas_name]
-    sampled = model_var.sample_at_coords(psp_coords.lon,
-                                         psp_coords.lat,
-                                         psp_coords.radius)
+    sampled = model_var.sample_at_coords(
+        psp_coords.lon, psp_coords.lat, psp_coords.radius
+    )
 
     in_situ = psp_data.quantity(psp_name)
 
     # Note that we convert the sampled data to the same units as the PSP data
-    ax.plot(times, sampled.to(in_situ.unit), label='Model')
-    ax.plot(times, in_situ, label='PSP')
+    ax.plot(times, sampled.to(in_situ.unit), label="Model")
+    ax.plot(times, in_situ, label="PSP")
 
     ax.set_ylabel(str(model_var.unit))
     ax.legend()

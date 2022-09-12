@@ -3,7 +3,7 @@ import numpy as np
 
 from .flines import FieldLines
 
-__all__ = ['FortranTracer']
+__all__ = ["FortranTracer"]
 
 
 class FortranTracer:
@@ -25,17 +25,19 @@ class FortranTracer:
     singularity at the poles, which means seeds placed directly on the poles
     will not go anywhere.
     """
-    def __init__(self, max_steps='auto', step_size=1):
+
+    def __init__(self, max_steps="auto", step_size=1):
         try:
             import streamtracer  # NoQA
         except ModuleNotFoundError as e:
             raise RuntimeError(
-                'Using FortranTracer requires the streamtracer module, '
-                'but streamtracer could not be loaded') from e
+                "Using FortranTracer requires the streamtracer module, "
+                "but streamtracer could not be loaded"
+            ) from e
         self.max_steps = max_steps
         self.step_size = step_size
         self.max_steps = max_steps
-        max_steps = 1 if max_steps == 'auto' else max_steps
+        max_steps = 1 if max_steps == "auto" else max_steps
         # We have to set max_steps and step_size here to create a tracer,
 
     def _vector_grid(self, mas_output, t_idx):
@@ -52,17 +54,18 @@ class FortranTracer:
         from streamtracer import VectorGrid
 
         # Account for tracing in spherical coordinates
-        bs.loc[..., 'bp'] /= np.cos(bs.coords['theta'])
-        bs.loc[..., 'bp'] /= bs.coords['r']
-        bs.loc[..., 'bt'] /= bs.coords['r']
+        bs.loc[..., "bp"] /= np.cos(bs.coords["theta"])
+        bs.loc[..., "bp"] /= bs.coords["r"]
+        bs.loc[..., "bt"] /= bs.coords["r"]
 
         # cyclic only in the phi direction
         cyclic = [True, False, False]
-        grid_coords = [bs.coords['phi'].values,
-                       bs.coords['theta'].values,
-                       bs.coords['r'].values]
-        vector_grid = VectorGrid(bs.data, cyclic=cyclic,
-                                 grid_coords=grid_coords)
+        grid_coords = [
+            bs.coords["phi"].values,
+            bs.coords["theta"].values,
+            bs.coords["r"].values,
+        ]
+        vector_grid = VectorGrid(bs.data, cyclic=cyclic, grid_coords=grid_coords)
         return vector_grid
 
     @u.quantity_input
@@ -94,8 +97,9 @@ class FortranTracer:
 
     def _trace_from_grid(self, grid, seeds):
         from streamtracer import StreamTracer
+
         seeds = np.atleast_2d(seeds)
-        if self.max_steps == 'auto':
+        if self.max_steps == "auto":
             max_steps = int(4 * len(grid.zcoords) / self.step_size)
         else:
             max_steps = self.max_steps

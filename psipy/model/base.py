@@ -3,7 +3,7 @@ from pathlib import Path
 
 from .variable import Variable
 
-__all__ = ['ModelOutput']
+__all__ = ["ModelOutput"]
 
 
 class ModelOutput(abc.ABC):
@@ -34,6 +34,7 @@ class ModelOutput(abc.ABC):
     path :
         Path to the directry containing the model output files.
     """
+
     def __init__(self, path):
         self.path = Path(path)
         # Leave data empty for now, as we want to load on demand
@@ -43,13 +44,13 @@ class ModelOutput(abc.ABC):
         self._variables.sort()
 
     def __str__(self):
-        return (f'{self.__class__.__name__}\n'
-                f'Variables: {self.variables}')
+        return f"{self.__class__.__name__}\n" f"Variables: {self.variables}"
 
     def __getitem__(self, var):
         if var not in self.variables:
-            raise RuntimeError(f'{var} not in list of known variables: '
-                               f'{self._variables}')
+            raise RuntimeError(
+                f"{var} not in list of known variables: " f"{self._variables}"
+            )
         if var in self.loaded_variables:
             return self._data[var]
 
@@ -59,8 +60,9 @@ class ModelOutput(abc.ABC):
         try:
             unit, factor = self.get_unit(var)
         except Exception as e:
-            raise RuntimeError('Do not know what units are for '
-                               f'variable "{var}"') from e
+            raise RuntimeError(
+                "Do not know what units are for " f'variable "{var}"'
+            ) from e
 
         data *= factor
         self._data[var] = Variable(data, var, unit)

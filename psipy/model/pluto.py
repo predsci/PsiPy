@@ -3,7 +3,7 @@ import astropy.units as u
 from psipy.io import get_pluto_variables, read_pluto_files
 from .base import ModelOutput
 
-__all__ = ['PLUTOOutput']
+__all__ = ["PLUTOOutput"]
 
 
 class PLUTOOutput(ModelOutput):
@@ -22,6 +22,7 @@ class PLUTOOutput(ModelOutput):
     use `PLUTOOutput.variables`, and to see the list of already loaded variables
     use `PLUTOOutput.loaded_variables`.
     """
+
     def get_unit(self, var):
         return u.dimensionless_unscaled, 1
 
