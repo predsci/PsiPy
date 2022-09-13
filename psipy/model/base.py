@@ -65,7 +65,9 @@ class ModelOutput(abc.ABC):
             ) from e
 
         data *= factor
-        self._data[var] = Variable(data, var, unit)
+
+        runit = self.get_runit()
+        self._data[var] = Variable(data, var, unit, runit)
         return self._data[var]
 
     # Abstract methods start here

@@ -43,10 +43,13 @@ class Variable:
     name : str
         Variable name.
     unit : astropy.units.Quantity
-        Variable unit.
+        Variable unit for the scalar data.
+    r_unit : astropy.units.Quantity
+        Unit for the radial coordinates.
     """
 
-    def __init__(self, data, name, unit):
+    @u.quantity_input
+    def __init__(self, data, name, unit, runit: u.m):
         # Convert from xarray Dataset to DataArray
         self._data = data[name]
         # Sort the data once now for any interpolation later
@@ -54,6 +57,7 @@ class Variable:
         self._data = self._data.sortby(["phi", "theta", "r", "time"])
         self.name = name
         self._unit = unit
+        self._runit = runit
 
     def __str__(self):
         return textwrap.dedent(
@@ -92,11 +96,13 @@ class Variable:
         """
         Radial coordinate values.
         """
-        return self._data.coords["r"].values
+        return self._data.coords["r"].values * self._runit
 
     @r_coords.setter
-    def r_coords(self, coords):
-        self._data.coords["r"] = coords
+    @u.quantity_input
+    def r_coords(self, coords: u.m):
+        self._data.coords["r"] = coords.value
+        self._runit = coords.unit
 
     @property
     def theta_coords(self):
@@ -141,12 +147,13 @@ class Variable:
         -------
         Variable
         """
-        r = self.data.coords["r"]
-        rsun_au = float(u.AU / const.R_sun)
-        data = self.data * (r * rsun_au) ** radial_exponent
-        units = self.unit * (u.AU) ** radial_exponent
+        norm_factor = (self.r_coords / const.R_sun).to_value(
+            u.dimensionless_unscaled
+        ) ** radial_exponent
+        data = xr.dot(self.data, xr.Variable("r", norm_factor), dims=())
         name = self.name + f" $r^{radial_exponent}$"
-        return Variable(xr.Dataset({name: data}), name, units)
+        unit = self.unit
+        return Variable(xr.Dataset({name: data}), name, unit, self._runit)
 
     # Methods for radial cuts
     @add_common_docstring(returns_doc=returns_doc)
@@ -413,20 +420,21 @@ class Variable:
         if len(points[3]) == 1:
             # Only one timestep
             xi = np.column_stack(
-                [lon.to_value(u.rad), lat.to_value(u.rad), r.to_value(const.R_sun)]
+                [lon.to_value(u.rad), lat.to_value(u.rad), r.to_value(self._runit)]
             )
             values = values[:, :, :, 0]
             points = points[:-1]
         else:
             xi = np.column_stack(
-                [lon.to_value(u.rad), lat.to_value(u.rad), r.to_value(const.R_sun), t]
+                [lon.to_value(u.rad), lat.to_value(u.rad), r.to_value(self._runit), t]
             )
 
         for i, dim in enumerate(dims[:-1]):
             bounds = np.min(points[i]), np.max(points[i])
-            if not (np.all(bounds[0] <= xi[:, i]) and np.all(xi[:, i] <= bounds[1])):
+            coord_bounds = np.min(xi[:, i]), np.max(xi[:, i])
+            if not (bounds[0] <= coord_bounds[0] and coord_bounds[1] <= bounds[1]):
                 raise ValueError(
-                    f"At least one point is outside bounds {bounds} in {dim} dimension."
+                    f"At least one sample coordinate is outside bounds {bounds} in {dim} dimension. Sample coordinate min/max values are {coord_bounds}."
                 )
 
         values_x = interpolate.interpn(points, values, xi)

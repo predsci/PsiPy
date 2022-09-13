@@ -13,19 +13,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from psipy.data import sample_data
-from psipy.model import MASOutput
+from psipy.model import PLUTOOutput
 
 ###############################################################################
 # Load a set of MAS output files, and get the number density variable from the
 # model run. This example works with PLUTO data too. Uncomment the comment
 # block below (and comment out the MAS block!)
 """
-from psipy.model import PLUTOOutput
-pluto_path = sample_data.plut_sample_data()
-model = PLUTOOutput(mas_path)
-"""
+from psipy.model import MASOutput
 mas_path = sample_data.mas_sample_data()
 model = MASOutput(mas_path)
+"""
+pluto_path = sample_data.pluto_sample_data()
+model = PLUTOOutput(pluto_path)
 rho = model["rho"]
 
 ###############################################################################
@@ -55,4 +55,5 @@ ax.set_ylim(bottom=0)
 ax.set_xlabel("Longitude (deg)")
 ax.set_ylabel(r"$\rho$ (cm$^{-3}$)")
 ax.set_xticks([0, 90, 180, 270, 360])
+ax.set_title(f"r={r[0].to_value(const.R_sun):.02f} R_sun")
 plt.show()

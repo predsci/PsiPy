@@ -20,13 +20,11 @@ mas_path = sample_data.mas_sample_data()
 model = MASOutput(mas_path)
 
 ###############################################################################
-# Define a conversion factor from solar radii to AU, and apply this to the
-# coordinates of a variable
-rsun_to_au = float(const.R_sun / const.au)
+# Convert from solar radii to AU
 
 br = model["br"]
 print(f"Old coords: {br.r_coords}")
-br.r_coords = br.r_coords * rsun_to_au
+br.r_coords = br.r_coords.to(const.au)
 print(f"New coords: {br.r_coords}")
 
 ###############################################################################

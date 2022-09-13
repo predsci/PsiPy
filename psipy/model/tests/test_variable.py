@@ -35,9 +35,9 @@ def test_sample_at_coords_mas(mas_model, lon, lat, r):
 @pytest.mark.parametrize(
     "lon, lat, r",
     [
-        (1 * u.deg, 1 * u.deg, 1 * const.R_sun),
-        ([1, 2] * u.deg, [1, 2] * u.deg, [1, 1.01] * const.R_sun),
-        ([1, 0] * u.deg, [1, 0] * u.deg, [1, 1.01] * const.R_sun),
+        (1 * u.deg, 1 * u.deg, 1 * const.au),
+        ([1, 2] * u.deg, [1, 2] * u.deg, [1, 1.01] * const.au),
+        ([1, 0] * u.deg, [1, 0] * u.deg, [1, 1.01] * const.au),
     ],
 )
 def test_sample_at_coords_pluto(pluto_model, lon, lat, r):
