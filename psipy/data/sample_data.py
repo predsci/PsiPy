@@ -3,6 +3,7 @@ Helper functions for downloading sample model output data.
 """
 import shutil
 from pathlib import Path
+from typing import Dict
 
 import pooch
 
@@ -13,11 +14,11 @@ file_url = "cr{cr}-medium/hmi_masp_mas_std_0201/{type}/{var}002.hdf"
 cache_dir = pooch.os_cache("psipy")
 
 
-def _get_url(*, type: str, var: str, cr: int = 2210):
+def _get_url(*, type: str, var: str, cr: int = 2210) -> str:
     return file_url.format(cr=cr, type=type, var=var)
 
 
-registry = {}
+registry: Dict[str, None] = {}
 
 # Add consecutive Carrington rotation sample data
 for cr in [2210, 2211]:
@@ -37,7 +38,7 @@ mas_pooch = pooch.create(
 )
 
 # Add some PLUTO data
-pluto_reg = {}
+pluto_reg: Dict[str, None] = {}
 PLUTO_FILES = ["grid.out", "dbl.out", "rho.0000.dbl"]
 for file in PLUTO_FILES:
     pluto_reg[file] = None

@@ -98,9 +98,6 @@ class MASPlotter:
         flines = self.tracer.trace(self.mas_output, r=r, lat=lat, lon=lon)
         self.add_fline(flines[0])
 
-    def show(self, *args, **kwargs):
-        return self.pvplotter.show(*args, **kwargs)
-
     def _end_pick_event(self, picker, event):
         picked_point = np.array(picker.GetPickPosition())
         self.pvplotter.add_mesh(
