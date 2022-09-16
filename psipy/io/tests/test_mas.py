@@ -1,3 +1,6 @@
+import os
+
+import numpy as np
 import pytest
 import xarray as xr
 
@@ -18,6 +21,21 @@ def test_read_mas_file(mas_directory):
     data = mas.read_mas_file(mas_directory, "rho")
     assert isinstance(data, xr.Dataset)
     assert "rho" in data
+
+
+def test_read_six_digit_mas_file(mas_directory):
+    # Check that loading a six digit timestamped file works
+    # Pretend that there's a file with 1 timestamp in the directory
+    try:
+        new_file = mas_directory / "rho123456.hdf"
+        os.symlink(mas_directory / "rho002.hdf", new_file)
+        data = mas.read_mas_file(mas_directory, "rho")
+        assert isinstance(data, xr.Dataset)
+        assert "rho" in data
+        assert data.dims["time"] == 2
+        np.testing.assert_array_equal(data.coords["time"], [2, 123456])
+    finally:
+        os.remove(new_file)
 
 
 def test_save_netcdf(mas_directory):
