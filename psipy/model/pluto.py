@@ -1,4 +1,3 @@
-import astropy.constants as const
 import astropy.units as u
 
 from psipy.io import get_pluto_variables, read_pluto_files
@@ -28,7 +27,7 @@ class PLUTOOutput(ModelOutput):
         return u.dimensionless_unscaled, 1
 
     def get_runit(self):
-        return const.au
+        return u.AU
 
     def get_variables(self):
         return get_pluto_variables(self.path)

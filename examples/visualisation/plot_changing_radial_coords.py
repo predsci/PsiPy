@@ -7,7 +7,7 @@ want to change the radial coordinates e.g. from solar radii to AU.
 """
 ###############################################################################
 # First, load the required modules.
-import astropy.constants as const
+import astropy.units as u
 import matplotlib.pyplot as plt
 
 from psipy.data import sample_data
@@ -24,7 +24,7 @@ model = MASOutput(mas_path)
 
 br = model["br"]
 print(f"Old coords: {br.r_coords}")
-br.r_coords = br.r_coords.to(const.au)
+br.r_coords = br.r_coords.to(u.AU)
 print(f"New coords: {br.r_coords}")
 
 ###############################################################################
