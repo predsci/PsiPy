@@ -97,7 +97,6 @@ class Variable:
         return self._data.coords["r"].values * self._runit
 
     @r_coords.setter
-    @u.quantity_input
     def r_coords(self, coords: u.m):
         self._data.coords["r"] = coords.value
         self._runit = coords.unit
