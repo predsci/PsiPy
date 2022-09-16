@@ -28,7 +28,7 @@ model = MASOutput(mas_path)
 tracer = FortranTracer()
 
 nseeds = 20
-r = np.ones(nseeds**2) * 40
+r = np.ones(nseeds**2) * 40 * u.R_sun
 lat = np.linspace(-45, 45, nseeds**2, endpoint=False) * u.deg
 lon = np.random.rand(nseeds**2) * 360 * u.deg
 

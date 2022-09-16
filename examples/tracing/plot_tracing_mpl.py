@@ -25,7 +25,7 @@ tracer = FortranTracer()
 
 nseeds = 5
 # Radius
-r = np.ones(nseeds**2) * 40
+r = np.ones(nseeds**2) * 40 * u.R_sun
 # Some points near the equatorial plane
 lat = np.linspace(-10, 10, nseeds**2, endpoint=False) * u.deg
 # Choose random longitudes

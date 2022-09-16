@@ -1,3 +1,4 @@
+import astropy.units as u
 import numpy as np
 import pyvista as pv
 from astropy.coordinates import cartesian_to_spherical
@@ -29,13 +30,14 @@ class MASPlotter:
         kwargs["pickable"] = kwargs.get("pickable", False)
         self.pvplotter.add_mesh(spline, **kwargs)
 
-    def add_sphere(self, radius, **kwargs):
+    @u.quantity_input
+    def add_sphere(self, radius: u.m, **kwargs):
         """
         Add a sphere at a given radius.
 
         Parameters
         ----------
-        radius : float
+        radius : astropy.units.Quantity
             Radius of the sphere.
         kwargs :
             Additional keyword arguments are passed to `pyvista.Sphere`, for
@@ -45,6 +47,7 @@ class MASPlotter:
         -------
         pyvista.Sphere
         """
+        radius = radius.to_value(self.mas_output.get_runit())
         sphere = pv.Sphere(radius=radius, theta_resolution=180, phi_resolution=360)
         self.pvplotter.add_mesh(sphere, **kwargs)
         return sphere
@@ -52,13 +55,14 @@ class MASPlotter:
     def show(self, *args, **kwargs):
         return self.pvplotter.show(*args, **kwargs)
 
-    def add_tracing_seed_sphere(self, radius, **kwargs):
+    @u.quantity_input
+    def add_tracing_seed_sphere(self, radius: u.m, **kwargs):
         """
         Add a sphere to trace field lines from.
 
         Parameters
         ----------
-        radius : float
+        radius : astropy.units.Qantity
             Radius of the sphere.
         kwargs :
             Additional keyword arguments are passed to `pyvista.Sphere`, for
