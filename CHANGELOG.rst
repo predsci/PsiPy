@@ -3,10 +3,18 @@ Changelog
 
 Version 0.3.1
 -------------
+Breaking changes
+~~~~~~~~~~~~~~~~
+- The radial coordinate input to `psipy.tracing.FortranTracer.trace` is now required to be
+  a :class:`~astropy.units.Quantity` (with length units) instead of a plain numpy array.
+- The radial coordinate input to the sphere methods on `psipy.visualization.pyvista.MASPlotter` is now required to be
+  a :class:`~astropy.units.Quantity` (with length units) instead of a plain numpy array.
+
 Bug fixes
 ~~~~~~~~~
 - Fixed the in-situ sampling example.
 - Fixed the multiple-time step sample data only returning a single file.
+- Fixed radial coordinate units in PLUTO outputs.
 
 Version 0.3.0
 -------------

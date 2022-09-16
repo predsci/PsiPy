@@ -16,7 +16,7 @@ is called to trace field lines from these points:
 .. code-block:: python
 
   import astropy.units as u
-  import numpy as np 
+  import numpy as np
   from psipy.tracing import FortranTracer
   tracer = FortranTracer()
 
@@ -77,7 +77,7 @@ model:
     # Set color with polarity near the inner boundary
     color = br.sample_at_coords(np.mod(fline.lon[1], 2 * np.pi * u.rad),
                                 fline.lat[1],
-                                fline.r[1] * const.R_sun) > 0
+                                fline.r[1] * u.R_sun) > 0
     color = {0: 'red', 1: 'blue'}[int(color)]
     # Add field line to the plotter
     plotter.add_fline(fline, color=color)

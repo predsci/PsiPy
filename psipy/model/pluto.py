@@ -26,6 +26,9 @@ class PLUTOOutput(ModelOutput):
     def get_unit(self, var):
         return u.dimensionless_unscaled, 1
 
+    def get_runit(self):
+        return u.AU
+
     def get_variables(self):
         return get_pluto_variables(self.path)
 

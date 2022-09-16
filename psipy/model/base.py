@@ -47,11 +47,15 @@ class ModelOutput(abc.ABC):
         return f"{self.__class__.__name__}\n" f"Variables: {self.variables}"
 
     def __getitem__(self, var):
+        """
+        Get a single variable.
+        """
         if var not in self.variables:
             raise RuntimeError(
                 f"{var} not in list of known variables: " f"{self._variables}"
             )
         if var in self.loaded_variables:
+            # Already loaded
             return self._data[var]
 
         data = self.load_file(var)
@@ -63,9 +67,11 @@ class ModelOutput(abc.ABC):
             raise RuntimeError(
                 "Do not know what units are for " f'variable "{var}"'
             ) from e
-
         data *= factor
-        self._data[var] = Variable(data, var, unit)
+
+        runit = self.get_runit()
+        # Save a reference on this ModelOutput object
+        self._data[var] = Variable(data, var, unit, runit)
         return self._data[var]
 
     # Abstract methods start here

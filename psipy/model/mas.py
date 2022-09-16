@@ -53,6 +53,9 @@ class MASOutput(ModelOutput):
     def get_unit(self, var):
         return _mas_units[var]
 
+    def get_runit(self):
+        return u.R_sun
+
     def get_variables(self):
         return get_mas_variables(self.path)
 

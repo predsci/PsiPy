@@ -69,7 +69,7 @@ class FortranTracer:
         return vector_grid
 
     @u.quantity_input
-    def trace(self, mas_output, *, r, lat: u.rad, lon: u.rad, t_idx=None):
+    def trace(self, mas_output, *, r: u.m, lat: u.rad, lon: u.rad, t_idx=None):
         """
         Trace field lines.
 
@@ -78,9 +78,8 @@ class FortranTracer:
         mas_output : psipy.model.MASOutput
             MAS model output. Must have all three magnetic field components
             available.
-        r : numpy.ndarray
-            Radial seed coordinates. These are interpreted in units equivalent
-            to the ``mas_output`` radial units.
+        r : astropy.units.Quantity
+            Radial seed coordinates.
         lat : astropy.units.Quantity
             Latitude seed points. Must be same shape as ``r``.
         lon : astropy.units.Quantity
@@ -89,6 +88,7 @@ class FortranTracer:
             Time slice of the ``mas_output`` to trace through. Doesn't need to
             be specified if only one time step is present.
         """
+        r = r.to_value(mas_output.get_runit())
         lat = lat.to_value(u.rad)
         lon = lon.to_value(u.rad)
         seeds = np.stack([lon, lat, r], axis=-1)

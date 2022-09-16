@@ -9,7 +9,6 @@ much more performant in comparison.
 """
 ###############################################################################
 # First, load the required modules.
-import astropy.constants as const
 import astropy.units as u
 import numpy as np
 
@@ -29,7 +28,7 @@ model = MASOutput(mas_path)
 tracer = FortranTracer()
 
 nseeds = 20
-r = np.ones(nseeds**2) * 40
+r = np.ones(nseeds**2) * 40 * u.R_sun
 lat = np.linspace(-45, 45, nseeds**2, endpoint=False) * u.deg
 lon = np.random.rand(nseeds**2) * 360 * u.deg
 
@@ -47,7 +46,7 @@ for fline in flines:
         br.sample_at_coords(
             np.mod(fline.lon[1], 2 * np.pi * u.rad),
             fline.lat[1],
-            fline.r[1] * const.R_sun,
+            fline.r[1] * u.R_sun,
         )
         > 0
     )
