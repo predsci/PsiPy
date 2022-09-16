@@ -12,6 +12,7 @@ Bug fixes
 ~~~~~~~~~
 - Fixed the in-situ sampling example.
 - Fixed the multiple-time step sample data only returning a single file.
+- Fixed radial coordinate units in PLUTO outputs.
 
 Version 0.3.0
 -------------
