@@ -1,4 +1,3 @@
-import astropy.constants as const
 import astropy.units as u
 import numpy as np
 
@@ -24,7 +23,7 @@ def test_tracer():
 
     tracer = FortranTracer()
 
-    r = 40 * const.R_sun
+    r = 40 * u.R_sun
     lat = 0 * u.deg
     lon = 0 * u.deg
 
@@ -48,7 +47,7 @@ def test_fline_io(mas_model, tmpdir):
     model = MASOutput(mas_path)
     tracer = FortranTracer()
 
-    r = 40 * const.R_sun
+    r = 40 * u.R_sun
     lat = 0 * u.deg
     lon = 0 * u.deg
 

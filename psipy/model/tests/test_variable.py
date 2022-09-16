@@ -1,4 +1,3 @@
-import astropy.constants as const
 import astropy.units as u
 import pytest
 
@@ -20,9 +19,9 @@ def test_radial_normalised(mas_model):
 @pytest.mark.parametrize(
     "lon, lat, r",
     [
-        (1 * u.deg, 1 * u.deg, 30 * const.R_sun),
-        ([1, 2] * u.deg, [1, 2] * u.deg, [30, 31] * const.R_sun),
-        ([1, 0] * u.deg, [1, 0] * u.deg, [30, 31] * const.R_sun),
+        (1 * u.deg, 1 * u.deg, 30 * u.R_sun),
+        ([1, 2] * u.deg, [1, 2] * u.deg, [30, 31] * u.R_sun),
+        ([1, 0] * u.deg, [1, 0] * u.deg, [30, 31] * u.R_sun),
     ],
 )
 def test_sample_at_coords_mas(mas_model, lon, lat, r):

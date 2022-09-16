@@ -1,7 +1,6 @@
 import copy
 import textwrap
 
-import astropy.constants as const
 import astropy.units as u
 import numpy as np
 import xarray as xr
@@ -48,8 +47,7 @@ class Variable:
         Unit for the radial coordinates.
     """
 
-    @u.quantity_input
-    def __init__(self, data, name, unit, runit: u.m):
+    def __init__(self, data, name, unit, runit):
         # Convert from xarray Dataset to DataArray
         self._data = data[name]
         # Sort the data once now for any interpolation later
@@ -147,7 +145,7 @@ class Variable:
         -------
         Variable
         """
-        norm_factor = (self.r_coords / const.R_sun).to_value(
+        norm_factor = (self.r_coords / u.R_sun).to_value(
             u.dimensionless_unscaled
         ) ** radial_exponent
         data = xr.dot(self.data, xr.Variable("r", norm_factor), dims=())

@@ -5,7 +5,6 @@ Visualising traced field lines with Matplotlib.
 """
 ###############################################################################
 # First, load the required modules.
-import astropy.constants as const
 import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
@@ -52,7 +51,7 @@ for fline in flines:
         br.sample_at_coords(
             np.mod(fline.lon[0], 2 * np.pi * u.rad),
             fline.lat[0],
-            fline.r[0] * const.R_sun,
+            fline.r[0] * u.R_sun,
         )
         > 0
     )

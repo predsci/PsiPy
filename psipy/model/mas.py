@@ -1,4 +1,3 @@
-import astropy.constants as const
 import astropy.units as u
 import numpy as np
 import scipy.interpolate
@@ -55,7 +54,7 @@ class MASOutput(ModelOutput):
         return _mas_units[var]
 
     def get_runit(self):
-        return const.R_sun
+        return u.R_sun
 
     def get_variables(self):
         return get_mas_variables(self.path)
