@@ -3,7 +3,9 @@ Sampling data from a 3D model
 =============================
 
 In this example we'll see how to sample a 3D model output at arbitrary points
-within the model domain.
+within the model domain. This example uses a model with a single timestep,
+so the time at which data is interpolated doesn't need to be specified.
+See
 """
 ###############################################################################
 # First, load the required modules.
