@@ -1,6 +1,6 @@
 """
 Sampling data across timesteps
-=============================-
+==============================
 
 In this example we'll see how to sample a 3D model across multiple timesteps.
 """
