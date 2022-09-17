@@ -1,5 +1,6 @@
 import copy
 import textwrap
+from typing import Optional
 
 import astropy.units as u
 import numpy as np
@@ -366,7 +367,9 @@ class Variable:
         return kwargs
 
     @u.quantity_input
-    def sample_at_coords(self, lon: u.deg, lat: u.deg, r: u.m, t=None):
+    def sample_at_coords(
+        self, lon: u.deg, lat: u.deg, r: u.m, t: Optional[np.ndarray] = None
+    ) -> u.Quantity:
         """
         Sample this variable along a 1D trajectory of coordinates.
 
