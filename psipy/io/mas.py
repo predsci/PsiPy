@@ -9,7 +9,9 @@ structure '{var}{timestep}.{extension}', where:
 - 'extension' is '.hdf' or '.h5'
 """
 import glob
+import os
 from pathlib import Path
+from typing import List
 
 import numpy as np
 import xarray as xr
@@ -19,9 +21,12 @@ from .util import read_hdf4, read_hdf5
 __all__ = ["read_mas_file", "get_mas_variables", "convert_hdf_to_netcdf"]
 
 
-def get_mas_filenames(directory, var):
+def get_mas_filenames(directory: os.PathLike, var: str) -> List[str]:
+    """
+    Get all MAS filenames in a given directory for a given variable.
+    """
     directory = Path(directory)
-    return sorted(glob.glob(str(directory / f"{var}[0-9][0-9][0-9].*")))
+    return sorted(glob.glob(str(directory / f"{var}*")))
 
 
 def read_mas_file(directory, var):
@@ -122,8 +127,13 @@ def get_mas_variables(path):
     return list(set(var_names))
 
 
-def get_timestep(path):
+def get_timestep(path: os.PathLike) -> int:
     """
     Extract the timestep from a given MAS output filename.
     """
-    return int(Path(path).stem[-3:])
+    fname = Path(path).stem
+    for i, char in enumerate(fname):
+        if char.isdigit():
+            return int(fname[i:])
+
+    raise RuntimeError(f"Failed to parse timestamp from {path}")

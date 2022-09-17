@@ -3,6 +3,10 @@ Changelog
 
 Version 0.3.1
 -------------
+New features
+~~~~~~~~~~~~
+- MAS output files with timestamps > 3 digits long can now be read in.
+
 Breaking changes
 ~~~~~~~~~~~~~~~~
 - The radial coordinate input to `psipy.tracing.FortranTracer.trace` is now required to be
