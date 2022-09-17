@@ -9,7 +9,7 @@ New features
 
 New behaviour
 ~~~~~~~~~~~~~
-- `psipy.model.Variable.sample_at_coords` will now return ``NaN`` for
+- `psipy.model.variable.Variable.sample_at_coords` will now return ``NaN`` for
   any sample points that are out of bounds, and raise a warning letting
   the user know some points were out of bounds.
 
