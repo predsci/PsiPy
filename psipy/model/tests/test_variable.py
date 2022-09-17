@@ -1,4 +1,5 @@
 import astropy.units as u
+import numpy as np
 import pytest
 
 from psipy.model import Variable
@@ -44,3 +45,20 @@ def test_sample_at_coords_pluto(pluto_model, lon, lat, r):
     rho = pluto_model["rho"].sample_at_coords(lon=lon, lat=lat, r=r)
     assert rho.unit == pluto_model["rho"].unit
     assert u.allclose(rho[0], [13.50442343])
+
+
+def test_sample_out_of_bounds(pluto_model):
+    lon = [0, 0, 0] * u.deg
+    lat = [0, 0, 0] * u.deg
+    rho = pluto_model["rho"]
+    # Check point below bounds, in bounds, above bounds
+    r = [0, 0.5, 2] * u.AU
+    assert r[0] < rho.r_coords[0]
+    assert rho.r_coords[0] < r[1] < rho.r_coords[-1]
+    assert rho.r_coords[-1] < r[2]
+    # Check scalar coords
+    with pytest.warns(UserWarning, match="outside bounds"):
+        samples = rho.sample_at_coords(lon=lon, lat=lat, r=r)
+    assert np.isnan(samples[0])
+    assert not np.isnan(samples[1])
+    assert np.isnan(samples[2])

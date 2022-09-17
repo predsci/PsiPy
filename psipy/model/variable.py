@@ -1,5 +1,6 @@
 import copy
 import textwrap
+import warnings
 from typing import Optional
 
 import astropy.units as u
@@ -433,9 +434,11 @@ class Variable:
             bounds = np.min(points[i]), np.max(points[i])
             coord_bounds = np.min(xi[:, i]), np.max(xi[:, i])
             if not (bounds[0] <= coord_bounds[0] and coord_bounds[1] <= bounds[1]):
-                raise ValueError(
+                warnings.warn(
                     f"At least one sample coordinate is outside bounds {bounds} in {dim} dimension. Sample coordinate min/max values are {coord_bounds}."
                 )
 
-        values_x = interpolate.interpn(points, values, xi)
+        values_x = interpolate.interpn(
+            points, values, xi, bounds_error=False, fill_value=np.nan
+        )
         return values_x * self._unit
