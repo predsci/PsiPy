@@ -1,7 +1,11 @@
+from typing import Optional, Union
+
 import astropy.units as u
 import numpy as np
+import xarray as xr
 
-from .flines import FieldLines
+from psipy.model import MASOutput
+from psipy.tracing.flines import FieldLines
 
 __all__ = ["FortranTracer"]
 
@@ -26,7 +30,7 @@ class FortranTracer:
     will not go anywhere.
     """
 
-    def __init__(self, max_steps="auto", step_size=1):
+    def __init__(self, max_steps: Union[int, str] = "auto", step_size: float = 1):
         try:
             import streamtracer  # NoQA
         except ModuleNotFoundError as e:
@@ -34,20 +38,17 @@ class FortranTracer:
                 "Using FortranTracer requires the streamtracer module, "
                 "but streamtracer could not be loaded"
             ) from e
-        self.max_steps = max_steps
         self.step_size = step_size
         self.max_steps = max_steps
-        max_steps = 1 if max_steps == "auto" else max_steps
-        # We have to set max_steps and step_size here to create a tracer,
 
-    def _vector_grid(self, mas_output, t_idx):
+    def _vector_grid(self, mas_output: MASOutput, t_idx: Optional[int]):
         """
         Create a `streamtracer.VectorGrid` object from a MAS output.
         """
         bs = mas_output.cell_corner_b(t_idx)
         return self._vector_grid_from_bs(bs)
 
-    def _vector_grid_from_bs(self, bs):
+    def _vector_grid_from_bs(self, bs: xr.DataArray):
         """
         Create a `streamtracer.VectorGrid` object from a magnetic field array.
         """
@@ -69,7 +70,15 @@ class FortranTracer:
         return vector_grid
 
     @u.quantity_input
-    def trace(self, mas_output, *, r: u.m, lat: u.rad, lon: u.rad, t_idx=None):
+    def trace(
+        self,
+        mas_output: MASOutput,
+        *,
+        r: u.m,
+        lat: u.rad,
+        lon: u.rad,
+        t_idx: Optional[int] = None
+    ):
         """
         Trace field lines.
 
@@ -95,14 +104,14 @@ class FortranTracer:
         vector_grid = self._vector_grid(mas_output, t_idx)
         return self._trace_from_grid(vector_grid, seeds)
 
-    def _trace_from_grid(self, grid, seeds):
+    def _trace_from_grid(self, grid, seeds: np.ndarray) -> FieldLines:
         from streamtracer import StreamTracer
 
         seeds = np.atleast_2d(seeds)
         if self.max_steps == "auto":
             max_steps = int(4 * len(grid.zcoords) / self.step_size)
         else:
-            max_steps = self.max_steps
+            max_steps = int(self.max_steps)
 
         # Normalize step size to radial cell size
         rcoords = grid.zcoords

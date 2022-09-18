@@ -1,3 +1,5 @@
+from typing import Optional
+
 import astropy.units as u
 import numpy as np
 import scipy.interpolate
@@ -68,7 +70,7 @@ class MASOutput(ModelOutput):
     def __str__(self):
         return f"MAS output in directory {self.path}\n" + super().__str__()
 
-    def cell_corner_b(self, t_idx=None):
+    def cell_corner_b(self, t_idx: Optional[int] = None) -> xr.DataArray:
         """
         Get the magnetic field vector at the cell corners.
 
