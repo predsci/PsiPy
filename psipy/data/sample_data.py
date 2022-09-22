@@ -39,7 +39,14 @@ mas_pooch = pooch.create(
 
 # Add some PLUTO data
 pluto_reg: Dict[str, None] = {}
-PLUTO_FILES = ["grid.out", "dbl.out", "rho.0000.dbl"]
+PLUTO_FILES = [
+    "grid.out",
+    "dbl.out",
+    "rho.0000.dbl",
+    "Bx1.0000.dbl",
+    "Bx2.0000.dbl",
+    "Bx3.0000.dbl",
+]
 for file in PLUTO_FILES:
     pluto_reg[file] = None
 
