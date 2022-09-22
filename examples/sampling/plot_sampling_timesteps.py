@@ -22,20 +22,15 @@ vr = model["vr"]
 print(f"Number of timesteps: {vr.n_timesteps}")
 
 ###############################################################################
-# Interpolating across the time dimension works exactly the same way as
-# interpolating across any of the spatial dimensions. The data is linearly
-# interpolated between the time coordinates.
-#
-# Here we'll keep a constant spatial coordinate (r, lat, lon), but sample
-# at 50 time points between the first and second time step. This isn't very
+# To sample across times, we'll keep a constant spatial coordinate
+# (r, lat, lon), but sample at each of the time coordiantes. This isn't that
 # exciting because there's only two timesteps, but illustrates how it works!
 fig, ax = plt.subplots()
 
-npoints = 50
-r = 50 * u.R_sun * np.ones(npoints)
-lon = 0 * u.deg * np.ones(npoints)
-lat = 0 * u.deg * np.ones(npoints)
-t = np.linspace(vr.time_coords[0], vr.time_coords[1], npoints)
+t = vr.time_coords
+r = 50 * u.R_sun * np.ones(len(t))
+lon = 0 * u.deg * np.ones(len(t))
+lat = 0 * u.deg * np.ones(len(t))
 
 samples = vr.sample_at_coords(lon, lat, r, t)
 
