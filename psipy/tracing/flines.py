@@ -15,10 +15,10 @@ class FieldLine:
     """
 
     r: np.ndarray
-    lat: np.ndarray
-    lon: np.ndarray
+    lat: u.Quantity
+    lon: u.Quantity
 
-    def __init__(self, *, r, lat, lon):
+    def __init__(self, *, r: np.ndarray, lat: np.ndarray, lon: np.ndarray):
         """
         Parameters
         ----------
