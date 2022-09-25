@@ -68,7 +68,9 @@ class FieldLines:
         runit : u.Unit
             Unit for radial coordinate.
         """
-        self.flines = [FieldLine(r=x[:, 2] * runit, lat=x[:, 1], lon=x[:, 0]) for x in xs]
+        self.flines = [
+            FieldLine(r=x[:, 2] * runit, lat=x[:, 1], lon=x[:, 0]) for x in xs
+        ]
 
     def __getitem__(self, i):
         return self.flines[i]
