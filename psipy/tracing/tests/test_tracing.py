@@ -40,7 +40,7 @@ def test_tracer(mas_model):
 
 
 def test_fline_io(mas_model, tmpdir):
-    # Simple smoke test of field line tracing
+    # Test saving and loading field lines
     mas_path = sample_data.mas_sample_data()
     model = MASOutput(mas_path)
     tracer = FortranTracer()
