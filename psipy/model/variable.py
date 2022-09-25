@@ -396,6 +396,18 @@ class Variable:
         Linear interpolation is used to interpoalte between cells. See the
         docstring of `scipy.interpolate.interpn` for more information.
         """
+        if lat.shape != lon.shape:
+            raise ValueError(
+                f"Shapes of latitude {lat.shape} and longitude {lon.shape} coordinates do not match."
+            )
+        if r.shape != lon.shape:
+            raise ValueError(
+                f"Shapes of radial {r.shape} and longitude {lon.shape} coordinates do not match."
+            )
+        if t is not None and t.shape != lon.shape:
+            raise ValueError(
+                f"Shapes of time {t.shape} and longitude {lon.shape} coordinates do not match."
+            )
         dims = ["phi", "theta", "r", "time"]
         points = [self.data.coords[dim].values for dim in dims]
         values = self.data.values
