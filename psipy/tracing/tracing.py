@@ -97,14 +97,15 @@ class FortranTracer:
             Time slice of the ``mas_output`` to trace through. Doesn't need to
             be specified if only one time step is present.
         """
-        r = r.to_value(mas_output.get_runit())
+        runit = mas_output.get_runit()
+        r = r.to_value(runit)
         lat = lat.to_value(u.rad)
         lon = lon.to_value(u.rad)
         seeds = np.stack([lon, lat, r], axis=-1)
         vector_grid = self._vector_grid(mas_output, t_idx)
-        return self._trace_from_grid(vector_grid, seeds)
+        return self._trace_from_grid(vector_grid, seeds, runit)
 
-    def _trace_from_grid(self, grid, seeds: np.ndarray) -> FieldLines:
+    def _trace_from_grid(self, grid, seeds: np.ndarray, runit: u.Unit) -> FieldLines:
         from streamtracer import StreamTracer
 
         seeds = np.atleast_2d(seeds)
@@ -118,4 +119,4 @@ class FortranTracer:
         step_size = self.step_size * np.min(np.diff(rcoords))
         self.tracer = StreamTracer(max_steps, step_size)
         self.tracer.trace(seeds, grid)
-        return FieldLines(self.tracer.xs)
+        return FieldLines(self.tracer.xs, runit)

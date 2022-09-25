@@ -58,15 +58,17 @@ class FieldLines:
 
     flines: List[FieldLine]
 
-    def __init__(self, xs):
+    def __init__(self, xs: np.ndarray, runit: u.Unit):
         """
         Parameters
         ----------
         xs : list[numpy.ndarray]
             Field lines. Each array must have lon, lat, r columns in that
             order.
+        runit : u.Unit
+            Unit for radial coordinate.
         """
-        self.flines = [FieldLine(r=x[:, 2], lat=x[:, 1], lon=x[:, 0]) for x in xs]
+        self.flines = [FieldLine(r=x[:, 2] * runit, lat=x[:, 1], lon=x[:, 0]) for x in xs]
 
     def __getitem__(self, i):
         return self.flines[i]
