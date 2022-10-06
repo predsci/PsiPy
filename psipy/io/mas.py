@@ -71,9 +71,14 @@ def _read_mas(path, var):
     dims = ["phi", "theta", "r", "time"]
     # Convert from co-latitude to latitude
     coords[1] = np.pi / 2 - np.array(coords[1])
+    # Add r and time
+    if len(data.shape)==2: # br_0
+        data = data[:,:,None,None]
+        coords.extend([[1],[get_timestep(path)]])
     # Add time
-    data = data.reshape(data.shape + (1,))
-    coords.append([get_timestep(path)])
+    if len(data.shape)==3: # 
+        data = data[:,:,:,None]
+        coords.append([get_timestep(path)])
     data = xr.Dataset({var: xr.DataArray(data=data, coords=coords, dims=dims)})
     return data
 

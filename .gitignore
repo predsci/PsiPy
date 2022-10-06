@@ -1,13 +1,32 @@
 *.pyc
 *.egg-info
 
+
+# Byte-compiled / optimized / DLL files
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# docs
 docs/_build/*
 docs/api/*
 docs/auto_examples
 *.automodsumm
 *.automodapi
-dist/*
-.eggs/*
 
 .coverage*
 

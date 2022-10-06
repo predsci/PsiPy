@@ -28,7 +28,7 @@ Loading data
 ------------
 psipy stores the output variables from a single MAS run in the `MASOutput`
 object. To create one of these, specify the directory which has all of the
-output ``.hdf`` files you want to load:
+output [HDF](https://support.hdfgroup.org/downloads/index.html) (``.hdf``) files you want to load:
 
 .. code-block:: python
 
