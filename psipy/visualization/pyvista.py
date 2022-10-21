@@ -33,7 +33,7 @@ class MASPlotter:
         self.tracer: Optional[FortranTracer] = None
 
     def add_fline(self, fline, **kwargs):
-        spline = pv.Spline(fline.xyz)
+        spline = pv.Spline(fline.xyz.to_value(self.mas_output.get_runit()))
         kwargs["pickable"] = kwargs.get("pickable", False)
         self.pvplotter.add_mesh(spline, **kwargs)
 

@@ -51,7 +51,7 @@ for fline in flines:
         br.sample_at_coords(
             np.mod(fline.lon[0], 2 * np.pi * u.rad),
             fline.lat[0],
-            fline.r[0] * u.R_sun,
+            fline.r[0],
         )
         > 0
     )

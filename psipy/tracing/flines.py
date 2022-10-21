@@ -39,11 +39,12 @@ class FieldLine:
         self.runit = runit
 
     @property
-    def xyz(self):
+    def xyz(self) -> u.Quantity:
         """
         Cartesian coordinates as a (n, 3) shaped array.
         """
-        return np.array(spherical_to_cartesian(self.r, self.lat, self.lon)).T
+        x, y, z = spherical_to_cartesian(self.r, self.lat, self.lon)
+        return np.array([x, y, z]).T * self.r.unit
 
     @property
     def _rlatlon(self):
