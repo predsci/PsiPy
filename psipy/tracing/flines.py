@@ -12,6 +12,17 @@ __all__ = ["FieldLines", "FieldLine"]
 class FieldLine:
     """
     A single field line.
+
+    Parameters
+    ----------
+    r : numpy.ndarray
+        Radial coordinates.
+    lat : numpy.ndarray
+        Latitude coordinates **in radians**.
+    lon : numpy.ndarray
+        Longitude coordinates **in radians**.
+    runit : astropy.units.Unit
+        Radial coordinate unit.
     """
 
     r: u.Quantity
@@ -21,18 +32,6 @@ class FieldLine:
     def __init__(
         self, *, r: np.ndarray, lat: np.ndarray, lon: np.ndarray, runit: u.Unit
     ):
-        """
-        Parameters
-        ----------
-        r : numpy.ndarray
-            Radial coordinates.
-        lat : numpy.ndarray
-            Latitude coordinates **in radians**.
-        lon : numpy.ndarray
-            Longitude coordinates **in radians**.
-        runit : u.Unit
-            Radial coordinate unit.
-        """
         self.r = r * runit
         self.lat = lat * u.rad
         self.lon = lon * u.rad
@@ -75,7 +74,7 @@ class FieldLines:
         xs : list[numpy.ndarray]
             Field lines. Each array must have lon, lat, r columns in that
             order.
-        runit : u.Unit
+        runit : astropy.units.Unit
             Unit for radial coordinate.
         """
         self.flines = [

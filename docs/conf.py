@@ -68,6 +68,10 @@ nitpick_ignore = [
     ("py:class", "Unit('deg')"),
     ("py:class", "Unit('m')"),
     ("py:class", "Unit('rad')"),
+    # These are documented on websites in different namespaces
+    # than where the classes are defined
+    ("py:class", "astropy.units.core.Unit"),
+    ("py:class", "pyvista.utilities.geometric_objects.Sphere"),
 ]
 
 
