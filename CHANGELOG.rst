@@ -4,6 +4,10 @@ Changelog
 Version 0.4.0
 -------------
 
+Bug fixes
+~~~~~~~~~
+- Removed a couple of un-needed dependencies from the package.
+
 Breaking changes
 ~~~~~~~~~~~~~~~~
 - The ``r`` attribute of `psipy.tracing.flines.FieldLine` is now stored as a
