@@ -71,24 +71,6 @@ class MASOutput(ModelOutput):
         return f"MAS output in directory {self.path}\n" + super().__str__()
 
     def cell_corner_b(self, t_idx: Optional[int] = None) -> xr.DataArray:
-        """
-        Get the magnetic field vector at the cell corners.
-
-        Parameters
-        ----------
-        t_idx : int, optional
-            If more than one timestep is present in the loaded model, a
-            timestep index at which to get the vectors must be provided.
-
-        Returns
-        -------
-        xarray.DataArray
-
-        Notes
-        -----
-        The phi limits go from 0 to 2pi inclusive, with the vectors at phi=0
-        equal to the vectors at phi=2pi.
-        """
         if not set(["br", "bt", "bp"]) <= set(self.variables):
             raise RuntimeError("MAS output must have the br, bt, bp variables loaded")
 

@@ -7,7 +7,7 @@ from astropy.coordinates import cartesian_to_spherical
 from vtkmodules.vtkCommonCore import vtkCommand
 from vtkmodules.vtkRenderingCore import vtkCellPicker
 
-from psipy.model import MASOutput
+from psipy.model import ModelOutput
 
 if TYPE_CHECKING:
     from psipy.tracing import FortranTracer
@@ -27,7 +27,7 @@ class MASPlotter:
     plotter : pyvista.Plotter
     """
 
-    def __init__(self, mas_output: MASOutput):
+    def __init__(self, mas_output: ModelOutput):
         self.pvplotter = pv.Plotter()
         self.mas_output = mas_output
         self.tracer: Optional[FortranTracer] = None

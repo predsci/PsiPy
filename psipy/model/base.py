@@ -1,5 +1,8 @@
 import abc
 from pathlib import Path
+from typing import Optional
+
+import xarray as xr
 
 from .variable import Variable
 
@@ -103,6 +106,37 @@ class ModelOutput(abc.ABC):
         -------
         unit : `astropy.units.Unit`
         factor : float
+        """
+
+    @abc.abstractmethod
+    def get_runit(self):
+        """
+        Return the units for the radial coordiate.
+
+        Returns
+        -------
+        unit : `astropy.units.Unit`
+        """
+
+    @abc.abstractmethod
+    def cell_corner_b(self, t_idx: Optional[int] = None) -> xr.DataArray:
+        """
+        Get the magnetic field vector at the cell corners.
+
+        Parameters
+        ----------
+        t_idx : int, optional
+            If more than one timestep is present in the loaded model, a
+            timestep index at which to get the vectors must be provided.
+
+        Returns
+        -------
+        xarray.DataArray
+
+        Notes
+        -----
+        The phi limits go from 0 to 2pi inclusive, with the vectors at phi=0
+        equal to the vectors at phi=2pi.
         """
 
     # Properties start here
