@@ -1,9 +1,16 @@
+from typing import TYPE_CHECKING, Optional
+
 import astropy.units as u
 import numpy as np
 import pyvista as pv
 from astropy.coordinates import cartesian_to_spherical
 from vtkmodules.vtkCommonCore import vtkCommand
 from vtkmodules.vtkRenderingCore import vtkCellPicker
+
+from psipy.model import MASOutput
+
+if TYPE_CHECKING:
+    from psipy.tracing import FortranTracer
 
 __all__ = ["MASPlotter"]
 
@@ -20,18 +27,18 @@ class MASPlotter:
     plotter : pyvista.Plotter
     """
 
-    def __init__(self, mas_output):
+    def __init__(self, mas_output: MASOutput):
         self.pvplotter = pv.Plotter()
         self.mas_output = mas_output
-        self.tracer = None
+        self.tracer: Optional[FortranTracer] = None
 
     def add_fline(self, fline, **kwargs):
-        spline = pv.Spline(fline.xyz)
+        spline = pv.Spline(fline.xyz.to_value(self.mas_output.get_runit()))
         kwargs["pickable"] = kwargs.get("pickable", False)
         self.pvplotter.add_mesh(spline, **kwargs)
 
     @u.quantity_input
-    def add_sphere(self, radius: u.m, **kwargs):
+    def add_sphere(self, radius: u.m, **kwargs) -> pv.Sphere:
         """
         Add a sphere at a given radius.
 
@@ -56,7 +63,7 @@ class MASPlotter:
         return self.pvplotter.show(*args, **kwargs)
 
     @u.quantity_input
-    def add_tracing_seed_sphere(self, radius: u.m, **kwargs):
+    def add_tracing_seed_sphere(self, radius: u.m, **kwargs) -> None:
         """
         Add a sphere to trace field lines from.
 
@@ -89,7 +96,7 @@ class MASPlotter:
             show_message, font_size=14, name="_point_picking_message"
         )
 
-    def _trace_from_seed(self, pos):
+    def _trace_from_seed(self, pos) -> None:
         """
         A callback to trace a magnetic field line from the picked point.
         """
@@ -102,7 +109,7 @@ class MASPlotter:
         flines = self.tracer.trace(self.mas_output, r=r, lat=lat, lon=lon)
         self.add_fline(flines[0])
 
-    def _end_pick_event(self, picker, event):
+    def _end_pick_event(self, picker, event) -> None:
         picked_point = np.array(picker.GetPickPosition())
         self.pvplotter.add_mesh(
             picked_point,

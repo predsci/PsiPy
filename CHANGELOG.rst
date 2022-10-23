@@ -1,6 +1,16 @@
 Changelog
 =========
 
+Version 0.4.0
+-------------
+
+Breaking changes
+~~~~~~~~~~~~~~~~
+- The ``r`` attribute of `psipy.tracing.flines.FieldLine` is now stored as a
+  :class:`~astropy.units.Quantity` instead of as an array.
+- ``psipy.tracing.flines.FieldLine.xyz`` now returnes a
+  :class:`~astropy.units.Quantity` instead of an array.
+
 Version 0.3.1
 -------------
 New features

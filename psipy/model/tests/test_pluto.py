@@ -8,7 +8,7 @@ def test_pluto_model(pluto_model):
     # Check that loading a single file works
     assert isinstance(pluto_model, base.ModelOutput)
     assert "PLUTOOutput" in str(pluto_model)
-    assert pluto_model.variables == ["rho"]
+    assert pluto_model.variables == ["Bx1", "Bx2", "Bx3", "rho"]
     assert "rho" in str(pluto_model)
 
     rho = pluto_model["rho"]
