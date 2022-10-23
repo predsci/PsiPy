@@ -412,23 +412,24 @@ class Variable:
         points = [self.data.coords[dim].values for dim in dims]
         values = self.data.values
 
-        # Check that coordinates are increasing
-        if not np.all(np.diff(points[1]) >= 0):
-            raise RuntimeError("Longitude coordinates are not monotonically increasing")
-        if not np.all(np.diff(points[2]) >= 0):
-            raise RuntimeError("Latitude coordinates are not monotonically increasing")
-        if not np.all(np.diff(points[3]) > 0):
-            raise RuntimeError("Radial coordinates are not monotonically increasing")
-
         # Pad phi points so it's possible to interpolate all the way from
         # 0 to 360 deg
         pcoords = points[0]
-        pcoords = np.append(pcoords, pcoords[0] + 2 * np.pi)
-        pcoords = np.insert(pcoords, 0, pcoords[-2] - 2 * np.pi)
-        points[0] = pcoords
+        if not np.allclose(pcoords[0], pcoords[-1] - (2 * np.pi), rtol=0, atol=1e-6):
+            pcoords = np.append(pcoords, pcoords[0] + 2 * np.pi)
+            pcoords = np.insert(pcoords, 0, pcoords[-2] - 2 * np.pi)
+            points[0] = pcoords
 
-        values = np.append(values, values[0:1, :, :, :], axis=0)
-        values = np.insert(values, 0, values[-2:-1, :, :, :], axis=0)
+            values = np.append(values, values[0:1, :, :, :], axis=0)
+            values = np.insert(values, 0, values[-2:-1, :, :, :], axis=0)
+
+        # Check that coordinates are increasing
+        if not np.all(np.diff(points[0]) >= 0):
+            raise RuntimeError("Longitude coordinates are not monotonically increasing")
+        if not np.all(np.diff(points[1]) >= 0):
+            raise RuntimeError("Latitude coordinates are not monotonically increasing")
+        if not np.all(np.diff(points[2]) > 0):
+            raise RuntimeError("Radial coordinates are not monotonically increasing")
 
         if len(points[3]) == 1:
             # Only one timestep
