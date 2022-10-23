@@ -56,7 +56,7 @@ for fline in flines:
         > 0
     )
     color = {0: "red", 1: "blue"}[int(color)]
-    ax.plot(*fline.xyz, color=color, linewidth=2)
+    ax.plot(fline.xyz[:, 0], fline.xyz[:, 1], fline.xyz[:, 2], color=color, linewidth=2)
 
 lim = 60
 ax.set_xlim(-lim, lim)
