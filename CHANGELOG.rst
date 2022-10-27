@@ -4,6 +4,11 @@ Changelog
 Version 0.4.0
 -------------
 
+New features
+~~~~~~~~~~~~
+- It is now possible trace magnetic field lines through PLUTO data.
+  The code for doing this is exactly the same as for MAS data.
+
 Bug fixes
 ~~~~~~~~~
 - Removed a couple of un-needed dependencies from the package.
