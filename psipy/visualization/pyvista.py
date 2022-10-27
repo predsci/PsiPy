@@ -1,3 +1,4 @@
+import warnings
 from typing import TYPE_CHECKING, Optional
 
 import astropy.units as u
@@ -12,10 +13,10 @@ from psipy.model import ModelOutput
 if TYPE_CHECKING:
     from psipy.tracing import FortranTracer
 
-__all__ = ["MASPlotter"]
+__all__ = ["PyvistaPlotter"]
 
 
-class MASPlotter:
+class PyvistaPlotter:
     """
     Wrapper for a `pyvista.Plotter`.
 
@@ -121,3 +122,11 @@ class MASPlotter:
         )
 
         self._trace_from_seed(picked_point)
+
+
+class MASPlotter(PyvistaPlotter):
+    def __init__(self, *args, **kwargs):
+        warnings.warn(
+            "MASPlotter is deprecated, use the identical PyvistaPlotter instead",
+            warnings.DeprecationWarning,
+        )

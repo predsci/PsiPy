@@ -63,9 +63,9 @@ To start we we need to create a plotting window, called a 'plotter':
 
 .. code-block:: python
 
-  from psipy.visualization.pyvista import MASPlotter
+  from psipy.visualization.pyvista import PyvistaPlotter
 
-  plotter = MASPlotter(model)
+  plotter = PyvistaPlotter(model)
 
 Once we have a plotter, we can add field lines to it. In this example
 we'll colour the field lines by their polarity near the inner boundary of the

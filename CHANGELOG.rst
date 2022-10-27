@@ -19,6 +19,7 @@ Breaking changes
   :class:`~astropy.units.Quantity` instead of as an array.
 - ``psipy.tracing.flines.FieldLine.xyz`` now returnes a
   :class:`~astropy.units.Quantity` instead of an array.
+- ``MASPlotter`` has been renamed to `PyvistaPlotter` as it can now plot PLUTO data as well as MAS data.
 
 Version 0.3.1
 -------------
@@ -36,7 +37,7 @@ Breaking changes
 ~~~~~~~~~~~~~~~~
 - The radial coordinate input to `psipy.tracing.FortranTracer.trace` is now required to be
   a :class:`~astropy.units.Quantity` (with length units) instead of a plain numpy array.
-- The radial coordinate input to the sphere methods on `psipy.visualization.pyvista.MASPlotter` is now required to be
+- The radial coordinate input to the sphere methods on ``psipy.visualization.pyvista.MASPlotter`` is now required to be
   a :class:`~astropy.units.Quantity` (with length units) instead of a plain numpy array.
 
 Bug fixes

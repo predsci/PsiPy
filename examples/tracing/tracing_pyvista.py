@@ -15,7 +15,7 @@ import numpy as np
 from psipy.data import sample_data
 from psipy.model import MASOutput
 from psipy.tracing import FortranTracer
-from psipy.visualization.pyvista import MASPlotter
+from psipy.visualization.pyvista import PyvistaPlotter
 
 ###############################################################################
 # Load a set of MAS output files.
@@ -38,7 +38,7 @@ flines = tracer.trace(model, r=r, lat=lat, lon=lon)
 ###############################################################################
 # Visualise the results
 
-plotter = MASPlotter(model)
+plotter = PyvistaPlotter(model)
 br = model["br"]
 for fline in flines:
     # Set color with polarity near the inner boundary
