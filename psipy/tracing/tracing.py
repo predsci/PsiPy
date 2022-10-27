@@ -60,6 +60,11 @@ class FortranTracer:
         bs.loc[..., "bt"] /= bs.coords["r"]
 
         # cyclic only in the phi direction
+        pcoords = bs.coords["phi"].values
+        if not np.allclose(pcoords[0], pcoords[-1] - (2 * np.pi), atol=1e-5, rtol=0):
+            raise RuntimeError(
+                f"First and last phi coordinates do not differ by 2π ({pcoords[0]}, {pcoords[-1]})"
+            )
         cyclic = [True, False, False]
         grid_coords = [
             bs.coords["phi"].values,
@@ -77,7 +82,7 @@ class FortranTracer:
         r: u.m,
         lat: u.rad,
         lon: u.rad,
-        t_idx: Optional[int] = None
+        t_idx: Optional[int] = None,
     ):
         """
         Trace field lines.
