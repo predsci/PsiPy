@@ -121,7 +121,6 @@ class FortranTracer:
 
         # Normalize step size to radial cell size
         rcoords = grid.zcoords
-        step_size = self.step_size * np.min(np.diff(rcoords))
-        self.tracer = StreamTracer(max_steps, step_size)
+        self.tracer = StreamTracer(max_steps, self.step_size)
         self.tracer.trace(seeds, grid)
         return FieldLines(self.tracer.xs, runit)
