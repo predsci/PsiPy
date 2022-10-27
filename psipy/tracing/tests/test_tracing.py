@@ -1,7 +1,6 @@
 import astropy.units as u
 import numpy as np
 
-from psipy.data import sample_data
 from psipy.model import MASOutput, PLUTOOutput
 from psipy.tracing import FieldLines, FortranTracer
 
@@ -35,12 +34,15 @@ def test_tracer(model):
         assert flines[0].xyz.shape == (139, 3)
     elif isinstance(model, PLUTOOutput):
         assert len(bs.coords["r"]) == 141
-        assert flines[0].xyz.shape == (139, 3)
+        assert flines[0].xyz.shape == (140, 3)
 
     tracer = FortranTracer(step_size=0.5)
     flines = tracer.trace(model, lon=lon, lat=lat, r=r)
-    # Check that changing step size has an effect
-    assert flines[0].xyz.shape == (278, 3)
+
+    if isinstance(model, MASOutput):
+        assert flines[0].xyz.shape == (278, 3)
+    elif isinstance(model, PLUTOOutput):
+        assert flines[0].xyz.shape == (280, 3)
 
 
 def test_fline_io(model, tmpdir):
