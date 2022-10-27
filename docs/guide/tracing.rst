@@ -26,7 +26,7 @@ is called to trace field lines from these points:
   lon = [0, np.pi / 4] * u.rad
   flines = tracer.trace(model, r=r, lat=lat, lon=lon)
 
-where ``model`` is a `MASOutput` which must have all three components of the
+where ``model`` is a `MASOutput` or a `PLUTOOutput` which must have all three components of the
 magnetic field available.
 
 The tracer has two configurable options:
