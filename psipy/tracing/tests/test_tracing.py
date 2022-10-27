@@ -2,13 +2,13 @@ import astropy.units as u
 import numpy as np
 
 from psipy.data import sample_data
-from psipy.model import MASOutput
+from psipy.model import MASOutput, PLUTOOutput
 from psipy.tracing import FieldLines, FortranTracer
 
 
-def test_tracer(mas_model):
+def test_tracer(model):
     # Simple smoke test of field line tracing
-    bs = mas_model.cell_corner_b()
+    bs = model.cell_corner_b()
     # Fake data to be unit vectors pointing in radial direction
     bs.loc[..., "bp"] = 0
     bs.loc[..., "bt"] = 0
@@ -17,7 +17,7 @@ def test_tracer(mas_model):
     def cell_corner_b(self):
         return bs
 
-    mas_model.cell_corner_b = cell_corner_b
+    model.cell_corner_b = cell_corner_b
 
     tracer = FortranTracer()
 
@@ -25,24 +25,26 @@ def test_tracer(mas_model):
     lat = 0 * u.deg
     lon = 0 * u.deg
 
-    flines = tracer.trace(mas_model, lon=lon, lat=lat, r=r)
+    flines = tracer.trace(model, lon=lon, lat=lat, r=r)
     assert len(flines) == 1
 
     # Check that with auto step size, number of steps is close to number of
     # radial coordinates
-    assert len(bs.coords["r"]) == 140
-    assert flines[0].xyz.shape == (139, 3)
+    if isinstance(model, MASOutput):
+        assert len(bs.coords["r"]) == 140
+        assert flines[0].xyz.shape == (139, 3)
+    elif isinstance(model, PLUTOOutput):
+        assert len(bs.coords["r"]) == 141
+        assert flines[0].xyz.shape == (139, 3)
 
     tracer = FortranTracer(step_size=0.5)
-    flines = tracer.trace(mas_model, lon=lon, lat=lat, r=r)
+    flines = tracer.trace(model, lon=lon, lat=lat, r=r)
     # Check that changing step size has an effect
     assert flines[0].xyz.shape == (278, 3)
 
 
-def test_fline_io(mas_model, tmpdir):
+def test_fline_io(model, tmpdir):
     # Test saving and loading field lines
-    mas_path = sample_data.mas_sample_data()
-    model = MASOutput(mas_path)
     tracer = FortranTracer()
 
     r = 40 * u.R_sun
