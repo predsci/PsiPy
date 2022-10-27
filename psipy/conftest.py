@@ -61,4 +61,4 @@ def pluto_model():
     return pluto.PLUTOOutput(get_pluto_directory())
 
 
-fixture_union("all_models", [mas_model, pluto_model])
+fixture_union("model", [mas_model, pluto_model])

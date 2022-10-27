@@ -1,4 +1,6 @@
 import astropy.units as u
+import numpy as np
+import xarray as xr
 
 from psipy.io import get_pluto_variables, read_pluto_files
 from .base import ModelOutput
@@ -34,3 +36,29 @@ class PLUTOOutput(ModelOutput):
 
     def load_file(self, var):
         return read_pluto_files(self.path, var)
+
+    def cell_corner_b(self, t_idx: int = None) -> xr.DataArray:
+        if not set(["Bx1", "Bx2", "Bx3"]) <= set(self.variables):
+            raise RuntimeError(
+                "PLUTO output must have the BX1, Bx2, Bx3 variables loaded"
+            )
+
+        r_coords = self["Bx1"].r_coords
+        t_coords = self["Bx1"].theta_coords
+        p_coords = self["Bx1"].phi_coords
+
+        br = self["Bx1"].data.isel(time=t_idx or 0)
+        bt = self["Bx2"].data.isel(time=t_idx or 0)
+        bp = self["Bx3"].data.isel(time=t_idx or 0)
+
+        # Add an extra layer of cells around phi=2pi for the tracer
+        br = np.concatenate((br, br[0:1, :, :]), axis=0)
+        bt = np.concatenate((bt, bt[0:1, :, :]), axis=0)
+        bp = np.concatenate((bp, bp[0:1, :, :]), axis=0)
+        new_pcoords = np.append(p_coords, p_coords[0:1] + 2 * np.pi)
+
+        return xr.DataArray(
+            np.stack([bp, bt, br], axis=-1),
+            dims=["phi", "theta", "r", "component"],
+            coords=[new_pcoords, t_coords, r_coords, ["bp", "bt", "br"]],
+        )
