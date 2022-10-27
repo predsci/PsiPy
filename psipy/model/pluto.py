@@ -47,9 +47,6 @@ class PLUTOOutput(ModelOutput):
         t_coords = self["Bx1"].theta_coords
         p_coords = self["Bx1"].phi_coords
 
-        print(self["Bx1"])
-        print(self["Bx2"])
-
         br = self["Bx1"].data.isel(time=t_idx or 0)
         bt = self["Bx2"].data.isel(time=t_idx or 0)
         bp = self["Bx3"].data.isel(time=t_idx or 0)
@@ -58,7 +55,7 @@ class PLUTOOutput(ModelOutput):
         br = np.concatenate((br, br[0:1, :, :]), axis=0)
         bt = np.concatenate((bt, bt[0:1, :, :]), axis=0)
         bp = np.concatenate((bp, bp[0:1, :, :]), axis=0)
-        new_pcoords = np.append(p_coords, p_coords[0:1])
+        new_pcoords = np.append(p_coords, p_coords[0:1] + 2 * np.pi)
 
         return xr.DataArray(
             np.stack([bp, bt, br], axis=-1),
