@@ -55,7 +55,7 @@ class FortranTracer:
         from streamtracer import VectorGrid
 
         # Account for tracing in spherical coordinates
-        bs.loc[..., "bp"] /= np.cos(bs.coords["theta"])
+        bs.loc[..., "bp"] /= np.abs(np.cos(bs.coords["theta"]))
         bs.loc[..., "bp"] /= bs.coords["r"]
         bs.loc[..., "bt"] /= bs.coords["r"]
 
