@@ -10,26 +10,27 @@ import pooch
 __all__ = ["mas_sample_data", "mas_helio_timesteps"]
 
 
-file_url = "cr{cr}-medium/hmi_masp_mas_std_0201/{type}/{var}002.hdf"
+file_url = "cr{cr}-medium/hmi_masp_mas_std_0201/{sim_type}/{var}002.hdf"
 cache_dir = pooch.os_cache("psipy")
 
 
-def _get_url(*, type: str, var: str, cr: int = 2210) -> str:
-    return file_url.format(cr=cr, type=type, var=var)
+def _get_url(*, sim_type: str, var: str, cr: int = 2210) -> str:
+    return file_url.format(cr=cr, sim_type=sim_type, var=var)
 
 
 registry: Dict[str, None] = {}
 
 # Add consecutive Carrington rotation sample data
 for cr in [2210, 2211]:
-    registry[_get_url(cr=cr, type="helio", var="vr")] = None
+    registry[_get_url(cr=cr, sim_type="helio", var="vr")] = None
 
 
 # Add various variables for helio and corona solutions
-vars = ["rho", "vr", "br", "bt", "bp"]
-for type in ["helio", "corona"]:
-    for var in vars:
-        registry[_get_url(cr=2210, type=type, var=var)] = None
+sim_vars = ["rho", "vr", "br", "bt", "bp"]
+sim_types = ["helio", "corona"]
+for sim_type in sim_types:
+    for var in sim_vars:
+        registry[_get_url(cr=2210, sim_type=sim_type, var=var)] = None
 
 mas_pooch = pooch.create(
     path=cache_dir,
@@ -57,22 +58,24 @@ pluto_pooch = pooch.create(
 )
 
 
-def mas_sample_data(type="helio"):
+def mas_sample_data(sim_type="helio"):
     """
     Get some MAS data files. These are taken from CR2210, which
     is used for PSP data comparisons in the documentation examples.
 
     Parameters
     ----------
-    type : {'helio', 'corona'}
+    sim_type : {'helio', 'corona'}
 
     Returns
     -------
     pathlib.Path
         Download directory.
     """
-    for var in vars:
-        path = mas_pooch.fetch(_get_url(cr=2210, type=type, var=var), progressbar=True)
+    for var in sim_vars:
+        path = mas_pooch.fetch(
+            _get_url(cr=2210, sim_type=sim_type, var=var), progressbar=True
+        )
     return Path(path).parent
 
 
@@ -92,7 +95,7 @@ def mas_helio_timesteps():
         Download directory.
     """
     paths = [
-        mas_pooch.fetch(_get_url(cr=cr, type="helio", var="vr"), progressbar=True)
+        mas_pooch.fetch(_get_url(cr=cr, sim_type="helio", var="vr"), progressbar=True)
         for cr in [2210, 2211]
     ]
     paths = [Path(p) for p in paths]
