@@ -18,6 +18,8 @@ def get_mas_directory(filetype: str) -> Path:
     if filetype == "mas_helio":
         # Check for and download data if not present
         mas_directory = sample_data.mas_sample_data(sim_type="helio")
+    elif filetype == "mas_high_res_thermo":
+        mas_directory = sample_data.mas_high_res_thermo()
     else:
         # Directories with MAS outputs
         mas_directory = test_data_dir / filetype
@@ -41,7 +43,7 @@ def pluto_directory():
 
 
 @fixture(scope="module")
-@pytest.mark.parametrize("filetype", ["mas_helio", "mas_hdf5"])
+@pytest.mark.parametrize("filetype", ["mas_helio", "mas_hdf5", "mas_high_res_thermo"])
 def mas_directory(filetype: str) -> Path:
     return get_mas_directory(filetype)
 
@@ -49,6 +51,16 @@ def mas_directory(filetype: str) -> Path:
 @fixture(scope="module")
 @pytest.mark.parametrize("filetype", ["mas_helio", "mas_hdf5"])
 def mas_model(filetype: str) -> mas.MASOutput:
+    return mas.MASOutput(get_mas_directory(filetype))
+
+
+@fixture(scope="module")
+@pytest.mark.parametrize("filetype", ["mas_helio", "mas_hdf5", "mas_high_res_thermo"])
+def all_mas_models(filetype: str) -> mas.MASOutput:
+    """
+    Same as mas_model above, but also includes a high resolution model
+    with only 'rho' loaded.
+    """
     return mas.MASOutput(get_mas_directory(filetype))
 
 
