@@ -17,7 +17,7 @@ test_data_dir = (Path(__file__) / ".." / ".." / "data").resolve()
 def get_mas_directory(filetype: str) -> Path:
     if filetype == "mas_helio":
         # Check for and download data if not present
-        mas_directory = sample_data.mas_sample_data(type="helio")
+        mas_directory = sample_data.mas_sample_data(sim_type="helio")
     else:
         # Directories with MAS outputs
         mas_directory = test_data_dir / filetype
