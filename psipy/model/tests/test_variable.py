@@ -32,6 +32,20 @@ def test_sample_at_coords_mas(mas_model, lon, lat, r):
     assert u.allclose(rho[0], [447.02795493] * u.cm**-3)
 
 
+# Check different shaped input, including lon/lat points that go up/down in
+# value
+@pytest.mark.parametrize(
+    "lon, lat, r",
+    [
+        (1 * u.deg, 1 * u.deg, 29.5 * u.R_sun),
+    ],
+)
+def test_sample_at_coords_smoke(all_mas_models, lon, lat, r):
+    mas_model = all_mas_models
+    # Check scalar coords
+    rho = mas_model["rho"].sample_at_coords(lon=lon, lat=lat, r=r)
+
+
 @pytest.mark.parametrize(
     "lon, lat, r",
     [
