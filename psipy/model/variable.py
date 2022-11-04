@@ -415,7 +415,11 @@ class Variable:
         # Pad phi points so it's possible to interpolate all the way from
         # 0 to 360 deg
         pcoords = points[0]
-        if not np.allclose(pcoords[0], pcoords[-1] - (2 * np.pi), rtol=0, atol=1e-6):
+        if np.allclose(pcoords[1], pcoords[-1] - (2 * np.pi), rtol=0, atol=1e-6):
+            # If second and last points are the same, don't need to wrap
+            pass
+        elif not np.allclose(pcoords[0], pcoords[-1] - (2 * np.pi), rtol=0, atol=1e-6):
+            # If first and last coordinate aren't the same when wrapped by 2pi
             pcoords = np.append(pcoords, pcoords[0] + 2 * np.pi)
             pcoords = np.insert(pcoords, 0, pcoords[-2] - 2 * np.pi)
             points[0] = pcoords
