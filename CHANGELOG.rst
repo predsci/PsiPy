@@ -8,10 +8,13 @@ New features
 ~~~~~~~~~~~~
 - It is now possible trace magnetic field lines through PLUTO data.
   The code for doing this is exactly the same as for MAS data.
+- Variables from MAS 2T and/or WTD runs can now be read (te, tp, zp, zm, ep, em, heat).
 
 Bug fixes
 ~~~~~~~~~
 - Removed a couple of un-needed dependencies from the package.
+- Fixed the erroneous MAS current density normalization.
+- Standardized the MAS normalization constants to all be correct to 8 significant figures.
 
 Breaking changes
 ~~~~~~~~~~~~~~~~

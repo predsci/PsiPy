@@ -13,9 +13,14 @@ __all__ = ["MASOutput"]
 
 # A mapping from unit names to their units, and factors the data needs to be
 # multiplied to get them into these units.
-_vunit = [u.km / u.s, 481.37]
-_bunit = [u.G, 2.205]
-_junit = [u.A / u.m**2, 2.267e4]
+_vunit = [u.km / u.s, 481.37107]
+_bunit = [u.G, 2.2068914]
+_junit = [u.A / u.m**2, 2.5232592e-07]
+_neunit = [u.cm**-3, 1.0e8]
+_tempunit = [u.K, 2.8070667e07]
+_punit = [u.Pa, 3.8757170e-02]
+_energyunit = [u.erg / u.cm**3, 0.38757170]
+_heatunit = [u.erg / u.cm**3 / u.s, 2.6805432e-04]
 _mas_units = {
     "vr": _vunit,
     "vt": _vunit,
@@ -25,12 +30,19 @@ _mas_units = {
     "bt": _bunit,
     "bp": _bunit,
     "bmag": _bunit,
-    "rho": [u.cm**-3, 1.67e-16 / 1.67e-24],
-    "t": [u.K, 2.804e7],
-    "p": [u.Pa, 3.875717e-2],
+    "rho": _neunit,
+    "t": _tempunit,
+    "te": _tempunit,
+    "tp": _tempunit,
+    "p": _punit,
     "jr": _junit,
     "jt": _junit,
     "jp": _junit,
+    "ep": _energyunit,
+    "em": _energyunit,
+    "zp": _vunit,
+    "zm": _vunit,
+    "heat": _heatunit,
 }
 _2pi = 2 * np.pi
 
