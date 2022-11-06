@@ -15,6 +15,8 @@ Bug fixes
 - Removed a couple of un-needed dependencies from the package.
 - Fixed the erroneous MAS current density normalization.
 - Standardized the MAS normalization constants to all be correct to 8 significant figures.
+- Fixed :meth:`~psipy.model.variable.Variable.sample_at_coords` erroring for some valid model data.
+- Fixed the Matplotlib tracing example in the gallery.
 
 Breaking changes
 ~~~~~~~~~~~~~~~~
