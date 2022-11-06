@@ -26,7 +26,7 @@ is called to trace field lines from these points:
   lon = [0, np.pi / 4] * u.rad
   flines = tracer.trace(model, r=r, lat=lat, lon=lon)
 
-where ``model`` is a `MASOutput` which must have all three components of the
+where ``model`` is a `MASOutput` or a `PLUTOOutput` which must have all three components of the
 magnetic field available.
 
 The tracer has two configurable options:
@@ -63,9 +63,9 @@ To start we we need to create a plotting window, called a 'plotter':
 
 .. code-block:: python
 
-  from psipy.visualization.pyvista import MASPlotter
+  from psipy.visualization.pyvista import PyvistaPlotter
 
-  plotter = MASPlotter(model)
+  plotter = PyvistaPlotter(model)
 
 Once we have a plotter, we can add field lines to it. In this example
 we'll colour the field lines by their polarity near the inner boundary of the

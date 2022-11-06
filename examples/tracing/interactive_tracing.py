@@ -8,7 +8,7 @@ How to interactively choose field line seed points using the mouse.
 
 from psipy.data import sample_data
 from psipy.model import MASOutput
-from psipy.visualization.pyvista import MASPlotter
+from psipy.visualization.pyvista import PyvistaPlotter
 
 ###############################################################################
 # Load a set of MAS output files.
@@ -26,6 +26,6 @@ model = MASOutput(mas_path)
 # field lines from. Choosing the first coordinate (the inner boundary of the
 # model) will lead to surprising edge effects.
 
-plotter = MASPlotter(model)
+plotter = PyvistaPlotter(model)
 plotter.add_tracing_seed_sphere(model["br"].r_coords[1])
 plotter.show()
