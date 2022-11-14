@@ -28,7 +28,7 @@ To install psipy, run
   pip install psipy
 
 If you want to install the bleeding edge version, change to the directory you
-want to download the source code too, and run:
+want to download the source code to, and run:
 
 .. code-block:: bash
 
@@ -36,4 +36,4 @@ want to download the source code too, and run:
   cd PsiPy
   pip install .
 
-This will automatically install psipy and it's dependencies.
+This will automatically install psipy and its dependencies.
