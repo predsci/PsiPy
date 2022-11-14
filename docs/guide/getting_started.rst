@@ -23,7 +23,9 @@ psipy supports data from both MAS model runs and PLUTO model runs.
 For simplicity the instructions in this guide are written with MAS model output in mind.
 Everything works the same way for PLUTO model output though - just load the files with 
 the `PLUTOOutput` class instead of the `MASOutput` class.
-The one feature that is not yet implemented for PLUTO data is field line tracing.
+We are striving for feature parity so that the same capabilities are available for 
+both the MAS and PLUTO output. As of version 0.4, field line tracing should now work 
+for PLUTO as well as MAS files. 
 
 Loading data
 ------------
@@ -41,6 +43,11 @@ output ``.hdf`` files you want to load:
 It is assmumed that the files have the filename structure
 ``'{var}{timestep}.hdf'``, where ``var`` is a variable name, and ``timestep``
 is a three-digit or six-digit zero-padded integer timestep.
+
+If you encounter errors when following these examples, it may be that you 
+have added (or there exists) a file to the MAS/PLUTO directory that is 
+mimicking a variable file, but is, in fact something else, and PsiPy is 
+confused about it. 
 
 To see which variables have been loaded, you can look at the ``.variables``
 attribute:
