@@ -32,6 +32,6 @@ https://github.com/predsci/PsiPy/actions
 
 Code coverage
 -------------
-The coverage (ie. which lines are/aren't covered
-by the tests) is also automatically reported by codecov, and can be seen at
+The coverage (ie. which lines are/aren't coveredby the tests) is also 
+automatically reported by codecov, and can be seen at
 https://codecov.io/gh/predsci/PsiPy.
