@@ -9,3 +9,4 @@ Guide
    getting_started
    visualization
    tracing
+   hdf 
