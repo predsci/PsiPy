@@ -22,7 +22,7 @@ def read_pot3d(file_path: Path) -> xr.Dataset:
         Path to the file.
     """
     if not file_path.suffix == ".hdf":
-        raise ValueError("File path must point ot a hdf file.")
+        raise ValueError("File path must point to a hdf file.")
 
     data, coords = read_hdf4(file_path.resolve())
 
