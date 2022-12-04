@@ -35,7 +35,7 @@ class ModelOutput(abc.ABC):
     Parameters
     ----------
     path :
-        Path to the directry containing the model output files.
+        Path to the directory containing the model output files.
     """
 
     def __init__(self, path):
@@ -111,7 +111,7 @@ class ModelOutput(abc.ABC):
     @abc.abstractmethod
     def get_runit(self):
         """
-        Return the units for the radial coordiate.
+        Return the units for the radial coordinate.
 
         Returns
         -------

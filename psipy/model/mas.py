@@ -146,7 +146,7 @@ class MASOutput(ModelOutput):
         if not set(["vr", "vt", "vp"]) <= set(self.variables):
             raise RuntimeError("MAS output must have the vr, vt, vp variables loaded")
 
-        # Interpolate new radial coordiantes
+        # Interpolate new radial coordinates
         new_rcoord = self["vr"].r_coords
         vt = scipy.interpolate.interp1d(self["vt"].r_coords, self["vt"].data, axis=2)(
             new_rcoord

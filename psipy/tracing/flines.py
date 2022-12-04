@@ -129,7 +129,7 @@ class FieldLines:
         if "runit" in arrs:
             runit = u.Unit(str(arrs["runit"]))
         else:
-            # For backwards compatability with versions < 0.4, assume
+            # For backwards compatibility with versions < 0.4, assume
             # solar radii
             runit = u.R_sun
 

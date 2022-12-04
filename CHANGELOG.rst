@@ -22,7 +22,7 @@ Breaking changes
 ~~~~~~~~~~~~~~~~
 - The ``r`` attribute of `psipy.tracing.flines.FieldLine` is now stored as a
   :class:`~astropy.units.Quantity` instead of as an array.
-- ``psipy.tracing.flines.FieldLine.xyz`` now returnes a
+- ``psipy.tracing.flines.FieldLine.xyz`` now returns a
   :class:`~astropy.units.Quantity` instead of an array.
 - ``MASPlotter`` has been renamed to `PyvistaPlotter` as it can now plot PLUTO data as well as MAS data.
 
@@ -108,7 +108,7 @@ Animations
 `Variable.plot_radial_cut`, `Variable.plot_phi_cut`, and
 `Variable.plot_equatorial_cut` now support animation creation. If multiple
 timesteps are loaded in the `Variable` and the timestep isn't specified, a
-:class:`~matplotlib.animation.Animation` object will be returend instead of
+:class:`~matplotlib.animation.Animation` object will be returned instead of
 a single plot being created. See the example gallery for more information on
 how to save the animation to disk.
 
