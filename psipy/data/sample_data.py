@@ -22,6 +22,14 @@ def _get_url(
     thermo: str = "poly",
     resolution: str = "medium",
 ) -> str:
+    """
+    Get the URL to a MAS dataset with a given
+    - simulation type ('corona' or 'helio')
+    - simulation variable (e.g. magnetic field, density)
+    - carrington rotation
+    - thermodynamic model ('poly' or 'thermo')
+    - simulation resolution
+    """
     if thermo == "poly":
         thermo = "p"
     elif thermo == "thermo":
@@ -61,25 +69,6 @@ mas_pooch = pooch.create(
     path=cache_dir,
     base_url="https://www.predsci.com/data/runs/",
     registry=registry,
-)
-
-# Add some PLUTO data
-pluto_reg: Dict[str, None] = {}
-PLUTO_FILES = [
-    "grid.out",
-    "dbl.out",
-    "rho.0000.dbl",
-    "Bx1.0000.dbl",
-    "Bx2.0000.dbl",
-    "Bx3.0000.dbl",
-]
-for file in PLUTO_FILES:
-    pluto_reg[file] = None
-
-pluto_pooch = pooch.create(
-    path=cache_dir,
-    base_url="doi:10.6084/m9.figshare.19401089.v1/",
-    registry=pluto_reg,
 )
 
 
@@ -159,6 +148,37 @@ def mas_high_res_thermo() -> Path:
     return high_res_dir
 
 
+def _create_empty_pooch(files: list[str], base_url: str, cache_subdir: str):
+    """
+    Create an empty Pooch registry containing a list of files
+    available at a given URL.
+    """
+    reg_dict: Dict[str, None] = {}
+    for file in files:
+        reg_dict[file] = None
+
+    pooch_reg = pooch.create(
+        path=cache_dir / cache_subdir,
+        base_url=base_url,
+        registry=reg_dict,
+    )
+    return pooch_reg
+
+
+# PLUTO data
+PLUTO_FILES = [
+    "grid.out",
+    "dbl.out",
+    "rho.0000.dbl",
+    "Bx1.0000.dbl",
+    "Bx2.0000.dbl",
+    "Bx3.0000.dbl",
+]
+pluto_pooch = _create_empty_pooch(
+    PLUTO_FILES, "doi:10.6084/m9.figshare.19401089.v1/", "pluto"
+)
+
+
 def pluto_sample_data() -> Path:
     """
     Get some sample PLUTO data.
@@ -170,5 +190,29 @@ def pluto_sample_data() -> Path:
     """
     for file in PLUTO_FILES:
         path = pluto_pooch.fetch(file, progressbar=True)
+
+    return Path(path).parent
+
+
+# POT3D data
+POT3D_FILES = [f"{var}.hdf" for var in ["bp", "br", "bt"]]
+pot3d_pooch = _create_empty_pooch(
+    POT3D_FILES,
+    "https://www.predsci.com/~pete/research/dstansby/2022-06-13-rss25/",
+    "pot3d",
+)
+
+
+def pot3d_sample_data() -> Path:
+    """
+    Get some sample POT3D data.
+
+    Returns
+    -------
+    pathlib.Path
+        Download directory.
+    """
+    for file in POT3D_FILES:
+        path = pot3d_pooch.fetch(file, progressbar=True)
 
     return Path(path).parent

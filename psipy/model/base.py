@@ -115,7 +115,6 @@ class ModelOutput(abc.ABC):
         Return the units for the radial coordinate.
         """
 
-    @abc.abstractmethod
     def cell_corner_b(self, t_idx: Optional[int] = None) -> xr.DataArray:
         """
         Get the magnetic field vector at the cell corners.
