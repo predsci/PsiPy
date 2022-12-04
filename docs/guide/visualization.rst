@@ -17,7 +17,7 @@ A typical use looks like this:
   ax = plt.subplot(1, 1, 1, projection='polar')
   model['rho'].plot_phi_cut(index, ax=ax, ...)
 
-and produces an output like this:
+which produces output like this:
 
 .. image:: /auto_examples/visualisation/images/sphx_glr_plot_visualising_mas_002.png
    :width: 600
@@ -28,8 +28,8 @@ For more examples of how to use these methods, see the
 Animating timesteps
 ~~~~~~~~~~~~~~~~~~~
 If multiple timesteps have been loaded, each of the above methods can either
-be used to plot animations over time, or single time slices. By default they
-will produce animations which then need to be manually saved. As an example,
+be used to plot animations over time, or single time slices. By default, they
+will produce animations that then need to be manually saved. As an example,
 to create and save an animated cut in the phi direction:
 
 .. code-block:: python
@@ -40,7 +40,8 @@ to create and save an animated cut in the phi direction:
 Contouring data
 ~~~~~~~~~~~~~~~
 There are also methods that can be used to plot contours of the data on top
-of 2D slices. As an example, this can be helpful for plotting the heliospheric current sheet, by contouring :math:`B_{r} = 0`. These methods are
+of 2D slices. As an example, this can be helpful for plotting the 
+heliospheric current sheet, by contouring :math:`B_{r} = 0`. These methods are:
 
 - `Variable.contour_phi_cut`
 - `Variable.contour_equatorial_cut`
@@ -54,7 +55,7 @@ A typical use looks like this:
   model['rho'].plot_phi_cut(index, ax=ax, ...)
   model['br'].contour_phi_cut(index, levels=[0], ax=ax, ...)
 
-and produces outputs like this:
+which produces outputs like this:
 
 .. image:: /auto_examples/visualisation/images/sphx_glr_plot_visualising_mas_003.png
    :width: 600
@@ -64,7 +65,7 @@ For more examples of how to use these methods, see the
 
 Normalising data before plotting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Sometimes it is helpful to multiply data by an expected radial falloff, e.g.
+Sometimes it is helpful to multiply data by an expected radial falloff, e.g.,
 multiplying the density by :math:`r^{2}`. This can be done using the
 `Variable.radial_normalized` method, e.g.:
 

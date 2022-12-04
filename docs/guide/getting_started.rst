@@ -21,8 +21,11 @@ MAS and PLUTO data
 ------------------
 psipy supports data from both MAS model runs and PLUTO model runs.
 For simplicity the instructions in this guide are written with MAS model output in mind.
-Everything works the same way for PLUTO model output though - just load the files with the `PLUTOOutput` class instead of the `MASOutput` class.
-The one feature that is not yet implemented for PLUTO data is field line tracing.
+Everything works the same way for PLUTO model output though - just load the files with 
+the `PLUTOOutput` class instead of the `MASOutput` class.
+We are striving for feature parity so that the same capabilities are available for 
+both the MAS and PLUTO output. As of version 0.4, field line tracing should now work 
+for PLUTO as well as MAS files. 
 
 Loading data
 ------------
@@ -39,9 +42,14 @@ output ``.hdf`` files you want to load:
 
 It is assmumed that the files have the filename structure
 ``'{var}{timestep}.hdf'``, where ``var`` is a variable name, and ``timestep``
-is a three-digit zero-padded integer timestep.
+is a three-digit or six-digit zero-padded integer timestep.
 
-To see which variables have been loaded, we can look at the ``.variables``
+If you encounter errors when following these examples, it may be that you 
+have added (or there exists) a file to the MAS/PLUTO directory that is 
+mimicking a variable file, but is, in fact something else, and PsiPy is 
+confused about it. 
+
+To see which variables have been loaded, you can look at the ``.variables``
 attribute:
 
 .. code-block:: python
@@ -49,7 +57,7 @@ attribute:
     print(mas_output.variables)
 
 This will print a list of the variables that have been loaded. Each individual
-variable can then be accessed with square brackets, for example to get the
+variable can then be accessed with square brackets, for example, to get the
 radial magnetic field component:
 
 .. code-block:: python
@@ -62,7 +70,7 @@ This will return a `Variable` object, which stores the underlying data as a
 Data coordinates
 ----------------
 The data stored in `Variable.data` contains the values of the data as a normal
-array, and in addition stores the coordinates of each data point.
+array, and in addition, stores the coordinates of each data point.
 
 MAS model outputs are defined on a 3D grid of points on a spherical grid. The
 coordinate names are ``'r', 'theta', 'phi'``. The coordinate values along each
@@ -75,9 +83,9 @@ properties, e.g.:
 
 Sampling data
 -------------
-Variable objects have a `Variable.sample_at_coords` method, to take a sample of
+Variable objects have a `Variable.sample_at_coords` method to take a sample of
 the 3D data cube along a 1D trajectory. This is helpful for flying a 'virtual
-spacecraft' through the model, in order to compare model results with in-situ
+spacecraft' through the model and comparing the model results with in-situ
 measurements.
 
 `sample_at_coords` requires arrays of longitude, latitude, and radial distance.
