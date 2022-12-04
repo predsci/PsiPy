@@ -22,6 +22,14 @@ def _get_url(
     thermo: str = "poly",
     resolution: str = "medium",
 ) -> str:
+    """
+    Get the URL to a MAS dataset with a given
+    - simulation type ('corona' or 'helio')
+    - simulation variable (e.g. magnetic field, density)
+    - carrington rotation
+    - thermodynamic model ('poly' or 'thermo')
+    - simulation resolution
+    """
     if thermo == "poly":
         thermo = "p"
     elif thermo == "thermo":
