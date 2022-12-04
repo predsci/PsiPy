@@ -1,3 +1,5 @@
+from typing import Optional
+
 import astropy.units as u
 import numpy as np
 import xarray as xr
@@ -37,7 +39,7 @@ class PLUTOOutput(ModelOutput):
     def load_file(self, var):
         return read_pluto_files(self.path, var)
 
-    def cell_corner_b(self, t_idx: int = None) -> xr.DataArray:
+    def cell_corner_b(self, t_idx: Optional[int] = None) -> xr.DataArray:
         if not set(["Bx1", "Bx2", "Bx3"]) <= set(self.variables):
             raise RuntimeError(
                 "PLUTO output must have the BX1, Bx2, Bx3 variables loaded"
