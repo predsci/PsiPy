@@ -74,3 +74,8 @@ def pluto_model():
 
 
 fixture_union("model", [mas_model, pluto_model])
+
+
+@fixture(scope="module")
+def pot3d_directory() -> Path:
+    return sample_data.pot3d_sample_data()
