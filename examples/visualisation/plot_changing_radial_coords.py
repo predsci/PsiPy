@@ -2,7 +2,7 @@
 Changing the units of a plot
 =============================
 
-This example shows how to change the radial coordiantes. This is helpful if you
+This example shows how to change the radial coordinates. This is helpful if you
 want to change the radial coordinates e.g. from solar radii to AU.
 """
 ###############################################################################

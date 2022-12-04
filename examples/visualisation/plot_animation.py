@@ -12,7 +12,7 @@ from psipy.data import sample_data
 from psipy.model import MASOutput
 
 ###############################################################################
-# Next, load a set of MAS output files. Here we just download two succesive
+# Next, load a set of MAS output files. Here we just download two successive
 # Carrington rotations, but you can change this line to point to any directory
 # that has data files spanning multiple timesteps of a simulation.
 mas_path = sample_data.mas_helio_timesteps()

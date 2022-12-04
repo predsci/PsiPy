@@ -44,7 +44,7 @@ def read_hdf4(path, sds_id="Data-Set-2"):
     data : ndarray
         Scalar data.
     coords : list of ndarray
-        Cooordinates values along each axis of the data.
+        Coordinate values along each axis of the data.
     """
     # Load the HDF4 file
     # In all PSI files the data is stored in "Data-Set-2"
@@ -78,7 +78,7 @@ def read_hdf5(path, dataset_name="Data"):
     data : ndarray
         Scalar data.
     coords : list of ndarray
-        Cooordinates values along each axis of the data.
+        Coordinate values along each axis of the data.
     """
     with h5.File(path, "r") as hdf5_file:
         # Get the scalar data

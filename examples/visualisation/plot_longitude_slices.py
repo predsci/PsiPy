@@ -34,7 +34,7 @@ phi_idx = 40
 # Plot the slices
 #
 # Note that for density (rho) and pressure (p) we first normalise the data
-# relative to a power law decrease, to make it easer to see spatial variations.
+# relative to a power law decrease, to make it easier to see spatial variations.
 fig = plt.figure()
 axs = [plt.subplot(1, 2, i + 1, projection="polar") for i in range(2)]
 

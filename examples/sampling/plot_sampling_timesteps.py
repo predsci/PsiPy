@@ -23,7 +23,7 @@ print(f"Number of timesteps: {vr.n_timesteps}")
 
 ###############################################################################
 # To sample across times, we'll keep a constant spatial coordinate
-# (r, lat, lon), but sample at each of the time coordiantes. This isn't that
+# (r, lat, lon), but sample at each of the time coordinates. This isn't that
 # exciting because there's only two timesteps, but illustrates how it works!
 fig, ax = plt.subplots()
 
