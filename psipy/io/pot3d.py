@@ -9,10 +9,10 @@ import xarray as xr
 
 from .util import read_hdf4
 
-__all__ = ["get_pot3d_variables"]
+__all__ = ["read_pot3d", "get_pot3d_variables"]
 
 
-def _read_pot3d(file_path: Path) -> xr.Dataset:
+def read_pot3d(file_path: Path) -> xr.Dataset:
     """
     Read a single POT3D file.
 
