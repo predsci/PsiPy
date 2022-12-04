@@ -2,15 +2,18 @@
 Reading and visualising PLUTO runs
 ==================================
 """
+
 ###############################################################################
 # First, load the required modules.
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 
 from psipy.model import PLUTOOutput
 
 ###############################################################################
 # Load a set of PLUTO output files.
-pluto_path = "/Users/dstansby/github/psipy/data/pluto"
+pluto_path = Path("/Users/dstansby/github/psipy/data/pluto")
 model = PLUTOOutput(pluto_path)
 
 ###############################################################################

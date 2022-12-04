@@ -1,7 +1,9 @@
 import abc
+import os
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional, Tuple
 
+import astropy.units as u
 import xarray as xr
 
 from .variable import Variable
@@ -38,18 +40,17 @@ class ModelOutput(abc.ABC):
         Path to the directory containing the model output files.
     """
 
-    def __init__(self, path):
+    def __init__(self, path: os.PathLike):
         self.path = Path(path)
         # Leave data empty for now, as we want to load on demand
-        # This is a mapping from variable name to xr.DataSet
-        self._data = {}
+        self._data: dict[str, xr.Dataset] = {}
         self._variables = self.get_variables()
         self._variables.sort()
 
     def __str__(self):
         return f"{self.__class__.__name__}\n" f"Variables: {self.variables}"
 
-    def __getitem__(self, var):
+    def __getitem__(self, var: str):
         """
         Get a single variable.
         """
@@ -82,7 +83,7 @@ class ModelOutput(abc.ABC):
     # These are methods that must be defined by classes that inherit from this
     # class
     @abc.abstractmethod
-    def get_variables(self):
+    def get_variables(self) -> List[str]:
         """
         Returns
         -------
@@ -97,7 +98,7 @@ class ModelOutput(abc.ABC):
         """
 
     @abc.abstractmethod
-    def get_unit(self, var):
+    def get_unit(self, var) -> Tuple[u.Unit, float]:
         """
         Return the units for a variable, and the factor needed to convert
         from the model output to those units.
@@ -109,13 +110,9 @@ class ModelOutput(abc.ABC):
         """
 
     @abc.abstractmethod
-    def get_runit(self):
+    def get_runit(self) -> u.Unit:
         """
         Return the units for the radial coordinate.
-
-        Returns
-        -------
-        unit : `astropy.units.Unit`
         """
 
     @abc.abstractmethod
@@ -141,14 +138,14 @@ class ModelOutput(abc.ABC):
 
     # Properties start here
     @property
-    def loaded_variables(self):
+    def loaded_variables(self) -> List[str]:
         """
         List of loaded variable names.
         """
         return list(self._data.keys())
 
     @property
-    def variables(self):
+    def variables(self) -> List[str]:
         """
         List of all variable names present in the directory.
         """
