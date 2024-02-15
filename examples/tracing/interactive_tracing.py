@@ -17,13 +17,13 @@ model = MASOutput(mas_path)
 
 ###############################################################################
 # To visualise the result create a pyvista plotter window. To interactively
-# trace field lines, we then create a sphere to trace the field lines from.
+# trace field lines, we then create a sphere from which to trace the field lines.
 #
 # Once the window pops up, you can place your mouse over somewhere on the
 # sphere and click "p" to trace a field line from that point.
 #
-# Note that we've used the second r coordinate in the model to trace the
-# field lines from. Choosing the first coordinate (the inner boundary of the
+# Note that we've used the second r coordinate in the model from which to trace the
+# field lines. Choosing the first coordinate (the inner boundary of the
 # model) will lead to surprising edge effects.
 
 plotter = PyvistaPlotter(model)
