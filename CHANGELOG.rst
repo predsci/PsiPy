@@ -6,8 +6,8 @@ Version 0.4.0
 
 New features
 ~~~~~~~~~~~~
-- It is now possible trace magnetic field lines through PLUTO data.
-  The code for doing this is exactly the same as for MAS data.
+- It is now possible to trace magnetic field lines through PLUTO data.
+  The code for doing this is the same as for MAS data.
 - Variables from MAS 2T and/or WTD runs can now be read (te, tp, zp, zm, ep, em, heat).
 
 Bug fixes
@@ -100,13 +100,13 @@ When loading a set of netCDF files they will be lazily loaded along the time
 dimension (ie. only one file will be read into memory at any one time).
 
 When loading a set of HDF4 or HDF5 files all of them will be read into
-memory, so beware loading lots of them! Support for lazy loading may be
+memory, so beware of loading lots of them! Support for lazy loading may be
 implemented for HDF4 or HDF5 files in the future.
 
 Animations
 ~~~~~~~~~~
 `Variable.plot_radial_cut`, `Variable.plot_phi_cut`, and
-`Variable.plot_equatorial_cut` now support animation creation. If multiple
+`Variable.plot_equatorial_cut` now supports animation creation. If multiple
 timesteps are loaded in the `Variable` and the timestep isn't specified, a
 :class:`~matplotlib.animation.Animation` object will be returned instead of
 a single plot being created. See the example gallery for more information on
