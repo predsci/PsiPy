@@ -1,7 +1,7 @@
 psipy
 =====
 
-Tools for reading, processing, and visualising MHD models run by Predictive Science
+A Python package for reading, processing, and visualising MHD models run by Predictive Science
 Inc.
 
 |docs| |build-status| |coverage|
