@@ -2,8 +2,10 @@ Field line tracing
 ==================
 
 The `streamtracer` library is used to trace magnetic field lines through
-models. Note that this must be installed prior to use (pip install streamtracer).
-In spherical coordinates the streamline equations are:
+models. Currently it has been tested with the heliospheric model results. 
+Coronal model results are currently being validated. 
+Note that this must be installed before use (i.e., pip install streamtracer).
+In spherical coordinates, the streamline equations are:
 
 .. math:: \frac{dr}{ds} = \hat{B}_{r}
 .. math:: \frac{d\theta}{ds} = \frac{\hat{B}_{\theta}}{r}
@@ -56,7 +58,7 @@ Although it is possible to plot field lines in 3D using Matplotlib, this is
 not recommended as performance is poor and Matplotlib is not a true 3D
 rendering library.
 
-Instead the `pyvista` library can be used to visualise in 3D. This is a
+Instead, the `pyvista` library can be used to visualise in 3D. This is a
 Python wrapper around the popular Visualisation Toolkit (VTK).
 
 To start we we need to create a plotting window, called a 'plotter':
