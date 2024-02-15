@@ -42,7 +42,7 @@ class PLUTOOutput(ModelOutput):
     def cell_corner_b(self, t_idx: Optional[int] = None) -> xr.DataArray:
         if not set(["Bx1", "Bx2", "Bx3"]) <= set(self.variables):
             raise RuntimeError(
-                "PLUTO output must have the BX1, Bx2, Bx3 variables loaded"
+                "PLUTO output must have the Bx1, Bx2, Bx3 variables loaded"
             )
 
         r_coords = self["Bx1"].r_coords
